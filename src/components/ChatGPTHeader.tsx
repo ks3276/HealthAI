@@ -19,7 +19,7 @@ interface ChatGPTHeaderProps {
 export const ChatGPTHeader: React.FC<ChatGPTHeaderProps> = ({
   onOpenAuth,
 }) => {
-  const { theme, toggleTheme, language, setLanguage } = useTheme();
+  const { theme, toggleTheme, language, setLanguage, t } = useTheme();
   const { user } = useAuth();
 
   const [selectedModel, setSelectedModel] = useState('HealthAI 4.0');
@@ -134,23 +134,13 @@ export const ChatGPTHeader: React.FC<ChatGPTHeaderProps> = ({
           {theme === 'dark' ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-slate-700" />}
         </button>
 
-        {/* User Auth Profile Button */}
-        {user ? (
-          <button
-            onClick={onOpenAuth}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-2xl bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 text-xs font-bold shadow-sm hover:opacity-90 transition-all"
-          >
-            <div className="w-5 h-5 rounded-full bg-health-500 text-white flex items-center justify-center text-[10px]">
-              {user.name.charAt(0).toUpperCase()}
-            </div>
-            <span className="hidden sm:inline max-w-[120px] truncate">{user.name}</span>
-          </button>
-        ) : (
+        {/* User Auth Button: Hidden when logged in. Displays Sign In when logged out */}
+        {!user && (
           <button
             onClick={onOpenAuth}
             className="px-4 py-1.5 rounded-2xl bg-gradient-to-r from-health-500 to-health-accent text-white font-extrabold text-xs shadow-md shadow-health-500/20 hover:opacity-95 transition-all"
           >
-            Sign In
+            {t('signIn')}
           </button>
         )}
 

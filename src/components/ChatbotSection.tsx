@@ -55,19 +55,7 @@ export const ChatbotSection: React.FC<ChatbotSectionProps> = ({ onOpenHistory, i
   const processedQueryRef = useRef<string | null>(null);
   const isSendingRef = useRef(false);
 
-  const sampleQuestions = language === 'te' ? [
-    'డెంగ్యూ లక్షణాలు ఏమిటి?',
-    'మలేరియాను ఎలా నివారించాలి?',
-    'ఏ ఏ టీకాలు తీసుకోవడం మంచిది?',
-    'డయాబెటిస్ ప్రమాదాన్ని ఎలా తగ్గించాలి?',
-    'జ్వరం వస్తే ఏమి చేయాలి?'
-  ] : language === 'hi' ? [
-    'डेंगू के लक्षण क्या हैं?',
-    'मलेरिया से कैसे बचें?',
-    'कौन से टीके अनुशंसित हैं?',
-    'मधुमेह का खतरा कैसे कम करें?',
-    'बुखार होने पर क्या करना चाहिए?'
-  ] : [
+  const sampleQuestions = [
     'What are dengue symptoms?',
     'How to prevent malaria?',
     'What vaccines are recommended?',
@@ -309,7 +297,7 @@ export const ChatbotSection: React.FC<ChatbotSectionProps> = ({ onOpenHistory, i
                   </span>
                 </div>
                 <p className="text-[11px] text-slate-400">
-                  {user ? `${t('connectedAs')} ${user.name}` : t('verifiedRepo')}
+                  {user ? `Connected as ${user.name}` : 'WHO & CDC Verified Knowledge Base'}
                 </p>
               </div>
             </div>
