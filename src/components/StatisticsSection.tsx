@@ -1,19 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useTheme } from '../context/ThemeContext';
 import { 
   Users, 
   BookOpen, 
   Clock, 
   Smile, 
-  Globe, 
-  ShieldCheck,
-  TrendingUp,
   Award
 } from 'lucide-react';
 
 export const StatisticsSection: React.FC = () => {
   const { t } = useTheme();
-  const [activeChartTab, setActiveChartTab] = useState<'Awareness' | 'Accuracy' | 'Languages'>('Awareness');
 
   const stats = [
     { label: t('stat1Label'), value: t('stat1Value'), icon: <Users className="w-6 h-6 text-health-500" />, detail: t('stat1Desc') },

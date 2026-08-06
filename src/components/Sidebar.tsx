@@ -233,7 +233,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     <Trash2 className="w-3.5 h-3.5 text-slate-400 hover:text-red-500" />
                   </button>
                 ) : (
-                  <Lock title="Guest Temporary Session (Erased on tab close)" className="w-3 h-3 text-slate-400 opacity-40" />
+                  <span title="Guest Temporary Session (Erased on tab close)">
+                    <Lock className="w-3 h-3 text-slate-400 opacity-40" />
+                  </span>
                 )}
               </div>
             ))}

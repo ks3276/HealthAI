@@ -7,8 +7,7 @@ import {
   MapPin, 
   Send, 
   CheckCircle2, 
-  PhoneCall, 
-  Globe 
+  PhoneCall 
 } from 'lucide-react';
 
 export const ContactSection: React.FC = () => {

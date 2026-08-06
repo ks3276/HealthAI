@@ -7,7 +7,6 @@ import {
   Activity, 
   ChevronRight, 
   ChevronLeft,
-  PhoneCall,
   RotateCcw
 } from 'lucide-react';
 

@@ -1,14 +1,9 @@
 import React from 'react';
 import { useTheme } from '../context/ThemeContext';
 import { 
-  Zap, 
   ShieldCheck, 
   Smile, 
-  Smartphone, 
   Lock, 
-  Cloud, 
-  TrendingUp, 
-  HeartHandshake, 
   Cpu 
 } from 'lucide-react';
 

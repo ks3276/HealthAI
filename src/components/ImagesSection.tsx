@@ -2,20 +2,14 @@ import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { 
   Image as ImageIcon, 
-  Sparkles, 
-  Download, 
-  Trash2, 
   Lock, 
-  Search, 
-  ShieldCheck,
   CheckCircle2,
   ZoomIn
 } from 'lucide-react';
 
 export const ImagesSection: React.FC = () => {
-  const { user, chatHistory, deleteHistoryItem } = useAuth();
-  const [promptInput, setPromptInput] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<'all' | 'infographics' | 'ai'>('all');
+  const { user } = useAuth();
+  const [selectedCategory, setSelectedCategory] = useState<'all' | 'infographics'>('all');
   const [selectedImageModal, setSelectedImageModal] = useState<{ url: string; title: string; desc: string } | null>(null);
 
   const medicalInfographics = [
@@ -52,15 +46,6 @@ export const ImagesSection: React.FC = () => {
       source: 'International Diabetes Federation'
     }
   ];
-
-  const handleDeleteItem = (id: string, e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (!user) {
-      alert('Only registered logged-in accounts can delete saved chat and image records!');
-      return;
-    }
-    deleteHistoryItem(id);
-  };
 
   return (
     <div className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-10 animate-in fade-in duration-300">

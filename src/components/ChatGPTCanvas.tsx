@@ -2,16 +2,10 @@ import React, { useState } from 'react';
 import { 
   Plus, 
   Mic, 
-  Volume2, 
   Image as ImageIcon, 
   Edit3, 
   Globe, 
-  ArrowUp,
-  Sparkles,
-  Stethoscope,
-  ShieldCheck,
-  Zap,
-  Activity
+  ArrowUp
 } from 'lucide-react';
 
 interface ChatGPTCanvasProps {

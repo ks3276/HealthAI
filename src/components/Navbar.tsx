@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useTheme, languagesList, type Language } from '../context/ThemeContext';
+import { useTheme, languagesList } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
 import { 
   Activity, 
