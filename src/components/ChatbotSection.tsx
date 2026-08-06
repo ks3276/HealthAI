@@ -35,7 +35,7 @@ interface ChatbotSectionProps {
 
 export const ChatbotSection: React.FC<ChatbotSectionProps> = ({ onOpenHistory, initialQuery }) => {
   const { addChatHistory, user } = useAuth();
-  const { t } = useTheme();
+  const { t, speakText, isTtsEnabled, toggleTts } = useTheme();
 
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -49,7 +49,6 @@ export const ChatbotSection: React.FC<ChatbotSectionProps> = ({ onOpenHistory, i
   const [inputQuery, setInputQuery] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [isListening, setIsListening] = useState(false);
-  const [speechEnabled, setSpeechEnabled] = useState(true);
   const [copiedMessageId, setCopiedMessageId] = useState<string | null>(null);
 
   const chatEndRef = useRef<HTMLDivElement>(null);
@@ -164,11 +163,7 @@ export const ChatbotSection: React.FC<ChatbotSectionProps> = ({ onOpenHistory, i
       // Save to Auth Chat History
       addChatHistory(query, responseData.text, responseData.riskBadge, responseData.sources);
 
-      if (speechEnabled && 'speechSynthesis' in window) {
-        const speech = new SpeechSynthesisUtterance(responseData.text.replace(/[*#]/g, ''));
-        speech.rate = 1.0;
-        window.speechSynthesis.speak(speech);
-      }
+      speakText(responseData.text);
     }, 1000);
   };
 
@@ -286,13 +281,13 @@ export const ChatbotSection: React.FC<ChatbotSectionProps> = ({ onOpenHistory, i
               )}
 
               <button
-                onClick={() => setSpeechEnabled(!speechEnabled)}
+                onClick={toggleTts}
                 className={`p-2 rounded-xl text-xs transition-colors ${
-                  speechEnabled ? 'bg-slate-800 text-cyan-400' : 'bg-slate-800/50 text-slate-500'
+                  isTtsEnabled ? 'bg-slate-800 text-cyan-400 font-bold' : 'bg-slate-800/50 text-slate-500'
                 }`}
-                title={speechEnabled ? 'Text-to-Speech Enabled' : 'Text-to-Speech Muted'}
+                title={isTtsEnabled ? 'Text-to-Speech Enabled' : 'Text-to-Speech Muted'}
               >
-                {speechEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
+                {isTtsEnabled ? <Volume2 className="w-4 h-4 text-emerald-400 animate-pulse" /> : <VolumeX className="w-4 h-4" />}
               </button>
 
               <button

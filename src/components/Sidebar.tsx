@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import { 
   Plus, 
   Image as ImageIcon, 
@@ -15,7 +16,9 @@ import {
   Activity,
   Layers,
   Trash2,
-  Lock
+  Lock,
+  Volume2,
+  VolumeX
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -42,6 +45,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onToggleCollapse,
 }) => {
   const { user, logout, chatHistory, deleteHistoryItem } = useAuth();
+  const { isTtsEnabled, toggleTts } = useTheme();
   const [showUserDropdown, setShowUserDropdown] = useState(false);
 
   const defaultRecents = [
@@ -128,9 +132,36 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </button>
       </div>
 
-      {/* Navigation Tools Items (Exact Requested Order) */}
+      {/* Navigation Tools Items */}
       <div className="px-2 py-1 space-y-1">
         
+        {/* 🔊 Text-to-Speech ON/OFF Toggle Button (Upper Position of Images) */}
+        <button
+          onClick={toggleTts}
+          title={isTtsEnabled ? 'Text-to-Speech is ON (Voice read-aloud active)' : 'Text-to-Speech is OFF'}
+          className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
+            isTtsEnabled
+              ? 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 shadow-sm font-bold'
+              : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 hover:text-slate-900 dark:hover:text-white'
+          } ${isCollapsed ? 'justify-center px-0' : ''}`}
+        >
+          {isTtsEnabled ? (
+            <Volume2 className="w-4 h-4 text-emerald-500 flex-shrink-0 animate-pulse" />
+          ) : (
+            <VolumeX className="w-4 h-4 text-slate-400 flex-shrink-0" />
+          )}
+          {!isCollapsed && (
+            <div className="flex items-center justify-between flex-1">
+              <span>Text-to-Speech</span>
+              <span className={`text-[10px] font-extrabold uppercase px-1.5 py-0.5 rounded-full ${
+                isTtsEnabled ? 'bg-emerald-500 text-white shadow-sm' : 'bg-slate-300 dark:bg-slate-700 text-slate-600 dark:text-slate-300'
+              }`}>
+                {isTtsEnabled ? 'ON' : 'OFF'}
+              </span>
+            </div>
+          )}
+        </button>
+
         {/* 1. Images Page */}
         <button
           onClick={() => onSelectTab('images')}
@@ -157,7 +188,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           {!isCollapsed && <span>Features</span>}
         </button>
 
-        {/* 3. Health Guides Page (Upper Position of Symptom Triage) */}
+        {/* 3. Health Guides Page */}
         <button
           onClick={() => onSelectTab('tips')}
           className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
@@ -181,7 +212,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           {!isCollapsed && <span>Symptom Triage</span>}
         </button>
 
-        {/* 5. Diseases Page (In between Symptom Triage & Mostly Asked Questions) */}
+        {/* 5. Diseases Page */}
         <button
           onClick={() => onSelectTab('diseases')}
           className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
@@ -243,7 +274,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
       )}
 
-      {/* Footer User Profile (Only rendered if user is logged in) */}
+      {/* Footer User Profile */}
       {user && (
         <div className="p-3 border-t border-slate-200/80 dark:border-slate-800 relative mt-auto">
           {!isCollapsed ? (

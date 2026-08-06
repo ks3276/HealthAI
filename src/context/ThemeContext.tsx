@@ -10,6 +10,9 @@ interface ThemeContextType {
   setLanguage: (lang: Language) => void;
   t: (key: string) => string;
   isRTL: boolean;
+  isTtsEnabled: boolean;
+  toggleTts: () => void;
+  speakText: (text: string) => void;
 }
 
 export const languagesList: { code: Language; label: string; flag: string }[] = [
@@ -1754,6 +1757,31 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }
   }, [language]);
 
+  const [isTtsEnabled, setIsTtsEnabled] = useState<boolean>(() => {
+    return localStorage.getItem('healthai-tts') === 'true';
+  });
+
+  const toggleTts = () => {
+    setIsTtsEnabled(prev => {
+      const next = !prev;
+      localStorage.setItem('healthai-tts', String(next));
+      if (!next && 'speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+      return next;
+    });
+  };
+
+  const speakText = (text: string) => {
+    if (!isTtsEnabled || !('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    const cleanText = text.replace(/[*#_`]/g, '').slice(0, 400);
+    const utterance = new SpeechSynthesisUtterance(cleanText);
+    utterance.rate = 1.0;
+    utterance.pitch = 1.0;
+    window.speechSynthesis.speak(utterance);
+  };
+
   const toggleTheme = () => {
     setTheme(prev => (prev === 'light' ? 'dark' : 'light'));
   };
@@ -1769,7 +1797,10 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       language,
       setLanguage,
       t,
-      isRTL: language === 'ar'
+      isRTL: language === 'ar',
+      isTtsEnabled,
+      toggleTts,
+      speakText
     }}>
       {children}
     </ThemeContext.Provider>
