@@ -30,13 +30,13 @@
 }
 
 .dark {
-  --bg-primary: #090d16;
-  --bg-card: rgba(15, 23, 42, 0.85);
+  --bg-primary: #000000;
+  --bg-card: #171717;
   --text-primary: #f8fafc;
-  --text-secondary: #94a3b8;
-  --border-color: rgba(30, 41, 59, 0.8);
-  --glass-bg: rgba(15, 23, 42, 0.7);
-  --glass-border: rgba(255, 255, 255, 0.1);
+  --text-secondary: #a3a3a3;
+  --border-color: #212121;
+  --glass-bg: #171717;
+  --glass-border: #212121;
 }
 
 html {

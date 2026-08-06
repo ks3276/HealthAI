@@ -48,14 +48,14 @@ export const ChatGPTCanvas: React.FC<ChatGPTCanvasProps> = ({
       {/* Main Search/Prompt Box (Matching ChatGPT floating capsule bar) */}
       <form 
         onSubmit={handleSubmit}
-        className="w-full max-w-2xl bg-white dark:bg-slate-850 rounded-3xl p-3 border border-slate-200/80 dark:border-slate-750 shadow-xl focus-within:ring-2 focus-within:ring-health-500/40 transition-all flex items-center gap-2 mb-6"
+        className="w-full max-w-2xl bg-white dark:bg-[#212121] rounded-3xl p-3 border border-slate-200/80 dark:border-[#2f2f2f] shadow-xl focus-within:ring-2 focus-within:ring-health-500/40 transition-all flex items-center gap-2 mb-6"
       >
         {/* Plus / Attachment Button */}
         <button
           type="button"
           onClick={onOpenSymptomChecker}
           title="Symptom Checker & Triage"
-          className="p-2.5 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 transition-colors flex-shrink-0"
+          className="p-2.5 rounded-full hover:bg-slate-100 dark:hover:bg-[#2f2f2f] text-slate-500 dark:text-slate-400 transition-colors flex-shrink-0"
         >
           <Plus className="w-5 h-5" />
         </button>
@@ -77,7 +77,7 @@ export const ChatGPTCanvas: React.FC<ChatGPTCanvasProps> = ({
           className={`p-2.5 rounded-full transition-colors flex-shrink-0 ${
             isListening 
               ? 'bg-red-500 text-white animate-pulse' 
-              : 'hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400'
+              : 'hover:bg-slate-100 dark:hover:bg-[#2f2f2f] text-slate-500 dark:text-slate-400'
           }`}
         >
           <Mic className="w-5 h-5" />

@@ -35,13 +35,13 @@ export const ChatGPTHeader: React.FC<ChatGPTHeaderProps> = ({
   const currentLang = languagesList.find((l) => l.code === language) || languagesList[0];
 
   return (
-    <header className={`sticky top-0 z-30 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200/80 dark:border-slate-800 transition-all duration-300 px-4 py-3 flex items-center justify-between`}>
+    <header className={`sticky top-0 z-30 bg-white/80 dark:bg-black backdrop-blur-xl border-b border-slate-200/80 dark:border-[#212121] transition-all duration-300 px-4 py-3 flex items-center justify-between`}>
       
       {/* Model Selector Dropdown */}
       <div className="relative">
         <button
           onClick={() => setShowModelDropdown(!showModelDropdown)}
-          className="flex items-center gap-2 px-3 py-1.5 rounded-2xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all text-slate-900 dark:text-white font-bold text-sm"
+          className="flex items-center gap-2 px-3 py-1.5 rounded-2xl bg-slate-100 dark:bg-[#212121] hover:bg-slate-200 dark:hover:bg-[#2f2f2f] transition-all text-slate-900 dark:text-white font-bold text-sm"
         >
           <span className="text-health-500 font-extrabold flex items-center gap-1.5">
             <Activity className="w-4 h-4 text-health-500 animate-pulse" />
@@ -51,7 +51,7 @@ export const ChatGPTHeader: React.FC<ChatGPTHeaderProps> = ({
         </button>
 
         {showModelDropdown && (
-          <div className="absolute top-full left-0 mt-2 w-72 bg-white dark:bg-slate-850 rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-700 p-2 z-50 animate-in zoom-in-95">
+          <div className="absolute top-full left-0 mt-2 w-72 bg-white dark:bg-[#171717] rounded-3xl shadow-2xl border border-slate-200 dark:border-[#2f2f2f] p-2 z-50 animate-in zoom-in-95">
             <div className="px-3 py-2 text-[10px] font-extrabold uppercase text-slate-400 tracking-wider">
               Select AI Engine Model
             </div>
@@ -65,7 +65,7 @@ export const ChatGPTHeader: React.FC<ChatGPTHeaderProps> = ({
                 className={`w-full text-left p-3 rounded-2xl flex items-start gap-3 transition-colors ${
                   selectedModel === m.id
                     ? 'bg-health-500/10 text-health-600 dark:text-health-400 font-bold'
-                    : 'hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200'
+                    : 'hover:bg-slate-100 dark:hover:bg-[#212121] text-slate-800 dark:text-slate-200'
                 }`}
               >
                 <span className="text-lg">{m.icon}</span>
@@ -89,7 +89,7 @@ export const ChatGPTHeader: React.FC<ChatGPTHeaderProps> = ({
         <div className="relative">
           <button
             onClick={() => setShowLangDropdown(!showLangDropdown)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-xs font-bold text-slate-700 dark:text-slate-200 transition-all border border-slate-200 dark:border-slate-700"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-slate-100 dark:bg-[#212121] hover:bg-slate-200 dark:hover:bg-[#2f2f2f] text-xs font-bold text-slate-700 dark:text-slate-200 transition-all border border-slate-200 dark:border-[#2f2f2f]"
           >
             <span>{currentLang.flag}</span>
             <span className="hidden md:inline">{currentLang.label}</span>
@@ -97,7 +97,7 @@ export const ChatGPTHeader: React.FC<ChatGPTHeaderProps> = ({
           </button>
 
           {showLangDropdown && (
-            <div className="absolute top-full right-0 mt-2 w-52 bg-white dark:bg-slate-850 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 p-2 z-50 max-h-72 overflow-y-auto animate-in zoom-in-95">
+            <div className="absolute top-full right-0 mt-2 w-52 bg-white dark:bg-[#171717] rounded-2xl shadow-2xl border border-slate-200 dark:border-[#2f2f2f] p-2 z-50 max-h-72 overflow-y-auto animate-in zoom-in-95">
               <div className="px-3 py-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
                 Select Website Language
               </div>
@@ -111,7 +111,7 @@ export const ChatGPTHeader: React.FC<ChatGPTHeaderProps> = ({
                   className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition-colors ${
                     language === lang.code
                       ? 'bg-health-500 text-white font-bold'
-                      : 'hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300'
+                      : 'hover:bg-slate-100 dark:hover:bg-[#212121] text-slate-700 dark:text-slate-300'
                   }`}
                 >
                   <span className="flex items-center gap-2">
@@ -129,7 +129,7 @@ export const ChatGPTHeader: React.FC<ChatGPTHeaderProps> = ({
         <button
           onClick={toggleTheme}
           title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-          className="p-2 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all border border-slate-200 dark:border-slate-700"
+          className="p-2 rounded-2xl bg-slate-100 dark:bg-[#212121] text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-[#2f2f2f] transition-all border border-slate-200 dark:border-[#2f2f2f]"
         >
           {theme === 'dark' ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-slate-700" />}
         </button>

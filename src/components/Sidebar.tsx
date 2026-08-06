@@ -81,7 +81,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
   return (
     <aside 
-      className={`fixed top-0 left-0 bottom-0 z-40 bg-slate-100/90 dark:bg-slate-900/95 backdrop-blur-xl border-r border-slate-200/80 dark:border-slate-800 transition-all duration-300 flex flex-col ${
+      className={`fixed top-0 left-0 bottom-0 z-40 bg-slate-100/90 dark:bg-black backdrop-blur-xl border-r border-slate-200/80 dark:border-[#212121] transition-all duration-300 flex flex-col ${
         isCollapsed ? 'w-16' : 'w-64'
       }`}
     >
@@ -123,7 +123,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       <div className="p-3">
         <button
           onClick={onNewChat}
-          className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-2xl bg-white dark:bg-slate-800/90 border border-slate-200/80 dark:border-slate-700/80 text-slate-900 dark:text-white font-semibold text-xs shadow-sm hover:bg-slate-50 dark:hover:bg-slate-750 transition-all ${
+          className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-2xl bg-white dark:bg-[#212121] border border-slate-200/80 dark:border-[#2f2f2f] text-slate-900 dark:text-white font-semibold text-xs shadow-sm hover:bg-slate-50 dark:hover:bg-[#2f2f2f] transition-all ${
             isCollapsed ? 'justify-center px-0' : 'justify-start'
           }`}
         >
@@ -142,7 +142,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
             isTtsEnabled
               ? 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 shadow-sm font-bold'
-              : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 hover:text-slate-900 dark:hover:text-white'
+              : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-[#171717] hover:text-slate-900 dark:hover:text-white'
           } ${isCollapsed ? 'justify-center px-0' : ''}`}
         >
           {isTtsEnabled ? (
@@ -167,8 +167,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
           onClick={() => onSelectTab('images')}
           className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
             activeTab === 'images'
-              ? 'bg-slate-200/80 dark:bg-slate-800 text-slate-900 dark:text-white font-bold'
-              : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 hover:text-slate-900 dark:hover:text-white'
+              ? 'bg-slate-200/80 dark:bg-[#212121] text-slate-900 dark:text-white font-bold'
+              : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-[#171717] hover:text-slate-900 dark:hover:text-white'
           } ${isCollapsed ? 'justify-center px-0' : ''}`}
         >
           <ImageIcon className="w-4 h-4 text-purple-500 flex-shrink-0" />
@@ -180,8 +180,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
           onClick={() => onSelectTab('features')}
           className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
             activeTab === 'features'
-              ? 'bg-slate-200/80 dark:bg-slate-800 text-slate-900 dark:text-white font-bold'
-              : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 hover:text-slate-900 dark:hover:text-white'
+              ? 'bg-slate-200/80 dark:bg-[#212121] text-slate-900 dark:text-white font-bold'
+              : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-[#171717] hover:text-slate-900 dark:hover:text-white'
           } ${isCollapsed ? 'justify-center px-0' : ''}`}
         >
           <Layers className="w-4 h-4 text-emerald-500 flex-shrink-0" />
@@ -193,8 +193,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
           onClick={() => onSelectTab('tips')}
           className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
             activeTab === 'tips'
-              ? 'bg-slate-200/80 dark:bg-slate-800 text-slate-900 dark:text-white font-bold'
-              : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 hover:text-slate-900 dark:hover:text-white'
+              ? 'bg-slate-200/80 dark:bg-[#212121] text-slate-900 dark:text-white font-bold'
+              : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-[#171717] hover:text-slate-900 dark:hover:text-white'
           } ${isCollapsed ? 'justify-center px-0' : ''}`}
         >
           <Folder className="w-4 h-4 text-indigo-500 flex-shrink-0" />
@@ -204,7 +204,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {/* 4. Symptom Triage Tool */}
         <button
           onClick={onOpenSymptomChecker}
-          className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 hover:text-slate-900 dark:hover:text-white transition-all ${
+          className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-[#171717] hover:text-slate-900 dark:hover:text-white transition-all ${
             isCollapsed ? 'justify-center px-0' : ''
           }`}
         >
@@ -217,8 +217,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
           onClick={() => onSelectTab('diseases')}
           className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
             activeTab === 'diseases'
-              ? 'bg-slate-200/80 dark:bg-slate-800 text-slate-900 dark:text-white font-bold'
-              : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 hover:text-slate-900 dark:hover:text-white'
+              ? 'bg-slate-200/80 dark:bg-[#212121] text-slate-900 dark:text-white font-bold'
+              : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-[#171717] hover:text-slate-900 dark:hover:text-white'
           } ${isCollapsed ? 'justify-center px-0' : ''}`}
         >
           <BookOpen className="w-4 h-4 text-blue-500 flex-shrink-0" />
@@ -230,8 +230,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
           onClick={() => onSelectTab('faq')}
           className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
             activeTab === 'faq'
-              ? 'bg-slate-200/80 dark:bg-slate-800 text-slate-900 dark:text-white font-bold'
-              : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 hover:text-slate-900 dark:hover:text-white'
+              ? 'bg-slate-200/80 dark:bg-[#212121] text-slate-900 dark:text-white font-bold'
+              : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-[#171717] hover:text-slate-900 dark:hover:text-white'
           } ${isCollapsed ? 'justify-center px-0' : ''}`}
         >
           <HelpCircle className="w-4 h-4 text-cyan-500 flex-shrink-0" />
