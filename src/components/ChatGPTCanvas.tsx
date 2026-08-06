@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTheme } from '../context/ThemeContext';
 import { 
   Plus, 
   Mic, 
@@ -17,6 +18,7 @@ export const ChatGPTCanvas: React.FC<ChatGPTCanvasProps> = ({
   onSendQuery,
   onOpenSymptomChecker,
 }) => {
+  const { t } = useTheme();
   const [query, setQuery] = useState('');
   const [isListening, setIsListening] = useState(false);
 
@@ -45,10 +47,10 @@ export const ChatGPTCanvas: React.FC<ChatGPTCanvasProps> = ({
       {/* Centered Heading */}
       <div className="text-center space-y-3 mb-10">
         <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-          Where should we begin?
+          {t('whereBegin')}
         </h1>
         <p className="text-sm text-slate-500 dark:text-slate-400 max-w-lg mx-auto">
-          Ask HealthAI about symptoms, disease prevention, vaccination guidelines, or regional public health safety.
+          {t('beginSub')}
         </p>
       </div>
 
@@ -61,7 +63,7 @@ export const ChatGPTCanvas: React.FC<ChatGPTCanvasProps> = ({
         <button
           type="button"
           onClick={onOpenSymptomChecker}
-          title="Add Symptoms or Select Triage Tool"
+          title={t('symptomCheckBtn')}
           className="p-2.5 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors flex-shrink-0"
         >
           <Plus className="w-5 h-5" />
@@ -72,7 +74,7 @@ export const ChatGPTCanvas: React.FC<ChatGPTCanvasProps> = ({
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Ask anything..."
+          placeholder={t('askPlaceholder')}
           className="flex-1 bg-transparent border-none outline-none text-base text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500"
         />
 
@@ -112,7 +114,7 @@ export const ChatGPTCanvas: React.FC<ChatGPTCanvasProps> = ({
         </button>
       </form>
 
-      {/* Action Prompt Suggestion Cards (Matches ChatGPT UI) */}
+      {/* Action Prompt Suggestion Cards */}
       <div className="w-full max-w-2xl grid grid-cols-1 sm:grid-cols-3 gap-3">
         
         <button
@@ -123,8 +125,8 @@ export const ChatGPTCanvas: React.FC<ChatGPTCanvasProps> = ({
             <ImageIcon className="w-5 h-5" />
           </div>
           <div>
-            <div className="text-xs font-bold text-slate-900 dark:text-white">Create an image</div>
-            <div className="text-[11px] text-slate-400">Visual Disease Guide</div>
+            <div className="text-xs font-bold text-slate-900 dark:text-white">{t('createImage')}</div>
+            <div className="text-[11px] text-slate-400">{t('createImageSub')}</div>
           </div>
         </button>
 
@@ -136,8 +138,8 @@ export const ChatGPTCanvas: React.FC<ChatGPTCanvasProps> = ({
             <Edit3 className="w-5 h-5" />
           </div>
           <div>
-            <div className="text-xs font-bold text-slate-900 dark:text-white">Write or edit</div>
-            <div className="text-[11px] text-slate-400">Health Guidelines</div>
+            <div className="text-xs font-bold text-slate-900 dark:text-white">{t('writeEdit')}</div>
+            <div className="text-[11px] text-slate-400">{t('writeEditSub')}</div>
           </div>
         </button>
 
@@ -149,8 +151,8 @@ export const ChatGPTCanvas: React.FC<ChatGPTCanvasProps> = ({
             <Globe className="w-5 h-5" />
           </div>
           <div>
-            <div className="text-xs font-bold text-slate-900 dark:text-white">Search the web</div>
-            <div className="text-[11px] text-slate-400">Public Health Repo</div>
+            <div className="text-xs font-bold text-slate-900 dark:text-white">{t('searchWeb')}</div>
+            <div className="text-[11px] text-slate-400">{t('searchWebSub')}</div>
           </div>
         </button>
 
