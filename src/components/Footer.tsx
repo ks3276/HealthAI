@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useTheme } from '../context/ThemeContext';
+import { Logo } from './Logo';
 import { 
-  Activity, 
   Send, 
   CheckCircle2, 
   Heart 
@@ -43,13 +43,8 @@ export const Footer: React.FC<FooterProps> = ({ onSelectTab }) => {
           
           {/* Col 1: About HealthAI */}
           <div className="lg:col-span-2 space-y-4">
-            <button onClick={() => handleTabClick('home')} className="flex items-center gap-2 text-left focus:outline-none">
-              <div className="flex items-center justify-center w-9 h-9 rounded-xl bg-gradient-to-tr from-health-500 to-health-accent text-white shadow-lg">
-                <Activity className="w-5 h-5 animate-pulse" />
-              </div>
-              <span className="font-extrabold text-xl tracking-tight text-white">
-                Health<span className="gradient-text">AI</span>
-              </span>
+            <button onClick={() => handleTabClick('home')} className="flex items-center text-left focus:outline-none">
+              <Logo size="md" variant="light" />
             </button>
 
             <p className="text-xs text-slate-400 leading-relaxed max-w-sm">

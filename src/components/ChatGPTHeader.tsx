@@ -6,7 +6,7 @@ import {
   Sun, 
   Moon, 
   Check, 
-  Activity
+  HeartPulse
 } from 'lucide-react';
 
 interface ChatGPTHeaderProps {
@@ -43,8 +43,8 @@ export const ChatGPTHeader: React.FC<ChatGPTHeaderProps> = ({
           onClick={() => setShowModelDropdown(!showModelDropdown)}
           className="flex items-center gap-2 px-3 py-1.5 rounded-2xl bg-slate-100 dark:bg-[#212121] hover:bg-slate-200 dark:hover:bg-[#2f2f2f] transition-all text-slate-900 dark:text-white font-bold text-sm"
         >
-          <span className="text-health-500 font-extrabold flex items-center gap-1.5">
-            <Activity className="w-4 h-4 text-health-500 animate-pulse" />
+          <span className="text-emerald-500 font-extrabold flex items-center gap-1.5">
+            <HeartPulse className="w-4 h-4 text-emerald-500 animate-pulse" />
             <span>{selectedModel}</span>
           </span>
           <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${showModelDropdown ? 'rotate-180' : ''}`} />

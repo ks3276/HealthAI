@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useTheme, languagesList } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
+import { Logo } from './Logo';
 import { 
-  Activity, 
   Sun, 
   Moon, 
   Globe, 
@@ -78,18 +78,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             onClick={() => handleTabClick('home')} 
             className="flex items-center gap-2 group text-left focus:outline-none"
           >
-            <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-tr from-health-500 to-health-accent text-white shadow-lg shadow-health-500/30 group-hover:scale-105 transition-transform">
-              <Activity className="w-6 h-6 animate-pulse" />
-              <span className="absolute -top-1 -right-1 w-3 h-3 bg-health-accent rounded-full border-2 border-white dark:border-slate-900"></span>
-            </div>
-            <div className="flex flex-col">
-              <span className="font-extrabold text-xl tracking-tight text-slate-900 dark:text-white flex items-center gap-1.5">
-                Health<span className="gradient-text">AI</span>
-                <span className="text-[10px] uppercase tracking-widest px-1.5 py-0.5 rounded bg-health-500/10 dark:bg-health-400/20 text-health-600 dark:text-health-400 font-semibold border border-health-500/20">
-                  Public Health
-                </span>
-              </span>
-            </div>
+            <Logo size="md" showTag={true} />
           </button>
 
           {/* Desktop Navigation Links */}
