@@ -150,7 +150,7 @@ const translations: Record<Language, Record<string, string>> = {
     clearChat: 'Clear Chat',
     exportChat: 'Export Chat',
     historyBtn: 'Chat History',
-    disclaimer: 'Disclaimer: HealthAI provides educational insights based on public health data. Always seek professional emergency care for severe conditions.',
+    disclaimer: 'Note: This is only for your awareness purpose not for medication purpose. Please consult a certified doctor to get treatment.',
     samplePromptTitle: 'Suggested Questions:',
 
     // FAQ Section
