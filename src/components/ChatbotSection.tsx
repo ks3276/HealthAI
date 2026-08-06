@@ -52,6 +52,8 @@ export const ChatbotSection: React.FC<ChatbotSectionProps> = ({ onOpenHistory, i
   const [copiedMessageId, setCopiedMessageId] = useState<string | null>(null);
 
   const chatEndRef = useRef<HTMLDivElement>(null);
+  const processedQueryRef = useRef<string | null>(null);
+  const isSendingRef = useRef(false);
 
   const sampleQuestions = [
     'What are dengue symptoms?',
@@ -70,7 +72,8 @@ export const ChatbotSection: React.FC<ChatbotSectionProps> = ({ onOpenHistory, i
   }, [messages, isTyping]);
 
   useEffect(() => {
-    if (initialQuery) {
+    if (initialQuery && processedQueryRef.current !== initialQuery) {
+      processedQueryRef.current = initialQuery;
       handleSend(initialQuery);
     }
   }, [initialQuery]);
@@ -97,25 +100,25 @@ export const ChatbotSection: React.FC<ChatbotSectionProps> = ({ onOpenHistory, i
     }
 
     // Vaccines
-    if (textLower.includes('vaccine') || textLower.includes('vaccination')) {
+    if (textLower.includes('vaccin') || textLower.includes('immuniz')) {
       return {
-        text: `**Recommended Immunization Schedule:**\n\n1. **Routine Childhood:** BCG, Polio, DTP, Hepatitis B, MMR, and Rotavirus.\n2. **Adult Boosters:** Tetanus-Diphtheria (every 10 years), Pneumococcal (65+).\n3. **Annual:** Seasonal Influenza vaccine.\n4. **Travel:** Yellow Fever, Typhoid, and Cholera oral vaccines as advised for specific countries.`,
-        sources: ['WHO Global Immunization Standards', 'CDC Adult Vaccine Schedule'],
+        text: `**Immunization & Vaccine Roadmap:**\n\n• **Infants & Children:** DTP, MMR, Polio, and Hepatitis B.\n• **Adults & Seniors:** Annual Seasonal Flu, Tdap booster every 10 years, and Pneumococcal vaccine.\n• **Safety:** Modern vaccines undergo rigorous clinical safety monitoring.`,
+        sources: ['Global Immunization Schedule', 'WHO Vaccine Safetynet'],
         riskBadge: 'Low' as const
       };
     }
 
     // Diabetes
-    if (textLower.includes('diabet') || textLower.includes('sugar')) {
+    if (textLower.includes('diabe') || textLower.includes('sugar')) {
       return {
-        text: `**Type 2 Diabetes Risk Reduction Strategy:**\n\n• **Nutrition:** Switch to a high-fiber, low-glycemic Mediterranean diet.\n• **Physical Activity:** Aim for at least 150 minutes of brisk walking per week.\n• **Weight Management:** Reducing body weight by 5-7% reduces diabetes onset risk by nearly 60%.\n• **Screening:** Annual HbA1c screening after age 35.`,
-        sources: ['International Diabetes Federation Guidelines', 'ADA Standards of Care'],
+        text: `**Diabetes Management & Lifestyle Prevention:**\n\n• **Diet:** Choose low-glycemic foods, whole grains, and leafy vegetables.\n• **Exercise:** Engage in at least 150 minutes of moderate aerobic activity per week.\n• **Monitoring:** Check HbA1c levels regularly if diagnosed or pre-diabetic.`,
+        sources: ['International Diabetes Federation', 'CDC Diabetes Guidance'],
         riskBadge: 'Low' as const
       };
     }
 
-    // Fever
-    if (textLower.includes('fever')) {
+    // Fever / High Temperature
+    if (textLower.includes('fever') || textLower.includes('temp')) {
       return {
         text: `**Fever Care Protocol & Triage:**\n\n1. **Hydration:** Consume fluids, electrolyte solutions (ORS), and warm soups.\n2. **Rest:** Allow the body to rest in a cool, well-ventilated room.\n3. **Monitoring:** Track temperature every 4 hours.\n\n⚠️ **When to seek Emergency Care (Call 911/112):**\n- Fever exceeding 103°F (39.4°C) lasting over 3 days\n- Stiff neck, severe breathing difficulty, or altered mental state.`,
         sources: ['CDC Fever Triage Guide', 'NHS Medical Guidelines'],
@@ -133,10 +136,12 @@ export const ChatbotSection: React.FC<ChatbotSectionProps> = ({ onOpenHistory, i
 
   const handleSend = (textToSend?: string) => {
     const query = textToSend || inputQuery;
-    if (!query.trim()) return;
+    if (!query.trim() || isSendingRef.current) return;
+
+    isSendingRef.current = true;
 
     const userMessage: Message = {
-      id: Date.now().toString(),
+      id: `${Date.now()}-${Math.random()}`,
       sender: 'user',
       text: query,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
@@ -149,7 +154,7 @@ export const ChatbotSection: React.FC<ChatbotSectionProps> = ({ onOpenHistory, i
     setTimeout(() => {
       const responseData = generateAIResponse(query);
       const aiMessage: Message = {
-        id: (Date.now() + 1).toString(),
+        id: `${Date.now() + 1}-${Math.random()}`,
         sender: 'ai',
         text: responseData.text,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
@@ -159,6 +164,7 @@ export const ChatbotSection: React.FC<ChatbotSectionProps> = ({ onOpenHistory, i
 
       setMessages(prev => [...prev, aiMessage]);
       setIsTyping(false);
+      isSendingRef.current = false;
 
       // Save to Auth Chat History
       addChatHistory(query, responseData.text, responseData.riskBadge, responseData.sources);
