@@ -2,9 +2,6 @@ import React, { useState } from 'react';
 import { 
   Plus, 
   Mic, 
-  Image as ImageIcon, 
-  Edit3, 
-  Globe, 
   ArrowUp
 } from 'lucide-react';
 
@@ -35,10 +32,6 @@ export const ChatGPTCanvas: React.FC<ChatGPTCanvasProps> = ({
     }, 2500);
   };
 
-  const handlePromptCard = (text: string) => {
-    onSendQuery(text);
-  };
-
   return (
     <div className="flex-1 flex flex-col items-center justify-center min-h-[70vh] px-4 py-8 max-w-4xl mx-auto w-full animate-in fade-in duration-300">
       
@@ -48,49 +41,49 @@ export const ChatGPTCanvas: React.FC<ChatGPTCanvasProps> = ({
           Where should we begin?
         </h1>
         <p className="text-sm text-slate-500 dark:text-slate-400 max-w-lg mx-auto">
-          Ask HealthAI about symptoms, disease prevention, vaccination guidelines, or regional public health safety.
+          Ask any health question, disease symptoms, preventive guidelines, or public health information below.
         </p>
       </div>
 
-      {/* ChatGPT-style Floating Search Bar */}
+      {/* Main Search/Prompt Box (Matching ChatGPT floating capsule bar) */}
       <form 
         onSubmit={handleSubmit}
-        className="w-full max-w-2xl bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 p-3 flex items-center gap-3 relative focus-within:ring-2 focus-within:ring-health-500/50 mb-8"
+        className="w-full max-w-2xl bg-white dark:bg-slate-850 rounded-3xl p-3 border border-slate-200/80 dark:border-slate-750 shadow-xl focus-within:ring-2 focus-within:ring-health-500/40 transition-all flex items-center gap-2 mb-6"
       >
         {/* Plus / Attachment Button */}
         <button
           type="button"
           onClick={onOpenSymptomChecker}
-          title="Add Symptoms or Select Triage Tool"
-          className="p-2.5 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors flex-shrink-0"
+          title="Symptom Checker & Triage"
+          className="p-2.5 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 transition-colors flex-shrink-0"
         >
           <Plus className="w-5 h-5" />
         </button>
 
-        {/* Input Text Box */}
+        {/* Prompt Input Field */}
         <input
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Ask anything..."
-          className="flex-1 bg-transparent border-none outline-none text-base text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500"
+          placeholder="Message HealthAI..."
+          className="flex-1 bg-transparent border-none outline-none text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 text-sm font-medium px-2"
         />
 
-        {/* Voice Microphone Button */}
+        {/* Voice Input Mic Button */}
         <button
           type="button"
           onClick={handleVoiceInput}
-          title="Voice Search"
-          className={`p-2.5 rounded-2xl transition-colors flex-shrink-0 ${
-            isListening
-              ? 'bg-red-500 text-white animate-pulse'
-              : 'text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800'
+          title={isListening ? "Listening..." : "Voice Input"}
+          className={`p-2.5 rounded-full transition-colors flex-shrink-0 ${
+            isListening 
+              ? 'bg-red-500 text-white animate-pulse' 
+              : 'hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400'
           }`}
         >
           <Mic className="w-5 h-5" />
         </button>
 
-        {/* Sound / Wave Audio Pill Button */}
+        {/* Submit Button */}
         <button
           type="submit"
           disabled={!query.trim()}
@@ -111,50 +104,6 @@ export const ChatGPTCanvas: React.FC<ChatGPTCanvasProps> = ({
           )}
         </button>
       </form>
-
-      {/* Action Prompt Suggestion Cards (Matches ChatGPT UI) */}
-      <div className="w-full max-w-2xl grid grid-cols-1 sm:grid-cols-3 gap-3">
-        
-        <button
-          onClick={() => handlePromptCard('Create a visual symptom breakdown and prevention guide for Dengue & Malaria')}
-          className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-left hover:border-health-500/50 hover:shadow-lg transition-all group flex items-center gap-3"
-        >
-          <div className="p-2.5 rounded-xl bg-purple-500/10 text-purple-500 group-hover:scale-110 transition-transform">
-            <ImageIcon className="w-5 h-5" />
-          </div>
-          <div>
-            <div className="text-xs font-bold text-slate-900 dark:text-white">Create an image</div>
-            <div className="text-[11px] text-slate-400">Visual Disease Guide</div>
-          </div>
-        </button>
-
-        <button
-          onClick={() => handlePromptCard('Write a complete step-by-step disease prevention protocol for seasonal flu and fever')}
-          className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-left hover:border-health-500/50 hover:shadow-lg transition-all group flex items-center gap-3"
-        >
-          <div className="p-2.5 rounded-xl bg-amber-500/10 text-amber-500 group-hover:scale-110 transition-transform">
-            <Edit3 className="w-5 h-5" />
-          </div>
-          <div>
-            <div className="text-xs font-bold text-slate-900 dark:text-white">Write or edit</div>
-            <div className="text-[11px] text-slate-400">Health Guidelines</div>
-          </div>
-        </button>
-
-        <button
-          onClick={() => handlePromptCard('Search global public health databases for recent disease outbreak updates')}
-          className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-left hover:border-health-500/50 hover:shadow-lg transition-all group flex items-center gap-3"
-        >
-          <div className="p-2.5 rounded-xl bg-blue-500/10 text-blue-500 group-hover:scale-110 transition-transform">
-            <Globe className="w-5 h-5" />
-          </div>
-          <div>
-            <div className="text-xs font-bold text-slate-900 dark:text-white">Search the web</div>
-            <div className="text-[11px] text-slate-400">Public Health Repo</div>
-          </div>
-        </button>
-
-      </div>
 
     </div>
   );
