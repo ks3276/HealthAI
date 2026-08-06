@@ -1273,142 +1273,10 @@ const translations: Record<Language, Record<string, string>> = {
     stat3Desc: 'مطابق لمعايير الفرز الطبي لمنظمة الصحة العالمية.',
     stat4Value: '24/7',
     stat4Label: 'دعم فوري',
-    stat4Desc: 'استجابة سريعة بدون انتظار.',
-
-    whyTag: 'صمم للنفع العام',
-    whyTitle: 'لماذا تثق المجتمعات في HealthAI',
-    whySubtitle: 'الجمع بين تقنيات الذكاء الاصطناعي والمعايير الطبية المعتمدة.',
-    why1Title: 'مبني على الأدلة العلمية',
-    why1Desc: 'جميع الإجابات مراجعة بناءً على إرشادات WHO و CDC.',
-    why2Title: 'خصوصية تامة',
-    why2Desc: 'نحن لا نحتفظ ببياناتك الشخصية. استفساراتك مجهولة الهوية.',
-    why3Title: 'تعدد اللغات',
-    why3Desc: 'ترجمة فورية في 10 لغات عالمية رئيسية.',
-    why4Title: 'سهل ومتاح للجميع',
-    why4Desc: 'واجهة بسيطة تناسب جميع المستخدمين.',
-
-    featuresTag: 'إمكانيات شاملة',
-    featuresTitle: 'مصمم للصحة العامة الحديثة',
-    featuresSubtitle: 'اكتشف ميزات الذكاء الاصطناعي للتوعية والوقاية.',
-    filterAll: 'جميع الميزات (10)',
-    filterAI: 'تركيز الذكاء الاصطناعي',
-    filterPrevention: 'تركيز الوقاية',
-    filterSecurity: 'تركيز الأمان',
-    searchFeaturesPlaceholder: 'البحث عن ميزة...',
-    verifiedCapability: 'ميزة موثقة',
-    launchTool: 'تشغيل أداة التقييم',
-
-    diseasesTag: 'قاعدة البيانات الطبية',
-    diseasesTitle: 'مركز التوعية بالأمراض والوقاية منها',
-    diseasesSubtitle: 'استكشف الأعراض والمسببات وطرق الوقاية المعتمدة.',
-    searchDiseasesPlaceholder: 'البحث باسم المرض أو الأعراض...',
-    allCategories: 'جميع الفئات',
-    symptomsLabel: 'الأعراض الرئيسية:',
-    preventionLabel: 'استراتيجية الوقاية:',
-    learnDetails: 'عرض التفاصيل والوقاية',
-    icdCodeLabel: 'رمز ICD',
-    transmissionLabel: 'طريقة الانتقال',
-    symptomsHeader: 'الأعراض السريرية',
-    causesHeader: 'الأسباب والمسببات',
-    preventionHeader: 'بروتوكول الوقاية',
-    emergencyHeader: 'تحذير طوارئ:',
-    shareGuide: 'مشاركة',
-    closeProfile: 'إغلاق',
-
-    tipsTag: 'العناية اليومية',
-    tipsTitle: 'نصائح صحية يومية',
-    tipsSubtitle: 'توصيات مبنية على أدلة طبية لتعزيز المناعة.',
-    bookmark: 'حفظ',
-    bookmarked: 'محفوظ',
-
-    chatbotTitle: 'مساعد HealthAI على مدار الساعة',
-    chatbotSubtitle: 'طرح أي سؤال صحي بلغة طبيعية للحصول على إرشادات موثوقة.',
-    chatbotHeaderTitle: 'مساعد HealthAI',
-    chatbotHeaderStatus: 'متصل',
-    chatPlaceholder: 'اكتب سؤالك الصحي (مثال: كيفية الوقاية من حمى الضنك؟)...',
-    send: 'إرسال',
-    clearChat: 'مسح',
-    exportChat: 'تصدير',
-    historyBtn: 'السجل',
-    disclaimer: 'تنبيه: يقدم تطبيق HealthAI معلومات تثقيفية. في الحالات الطارئة، يرجى مراجعة الطبيب.',
-    samplePromptTitle: 'أسئلة مقترحة:',
-
-    faqTag: 'الأسئلة الشائعة',
-    faqTitle: 'الأسئلة الأكثر تكراراً',
-    faqSubtitle: 'إجابات سريعة حول منصتنا والخصوصية.',
-    faqQ1: 'هل يغني هذا المساعد عن زيارة الطبيب؟',
-    faqA1: 'لا. HealthAI أداة تثقيفية للصحة العامة. في الحالات الشديدة، يرجى مراجعة الطبيب فوراً.',
-    faqQ2: 'هل معلوماتي الصحية آمنة؟',
-    faqA2: 'نعم، 100%. نحن نطبق سياسات عدم الاحتفاظ بالبيانات الشخصية.',
-    faqQ3: 'ما هي الأمراض المشمولة في المنصة؟',
-    faqA3: 'تغطي المنصة أكثر من 50 مرضاً بما في ذلك حمى الضنك والملاريا والسكري والسل.',
-    faqQ4: 'هل المنصة متاحة 24/7؟',
-    faqA4: 'نعم، تعمل الخدمة باستمرار طوال اليوم.',
-    faqQ5: 'هل يمكنني استخدامها من الهاتف المحمول؟',
-    faqA5: 'نعم، المنصة مصممة لتعمل بسلاسة على الهواتف والأجهزة اللوحية.',
-    faqQ6: 'ما هو مصدر المعلومات الطبية؟',
-    faqA6: 'مستمدة من التوصيات الرسمية لمنظمة الصحة العالمية و CDC.',
-
-    contactTag: 'اتصل بنا',
-    contactTitle: 'تواصل مع فريق HealthAI',
-    contactSubtitle: 'هل لديك استفسارات أو ملاحظات؟ تواصل معنا.',
-    nameField: 'الاسم الكامل',
-    emailField: 'البريد الإلكتروني',
-    messageField: 'رسالتك',
-    sendMessage: 'إرسال الرسالة',
-    contactAddressLabel: 'المقر الرئيسي',
-    contactPhoneLabel: 'خط المساعدة 24/7',
-    contactEmailUsLabel: 'البريد الرسمي',
-
-    copyright: '© 2026 منصة HealthAI للصحة العامة. جميع الحقوق محفوظة.',
-    authTitle: 'مرحباً بك في HealthAI',
-    authSubtitle: 'سجل الدخول لحفظ استفساراتك وسجل المحادثات.',
-    loginTab: 'تسجيل الدخول',
-    registerTab: 'إنشاء حساب',
-    googleBtn: 'المتابعة باستخدام Google',
-    emailLabel: 'البريد الإلكتروني',
-    passwordLabel: 'كلمة المرور',
-    nameLabel: 'الاسم الكامل',
-    alreadyAccount: 'لديك حساب بالفعل؟',
-    noAccount: 'ليس لديك حساب؟',
-    historyTitle: 'سجل البحث والمحادثات',
-    historySubtitle: 'مراجعة استفساراتك الصحية السابقة.',
-    noHistory: 'لا يوجد سجل سابق.',
-    clearHistoryBtn: 'مسح السجل بالكامل',
-    reloadQuery: 'فتح في المحادثة',
-    riskLow: 'خطر منخفض',
-    riskModerate: 'خطر متوسط',
-    riskUrgent: 'رعاية عاجلة',
-
-    symptomModalTitle: 'فحص الأعراض وتقييم المخاطر',
-    symptomModalSubtitle: 'حدد أعراضك للحصول على تقييم فوري.',
-    evaluateBtn: 'تقييم مستوى الخطر',
-    resetBtn: 'إعادة ضبط'
+    stat4Desc: 'استجابة سريعة بدون انتظار.'
   },
 
   ja: {
-    startChat: 'チャットを開始',
-    exploreDiseases: '疾病ライブラリ',
-    navHome: 'ホーム',
-    navFeatures: '機能紹介',
-    navDiseases: '疾患情報',
-    navTips: '健康ガイド',
-    navChatbot: 'AIチャット',
-    navFAQ: 'よくある質問',
-    navContact: 'お問い合わせ',
-    signIn: 'ログイン',
-    signOut: 'ログアウト',
-    myHistory: '相談履歴',
-    guestUser: 'ゲストユーザー',
-    selectLanguage: '言語を選択',
-    symptomCheckBtn: '症状セルフチェック',
-
-    heroTag: '24/7 AI公衆衛生プラットフォーム',
-    heroTitle: 'AI駆動の公衆衛生・感染症予防相談チャットボット',
-    heroSubtitle: '最新のAI健康ガイドライン、予防医学知識、信頼性の高い公衆衛生情報を提供します。',
-    activeUsers: '保護されたアクティブユーザー',
-    verifiedArticles: '検証済み臨床医学ソース',
-    instantAnswers: '24/7 AI健康サポート',
     heroBadge: '予防医療の推進',
 
     howItWorksTag: 'スムーズな流れ',
@@ -1772,12 +1640,34 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     });
   };
 
+  const languageVoiceMap: Record<Language, string> = {
+    en: 'en-US',
+    es: 'es-ES',
+    hi: 'hi-IN',
+    fr: 'fr-FR',
+    zh: 'zh-CN',
+    de: 'de-DE',
+    te: 'te-IN',
+    ar: 'ar-SA',
+    ja: 'ja-JP',
+    pt: 'pt-BR'
+  };
+
   const speakText = (text: string) => {
     if (!isTtsEnabled || !('speechSynthesis' in window)) return;
     window.speechSynthesis.cancel();
     const cleanText = text.replace(/[*#_`]/g, '').slice(0, 400);
     const utterance = new SpeechSynthesisUtterance(cleanText);
-    utterance.rate = 1.0;
+    const targetLangCode = languageVoiceMap[language] || 'en-US';
+    utterance.lang = targetLangCode;
+
+    const voices = window.speechSynthesis.getVoices();
+    const matchingVoice = voices.find(v => v.lang === targetLangCode || v.lang.startsWith(language));
+    if (matchingVoice) {
+      utterance.voice = matchingVoice;
+    }
+
+    utterance.rate = 0.95;
     utterance.pitch = 1.0;
     window.speechSynthesis.speak(utterance);
   };

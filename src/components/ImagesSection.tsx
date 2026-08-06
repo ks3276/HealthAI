@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { useTheme } from '../context/ThemeContext';
 import { 
   Image as ImageIcon, 
   Lock, 
@@ -10,7 +9,6 @@ import {
 
 export const ImagesSection: React.FC = () => {
   const { user } = useAuth();
-  const { t } = useTheme();
   const [selectedCategory, setSelectedCategory] = useState<'all' | 'infographics'>('all');
   const [selectedImageModal, setSelectedImageModal] = useState<{ url: string; title: string; desc: string } | null>(null);
 
@@ -56,13 +54,13 @@ export const ImagesSection: React.FC = () => {
       <div className="text-center max-w-3xl mx-auto space-y-3">
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-purple-500/10 text-purple-600 dark:text-purple-400 text-xs font-extrabold uppercase tracking-wider">
           <ImageIcon className="w-4 h-4 text-purple-500" />
-          <span>{t('medVisualLib') || 'Medical Visual Library'}</span>
+          <span>Medical Visual Library</span>
         </div>
         <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-          {t('infographicsTitle') || 'Disease Infographics & Medical Visual Guides'}
+          Disease Infographics & Medical Visual Guides
         </h2>
         <p className="text-sm text-slate-600 dark:text-slate-400">
-          {t('infographicsSub') || 'Browse verified clinical infographics, disease awareness graphics, and AI-generated public health media.'}
+          Browse verified clinical infographics, disease awareness graphics, and AI-generated public health media.
         </p>
 
         {/* Notice Banner regarding Registered vs Guest storage */}
@@ -74,12 +72,12 @@ export const ImagesSection: React.FC = () => {
           {user ? (
             <>
               <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0" />
-              <span>{user.name}: {t('registeredActiveBanner') || 'Registered Account Active: Your chat and saved images are stored permanently and can be deleted individually.'}</span>
+              <span>Registered Account Active ({user.name}): Your chat and saved images are stored permanently and can be deleted individually.</span>
             </>
           ) : (
             <>
               <Lock className="w-4 h-4 text-amber-500 flex-shrink-0" />
-              <span>{t('guestSessionBanner') || 'Guest Session Mode: Your chat & images are saved temporarily only until you close this website tab. Sign in to save permanently and manage deletions.'}</span>
+              <span>Guest Session Mode: Your chat & images are saved temporarily only until you close this website tab. Sign in to save permanently and manage deletions.</span>
             </>
           )}
         </div>
@@ -95,7 +93,7 @@ export const ImagesSection: React.FC = () => {
               : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200'
           }`}
         >
-          {t('allVisualMedia') || 'All Visual Media'}
+          All Visual Media
         </button>
         <button
           onClick={() => setSelectedCategory('infographics')}
@@ -105,7 +103,7 @@ export const ImagesSection: React.FC = () => {
               : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200'
           }`}
         >
-          {t('verifiedInfographics') || 'Verified Infographics'}
+          Verified Infographics
         </button>
       </div>
 
@@ -169,7 +167,7 @@ export const ImagesSection: React.FC = () => {
               onClick={() => setSelectedImageModal(null)}
               className="w-full py-2.5 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs hover:bg-slate-200"
             >
-              {t('closeLightbox') || 'Close Lightbox'}
+              Close Lightbox
             </button>
           </div>
         </div>

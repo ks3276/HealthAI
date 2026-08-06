@@ -35,7 +35,7 @@ interface ChatbotSectionProps {
 
 export const ChatbotSection: React.FC<ChatbotSectionProps> = ({ onOpenHistory, initialQuery }) => {
   const { addChatHistory, user } = useAuth();
-  const { t, speakText, isTtsEnabled, toggleTts } = useTheme();
+  const { t, speakText, isTtsEnabled, toggleTts, language } = useTheme();
 
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -80,6 +80,35 @@ export const ChatbotSection: React.FC<ChatbotSectionProps> = ({ onOpenHistory, i
 
   const generateAIResponse = (userText: string) => {
     const textLower = userText.toLowerCase();
+
+    if (language === 'te') {
+      if (textLower.includes('dengue') || textLower.includes('డెంగ్యూ')) {
+        return {
+          text: `**డెంగ్యూ జ్వరం నివారణ మరియు లక్షణాల మార్గదర్శకం:**\n\n• **ముఖ్య లక్షణాలు:** తీవ్రమైన జ్వరం (104°F), తీవ్రమైన తలనొప్పి/కళ్ల నొప్పులు, కీళ్ల నొప్పులు మరియు దద్దుర్లు.\n• **వ్యాప్తి:** ఆడ ఎడిస్ దోమల ద్వారా వ్యాపిస్తుంది.\n• **నివారణ:** నిలిచి ఉన్న నీటిని తొలగించండి, కాళ్లు చేతులు పూర్తిగా కప్పే దుస్తులు ధరించండి.\n\n⚠️ *హెచ్చరిక:* తీవ్రమైన కడుపు నొప్పి లేదా వాంతులు ఉంటే వెంటనే ఆసుపత్రికి వెళ్ళండి.`,
+          sources: ['WHO డెంగ్యూ సమాచారం 2026', 'CDC నివారణ మార్గదర్శకాలు'],
+          riskBadge: 'Moderate' as const
+        };
+      }
+      if (textLower.includes('malaria') || textLower.includes('మలేరియా')) {
+        return {
+          text: `**మలేరియా అవగాహన మరియు రక్షణ:**\n\n• **లక్షణాలు:** చలితో కూడిన జ్వరం, అధికంగా చెమటలు పట్టడం మరియు శరీర బలహీనత.\n• **నివారణ:** దోమతెరలను (ITNs) ఉపయోగించండి మరియు పరిసరాలను పరిశుభ్రంగా ఉంచుకోండి.\n• **చర్య:** పదే పదే జ్వరం వస్తుంటే వెంటనే రక్త పరీక్ష చేయించుకోండి.`,
+          sources: ['ప్రపంచ మలేరియా నివేదిక', 'CDC మలేరియా నియంత్రణ'],
+          riskBadge: 'Moderate' as const
+        };
+      }
+      if (textLower.includes('fever') || textLower.includes('జ్వరం')) {
+        return {
+          text: `**జ్వరం సంరక్షణ ప్రోటోకాల్:**\n\n1. **ద్రవ పదార్థాలు:** మంచినీరు, ORS మరియు వేడి సూప్‌లు తీసుకోండి.\n2. **విశ్రాంతి:** చల్లని మరియు గాలి వెలుతురు ఉన్న గదిలో విశ్రాంతి తీసుకోండి.\n3. **పరిశీలన:** ప్రతి 4 గంటలకు ఒకసారి శరీర ఉష్ణోగ్రతను తనిఖీ చేయండి.\n\n⚠️ **అత్యవసర చికిత్స అవసరం:** 3 రోజుల కంటే ఎక్కువ జ్వరం ఉంటే లేదా శ్వాస తీసుకోవడంలో ఇబ్బంది ఉంటే వెంటనే డాక్టర్‌ని కలవండి.`,
+          sources: ['CDC జ్వరం నివారణ మార్గదర్శకాలు'],
+          riskBadge: 'Urgent' as const
+        };
+      }
+      return {
+        text: `మీ ప్రశ్న **"${userText}"** కి ధన్యవాదాలు.\n\nప్రజా ఆరోగ్య సమాచారం ప్రకారం, పరిశుభ్రత పాటించడం, పోషకాహారం తీసుకోవడం మరియు క్రమం తప్పకుండా నీరు తాగడం వల్ల రోగనిరోధక శక్తి పెరుగుతుంది.\n\nప్రత్యేక లక్షణాల తనిఖీ కోసం మా **లక్షణాల తనిఖీ** సాధనాన్ని ఉపయోగించండి లేదా అర్హత కలిగిన వైద్యుడిని సంప్రదించండి.`,
+        sources: ['హెల్త్-AI ధృవీకరించబడిన వైద్య సమాచారం', 'WHO ప్రజా ఆరోగ్య లైబ్రరీ'],
+        riskBadge: 'Low' as const
+      };
+    }
 
     // Dengue
     if (textLower.includes('dengue')) {
