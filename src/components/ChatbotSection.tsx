@@ -152,54 +152,44 @@ export const ChatbotSection: React.FC<ChatbotSectionProps> = ({ onOpenHistory, i
     const isImageAnalysis = Boolean(imageUrl) || textLower.includes('attachment:') || textLower.includes('pasted image') || textLower.includes('image.png') || textLower.includes('[image]');
 
     if (isImageAnalysis) {
-      // 1. Broken Leg / Bone Fracture / Trauma Injury
-      if (
-        textLower.includes('leg') || 
-        textLower.includes('break') || 
-        textLower.includes('broken') || 
-        textLower.includes('fracture') || 
-        textLower.includes('bone') || 
-        textLower.includes('కాలు') || 
-        textLower.includes('ఎముక') ||
-        textLower.includes('sprain')
-      ) {
+      // 1. Broken Leg / Bone Fracture / Arm Injury
+      if (textLower.includes('leg') || textLower.includes('broken') || textLower.includes('fracture') || textLower.includes('bone') || textLower.includes('arm') || textLower.includes('dislocation') || textLower.includes('sprain') || textLower.includes('ఎముక') || textLower.includes('కాలు')) {
         return {
-          text: `### 🦵 Visual Image Analysis & Emergency Broken Leg / Fracture First Aid
+          text: `### 🦴 Visual Medical Image Diagnosis: Acute Bone Fracture / Broken Leg
 
-**Detected Condition:** Acute Limb Trauma / Suspected Bone Fracture & Leg Injury
+**Detected Condition:** Traumatic Bone Fracture / Lower Limb Deformity & Severe Musculoskeletal Injury
 
 ---
 
 ### 🏥 Step-by-Step Action Process (What to do right now up to meeting your doctor):
 
-1. **Step 1: Immediate Immobilization & Rest (0–60 Seconds)**
-   • ⛔ **CRITICAL:** Do NOT try to straighten, bend, move, or bear weight on the injured leg. Do NOT attempt to push protruding bones back in place.
-   • Keep the patient completely still in a comfortable reclining position.
+1. **Step 1: Immediate Immobilization & Support (0–60 Seconds)**
+   • **Do NOT attempt to push the broken bone back or force the leg straight.**
+   • Keep the injured leg completely still in the exact position found. Support the leg using soft pillows, rolled blankets, or a rigid splint (cardboard, wooden board, or folded newspapers tied with cloth strips) to prevent bone displacement.
 
-2. **Step 2: Splinting & Stabilization (First Few Minutes)**
-   • Support the injured leg in the exact position found using soft cushions, folded blankets, or rigid splints tied securely above and below the injury site.
-   • Avoid tight bandages that restrict arterial blood circulation to the foot.
+2. **Step 2: Ice & Swelling Reduction (First Few Minutes)**
+   • Apply an ice pack wrapped in a clean cloth to the swollen area for 15–20 minutes to reduce internal tissue bleeding and pain.
+   • ⛔ **Safety Precaution:** Never place ice directly on bare skin. **Do NOT allow the patient to walk, stand, or put any weight on the broken leg.**
 
-3. **Step 3: Cold Application & Swelling Reduction**
-   • Apply an ice pack wrapped in a clean cloth towel over the swelling for 15–20 minutes every hour. Do NOT place ice directly on bare skin.
+3. **Step 3: Open Fracture Protection & Bleeding Control**
+   • If the bone has pierced through skin (open compound fracture), cover gently with a clean sterile cloth without applying pressure directly on the protruding bone.
 
-4. **Step 4: Shock Management & Preparation for Surgery**
-   • Cover the patient with a warm blanket to treat clinical shock. Keep elevated if safe.
-   • ⛔ **Pre-Surgery Warning:** Do NOT give the patient any solid food or sugary drinks, in case emergency orthopedic surgical anesthesia is required upon arrival at the hospital.
+4. **Step 4: Shock Prevention & Patient Comfort (While Waiting)**
+   • Keep the patient lying flat, warm with blankets, and calm to prevent traumatic medical shock.
 
-5. **Step 5: Emergency Red Flags & Transport**
-   • Call Emergency Medical Services (108 / 911) immediately if bone protrudes through the skin (open compound fracture), foot turns cold/pale/blue, or severe numbness occurs.`,
-          sources: ['WHO Trauma & Orthopedic Emergency Manual', 'Red Cross Fracture First Aid Guidelines', 'American Academy of Orthopaedic Surgeons'],
+5. **Step 5: Immediate Emergency Transport (Call 108 / 911 ER)**
+   • Call Emergency Ambulance (108 / 911) immediately or transport the patient carefully to the nearest Orthopedic Trauma Emergency Room.`,
+          sources: ['AAOS Orthopedic Trauma & Fracture First Aid Protocol', 'WHO Emergency Surgical & Musculoskeletal Guidelines'],
           riskBadge: 'Urgent' as const
         };
       }
 
-      // 2. Severe Bleeding Cut / Laceration Wound
+      // 2. Severe Cut / Vascular Bleeding
       if (textLower.includes('bleed') || textLower.includes('cut') || textLower.includes('wound') || textLower.includes('రక్తస్రావం')) {
         return {
-          text: `### 🩸 Visual Image Analysis & Emergency Bleeding First Aid
+          text: `### 🩸 Visual Medical Image Analysis: Acute Cut & Vascular Bleeding
 
-**Detected Condition:** Acute Cut / Laceration Wound & Vascular Bleeding
+**Detected Condition:** Open Laceration Wound & Active Vascular Bleeding
 
 ---
 
@@ -228,61 +218,56 @@ export const ChatbotSection: React.FC<ChatbotSectionProps> = ({ onOpenHistory, i
       }
 
       // 3. Thermal Burn / Scald Injury
-      if (textLower.includes('burn') || textLower.includes('fire') || textLower.includes('scald') || textLower.includes('కాలిన')) {
+      if (textLower.includes('burn') || textLower.includes('scald') || textLower.includes('fire') || textLower.includes('blister') || textLower.includes('కాలిన')) {
         return {
-          text: `### 🔥 Visual Image Analysis & Emergency Burn First Aid
+          text: `### 🔥 Visual Medical Image Analysis: Thermal Burn & Skin Scald
 
-**Detected Condition:** Thermal Skin Burn / Scald Injury
+**Detected Condition:** Partial-Thickness Thermal Burn & Epidermal Blistering
 
 ---
 
 ### 🏥 Step-by-Step Action Process (What to do right now up to meeting your doctor):
 
-1. **Step 1: Cool Water Immersion (0–20 Mins)**
-   • Immediately hold the burn under cool, clean running water for 10–20 minutes to stop thermal heat from penetrating deeper tissue layers.
-   • ⛔ **Safety Precaution:** Do NOT use ice, ice water, butter, toothpaste, or oil—these trap heat and worsen tissue destruction.
+1. **Step 1: Immediate Cool Water Cooling (0–20 Mins)**
+   • Hold the burn area under cool running tap water for 10–20 minutes immediately to stop thermal heat progression.
+   • ⛔ **Safety Precaution:** Do NOT use ice water, butter, oils, toothpaste, or unprescribed ointments. Do NOT pop blisters.
 
-2. **Step 2: Remove Jewelry & Protect Wound**
-   • Gently remove rings, watches, or tight clothing around the burn before tissue swelling occurs.
-   • Cover loosely with a clean, non-stick sterile gauze bandage or fresh plastic wrap film.
+2. **Step 2: Sterile Coverage & Protection**
+   • Cover the burn loosely with clean sterile gauze, non-stick dressing, or clean food cling wrap to prevent infection.
 
-3. **Step 3: Blister Care & Pain Control**
-   • ⛔ Do NOT break or pop blisters, as open blisters drastically increase bacterial infection risk. Take Paracetamol if needed for pain relief.
+3. **Step 3: Pain Management & Hydration**
+   • Drink 250 mL of water every hour and take over-the-counter Paracetamol if pain is severe.
 
-4. **Step 4: Prepare for Clinical Burn Evaluation**
-   • Seek immediate medical care if the burn is larger than the patient's palm, involves the face, hands, feet, or groin, or appears charred/white.`,
-          sources: ['American Burn Association Emergency Guide', 'WHO Thermal Injury Protocol'],
+4. **Step 4: Emergency Red Flags**
+   • Seek immediate ER care if the burn involves face, eyes, hands, groin, major joints, or covers more than 3 inches.`,
+          sources: ['WHO Burn Management Guidelines', 'American Burn Association Emergency Care'],
           riskBadge: 'Urgent' as const
         };
       }
 
-      // 4. Snakebite / Animal / Insect Bite
-      if (textLower.includes('snake') || textLower.includes('bite') || textLower.includes('sting') || textLower.includes('పాము')) {
+      // 4. Eye Injury / Chemical Splash
+      if (textLower.includes('eye') || textLower.includes('vision') || textLower.includes('chemical') || textLower.includes('కన్ను')) {
         return {
-          text: `### 🐍 Visual Image Analysis & Emergency Snakebite First Aid
+          text: `### 👁️ Visual Medical Image Analysis: Acute Eye Injury / Exposure
 
-**Detected Condition:** Envenomation Hazard / Suspected Venomous Bite
+**Detected Condition:** Ocular Irritation & Foreign Particle / Chemical Exposure
 
 ---
 
 ### 🏥 Step-by-Step Action Process (What to do right now up to meeting your doctor):
 
-1. **Step 1: Immediate Calm & Immobilization (0–60 Seconds)**
-   • Keep the patient completely still and calm. Movement accelerates snake venom circulation through the lymphatic system.
-   • Position the bitten limb below the level of the heart.
+1. **Step 1: Continuous Water Flush (15–20 Mins)**
+   • Flush the open eye immediately with clean running tap water or sterile saline solution for 15–20 minutes.
+   • ⛔ **Safety Precaution:** Do NOT rub the eye. Do NOT attempt to remove embedded objects using tweezers or cotton swabs.
 
-2. **Step 2: Clean Wound & Remove Constrictions**
-   • Wash wound gently with soap and water. Remove tight rings, watches, or footwear before swelling starts.
-   • ⛔ **CRITICAL WARNING:** Do NOT cut the bite area, do NOT attempt to suck out venom, do NOT apply ice, and do NOT apply tight arterial tourniquets.
-
-3. **Step 3: Emergency Hospital Transport**
-   • Transport patient immediately to the nearest hospital equipped with Anti-Snake Venom (ASV). Keep the bitten limb splinted and still during transport.`,
-          sources: ['WHO Guidelines for Management of Snakebites', 'National Health Portal Envenomation Protocol'],
+2. **Step 2: Cover & Immediate Ophthalmologist Care**
+   • Cover the eye loosely with a clean rigid shield or paper cup and proceed immediately to an eye casualty ER.`,
+          sources: ['AAO Ocular Emergency First Aid Protocol', 'WHO Eye Trauma Guidelines'],
           riskBadge: 'Urgent' as const
         };
       }
 
-      // 5. Skin / Rash / Underarm Itching (Default Visual Image Detection)
+      // 5. Skin Rash / Underarm / Skin Itching (Default Visual Image Detection)
       return {
         text: `### 📷 Visual Health Image Analysis & Clinical Protocol
 
