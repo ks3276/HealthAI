@@ -52,7 +52,7 @@ export const ChatbotSection: React.FC<ChatbotSectionProps> = ({ onOpenHistory, i
   const [isListening, setIsListening] = useState(false);
   const [copiedMessageId, setCopiedMessageId] = useState<string | null>(null);
 
-  const chatEndRef = useRef<HTMLDivElement>(null);
+  const lastUserMsgRef = useRef<HTMLDivElement>(null);
   const processedQueryRef = useRef<string | null>(null);
   const isSendingRef = useRef(false);
 
@@ -64,13 +64,19 @@ export const ChatbotSection: React.FC<ChatbotSectionProps> = ({ onOpenHistory, i
     'How to prevent malaria?'
   ];
 
-  const scrollToBottom = () => {
-    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  const lastUserIndex = messages.reduce((acc, m, idx) => m.sender === 'user' ? idx : acc, -1);
+
+  const scrollToLatestUserMessage = () => {
+    if (lastUserMsgRef.current) {
+      lastUserMsgRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   };
 
   useEffect(() => {
-    scrollToBottom();
-  }, [messages, isTyping]);
+    if (messages.length > 1) {
+      scrollToLatestUserMessage();
+    }
+  }, [messages.length, isTyping]);
 
   useEffect(() => {
     if (initialQuery && processedQueryRef.current !== initialQuery) {
@@ -747,9 +753,10 @@ Inability to bear any weight, visible joint deformity, loss of bowel/bladder con
           {/* Messages Scroll Container */}
           <div className="flex-1 p-6 overflow-y-auto space-y-4 bg-slate-50/50 dark:bg-black">
             
-            {messages.map((msg) => (
+            {messages.map((msg, index) => (
               <div
                 key={msg.id}
+                ref={index === lastUserIndex ? lastUserMsgRef : null}
                 className={`flex gap-3 max-w-[85%] sm:max-w-[75%] ${
                   msg.sender === 'user' ? 'ml-auto flex-row-reverse' : 'mr-auto'
                 }`}
@@ -836,8 +843,6 @@ Inability to bear any weight, visible joint deformity, loss of bowel/bladder con
                 </div>
               </div>
             )}
-
-            <div ref={chatEndRef} />
           </div>
 
           {/* Suggested Quick Question Chips */}
