@@ -196,10 +196,10 @@ export const ChatHistoryModal: React.FC<ChatHistoryModalProps> = ({
                     <Bot className="w-3.5 h-3.5" />
                   </div>
                   <div className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed whitespace-pre-line flex-1 space-y-1.5">
-                    <div className="line-clamp-3">{item.aiResponse}</div>
                     <div className="text-[10px] text-amber-600 dark:text-amber-400 font-medium">
                       Note: This is only for your awareness purpose not for medication purpose. Please consult a certified doctor to get treatment.
                     </div>
+                    <div className="line-clamp-3">{item.aiResponse}</div>
                   </div>
                 </div>
 

@@ -1445,6 +1445,16 @@ Inability to bear any weight, visible joint deformity, loss of bowel/bladder con
                     : 'bg-white dark:bg-[#171717] border border-slate-200 dark:border-[#212121] text-slate-800 dark:text-slate-200 rounded-tl-none'
                 }`}>
                   
+                  {/* Medical Awareness Disclaimer Note for every AI message (Rendered FIRST) */}
+                  {msg.sender === 'ai' && (
+                    <div className="mb-3 p-2.5 rounded-xl text-[11px] leading-snug text-slate-600 dark:text-slate-300 bg-amber-500/10 dark:bg-amber-500/10 border border-amber-500/20 font-medium flex items-start gap-2">
+                      <AlertTriangle className="w-4 h-4 text-amber-500 flex-shrink-0 mt-0.5" />
+                      <span>
+                        <strong className="font-bold text-amber-600 dark:text-amber-400">Note:</strong> This is only for your awareness purpose not for medication purpose. Please consult a certified doctor to get treatment.
+                      </span>
+                    </div>
+                  )}
+
                   {/* Actual Image rendering inside message bubble */}
                   {msg.imageUrl && (
                     <div className="mb-2 rounded-xl overflow-hidden border border-white/30 shadow-md">
@@ -1460,16 +1470,6 @@ Inability to bear any weight, visible joint deformity, loss of bowel/bladder con
                   {msg.text && (
                     <div className="whitespace-pre-line leading-relaxed">
                       {msg.text}
-                    </div>
-                  )}
-
-                  {/* Medical Awareness Disclaimer Note for every AI message */}
-                  {msg.sender === 'ai' && (
-                    <div className="mt-3 pt-2.5 border-t border-slate-200/80 dark:border-slate-800 text-[11px] leading-snug text-slate-600 dark:text-slate-300 bg-amber-500/10 dark:bg-amber-500/10 border border-amber-500/20 p-2.5 rounded-xl font-medium flex items-start gap-2">
-                      <AlertTriangle className="w-4 h-4 text-amber-500 flex-shrink-0 mt-0.5" />
-                      <span>
-                        <strong className="font-bold text-amber-600 dark:text-amber-400">Note:</strong> This is only for your awareness purpose not for medication purpose. Please consult a certified doctor to get treatment.
-                      </span>
                     </div>
                   )}
 
