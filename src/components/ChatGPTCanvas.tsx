@@ -18,7 +18,7 @@ import {
 } from 'lucide-react';
 
 interface ChatGPTCanvasProps {
-  onSendQuery: (query: string) => void;
+  onSendQuery: (query: string, imageUrl?: string) => void;
   onOpenSymptomChecker: () => void;
 }
 
@@ -37,12 +37,12 @@ export const ChatGPTCanvas: React.FC<ChatGPTCanvasProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const finalQuery = insertedAttachment 
-      ? `[Attachment: ${insertedAttachment}] ${query}`.trim()
-      : query.trim();
+    const cleanText = query.trim();
+    const finalQuery = cleanText || (insertedAttachment ? `[Attachment: ${insertedAttachment}] Please analyze this health condition image.` : '');
 
-    if (!finalQuery) return;
-    onSendQuery(finalQuery);
+    if (!finalQuery && !imagePreviewUrl) return;
+
+    onSendQuery(finalQuery, imagePreviewUrl || undefined);
     setQuery('');
     setInsertedAttachment(null);
     setImagePreviewUrl(null);

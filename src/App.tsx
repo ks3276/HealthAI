@@ -26,15 +26,15 @@ export const AppContent: React.FC = () => {
   const [isSymptomCheckerOpen, setIsSymptomCheckerOpen] = useState(false);
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
-  const [selectedHistoryQuery, setSelectedHistoryQuery] = useState<string | undefined>();
+  const [selectedHistoryQuery, setSelectedHistoryQuery] = useState<{ query: string; imageUrl?: string } | undefined>();
 
   const handleSelectTab = (tabId: string) => {
     setActiveTab(tabId);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleReloadQueryInChat = (query: string) => {
-    setSelectedHistoryQuery(query);
+  const handleReloadQueryInChat = (query: string, imageUrl?: string) => {
+    setSelectedHistoryQuery({ query, imageUrl });
     setActiveTab('chatbot');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -89,7 +89,8 @@ export const AppContent: React.FC = () => {
                 ) : (
                   <ChatbotSection
                     onOpenHistory={() => setIsHistoryOpen(true)}
-                    initialQuery={selectedHistoryQuery}
+                    initialQuery={selectedHistoryQuery.query}
+                    initialImageUrl={selectedHistoryQuery.imageUrl}
                   />
                 )}
               </div>

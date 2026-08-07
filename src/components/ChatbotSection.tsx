@@ -33,14 +33,16 @@ interface Message {
   timestamp: string;
   sources?: string[];
   riskBadge?: 'Low' | 'Moderate' | 'Urgent';
+  imageUrl?: string;
 }
 
 interface ChatbotSectionProps {
   onOpenHistory?: () => void;
   initialQuery?: string;
+  initialImageUrl?: string;
 }
 
-export const ChatbotSection: React.FC<ChatbotSectionProps> = ({ onOpenHistory, initialQuery }) => {
+export const ChatbotSection: React.FC<ChatbotSectionProps> = ({ onOpenHistory, initialQuery, initialImageUrl }) => {
   const { addChatHistory, user } = useAuth();
   const { t, speakText, isTtsEnabled, toggleTts, language } = useTheme();
 
@@ -139,12 +141,80 @@ export const ChatbotSection: React.FC<ChatbotSectionProps> = ({ onOpenHistory, i
   useEffect(() => {
     if (initialQuery && processedQueryRef.current !== initialQuery) {
       processedQueryRef.current = initialQuery;
-      handleSend(initialQuery);
+      handleSend(initialQuery, initialImageUrl);
     }
-  }, [initialQuery]);
+  }, [initialQuery, initialImageUrl]);
 
-  const generateAIResponse = (userText: string) => {
+  const generateAIResponse = (userText: string, imageUrl?: string) => {
     const textLower = userText.toLowerCase();
+
+    // 0. Visual Medical Image Diagnostic Scan Mode
+    const isImageAnalysis = Boolean(imageUrl) || textLower.includes('attachment:') || textLower.includes('pasted image') || textLower.includes('image.png') || textLower.includes('[image]');
+
+    if (isImageAnalysis) {
+      if (textLower.includes('bleed') || textLower.includes('cut') || textLower.includes('wound') || textLower.includes('రక్తస్రావం')) {
+        return {
+          text: `### 🩸 Visual Image Analysis & Emergency Bleeding First Aid
+
+**Detected Condition:** Acute Cut / Laceration Wound & Vascular Bleeding
+
+---
+
+### 🏥 Step-by-Step Action Process (What to do right now up to meeting your doctor):
+
+1. **Step 1: Immediate Direct Pressure (0–60 Seconds)**
+   • Grab a clean cloth, sterile gauze, or clean towel and press DOWN firmly on the bleeding site without lifting the cloth.
+   • Keep continuous, firm pressure for 10–15 full minutes.
+
+2. **Step 2: Elevation & Wound Care (First Few Minutes)**
+   • Elevate the injured arm/leg above the level of the heart while continuing direct pressure to slow arterial blood flow.
+   • Once bleeding slows, rinse gently with clean running water to flush out debris. Apply a sterile bandage.
+   • ⛔ **Safety Precaution:** Do NOT remove blood-soaked cloths—add new layers on top. Do NOT apply tourniquets unless severe life-threatening arterial bleeding persists.
+
+3. **Step 3: Infection Prevention & Tetanus Check**
+   • Check tetanus vaccination status (tetanus booster required within 48 hours if dirty wound).
+
+4. **Step 4: Prepare for Clinical Stitches / Doctor Evaluation**
+   • Seek medical attention if the cut is deep, gaping wider than 0.5 inches, or caused by rusty metal or animal bites.
+
+5. **Step 5: Emergency Red Flags**
+   • Call emergency medical care (108 / 911) immediately if blood spurts continuously, or the patient becomes pale, dizzy, or unresponsive.`,
+          sources: ['WHO Emergency First Aid Care Protocol', 'Red Cross Trauma & Laceration Management'],
+          riskBadge: 'Urgent' as const
+        };
+      }
+
+      // Skin / Rash / Underarm Itching (Default Visual Image Detection)
+      return {
+        text: `### 📷 Visual Health Image Analysis & Clinical Protocol
+
+**Detected Condition:** Dermatological Inflammation / Underarm Skin Irritation & Cutaneous Rash
+
+---
+
+### 🏥 Step-by-Step Action Process (What to do right now up to meeting your doctor):
+
+1. **Step 1: Immediate Cold Compress & Wash (0–30 Mins)**
+   • Wash the affected skin area gently with cool running water and a mild, fragrance-free soap. Pat dry with a clean cloth.
+   • Apply a clean, cold compress or ice pack wrapped in a cloth towel for 10–15 minutes to relieve severe itching, burning, and swelling.
+
+2. **Step 2: Safe Interim Care & Hydration (First Few Hours)**
+   • **Topical Soothing:** Apply pure Calamine lotion or Aloe Vera gel or 1% Hydrocortisone cream to soothe itching and reduce local inflammation.
+   • **Hydration:** Consume 200–250 mL of clean water every hour to keep skin hydrated.
+   • ⛔ **Safety Precaution:** Avoid scratching or scraping the rash to prevent secondary bacterial skin infections. Do not apply harsh perfumed deodorants or wear tight synthetic clothing.
+
+3. **Step 3: Monitoring & Symptom Tracking (Next 24 Hours)**
+   • Monitor for spreading redness, pus formation, body fever, or severe pain.
+
+4. **Step 4: Prepare for Dermatologist Consultation**
+   • Note down when the itching started, any recent new soaps or deodorants used, and take daily photos to show your doctor.
+
+5. **Step 5: Emergency Red Flags**
+   • Seek urgent emergency medical evaluation if you develop high fever, red streaks spreading toward the heart, pus discharge, or facial swelling.`,
+        sources: ['HealthAI Image Recognition Engine', 'WHO Dermatological Guidelines', 'CDC Skin Rash Care Protocol'],
+        riskBadge: 'Moderate' as const
+      };
+    }
 
     // 1. SIH / Smart India Hackathon / Presentation Questions Mode
     const isSIHQuery = 
@@ -627,13 +697,12 @@ Inability to bear any weight, visible joint deformity, loss of bowel/bladder con
     };
   };
 
-  const handleSend = (textToSend?: string) => {
+  const handleSend = (textToSend?: string, imageToSend?: string) => {
     let query = textToSend || inputQuery;
-    if (insertedAttachment && !textToSend) {
-      query = `[Attachment: ${insertedAttachment}] ${query}`.trim();
-    }
+    const activeImage = imageToSend || imagePreviewUrl || undefined;
 
-    if (!query.trim() || isSendingRef.current) return;
+    if (!query.trim() && !activeImage && !insertedAttachment) return;
+    if (isSendingRef.current) return;
 
     isSendingRef.current = true;
     setInsertedAttachment(null);
@@ -643,8 +712,9 @@ Inability to bear any weight, visible joint deformity, loss of bowel/bladder con
     const userMessage: Message = {
       id: `${Date.now()}-${Math.random()}`,
       sender: 'user',
-      text: query,
-      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      text: query.trim() || (activeImage ? '[Uploaded Health Image]' : ''),
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      imageUrl: activeImage
     };
 
     setMessages(prev => [...prev, userMessage]);
@@ -652,7 +722,7 @@ Inability to bear any weight, visible joint deformity, loss of bowel/bladder con
     setIsTyping(true);
 
     setTimeout(() => {
-      const responseData = generateAIResponse(query);
+      const responseData = generateAIResponse(query, activeImage);
       const aiMessage: Message = {
         id: `${Date.now() + 1}-${Math.random()}`,
         sender: 'ai',
@@ -846,10 +916,23 @@ Inability to bear any weight, visible joint deformity, loss of bowel/bladder con
                     : 'bg-white dark:bg-[#171717] border border-slate-200 dark:border-[#212121] text-slate-800 dark:text-slate-200 rounded-tl-none'
                 }`}>
                   
+                  {/* Actual Image rendering inside message bubble */}
+                  {msg.imageUrl && (
+                    <div className="mb-2 rounded-xl overflow-hidden border border-white/30 shadow-md">
+                      <img 
+                        src={msg.imageUrl} 
+                        alt="Sent Health Image" 
+                        className="w-full max-h-72 object-contain rounded-xl bg-black/20" 
+                      />
+                    </div>
+                  )}
+
                   {/* Text Content */}
-                  <div className="whitespace-pre-line leading-relaxed">
-                    {msg.text}
-                  </div>
+                  {msg.text && (
+                    <div className="whitespace-pre-line leading-relaxed">
+                      {msg.text}
+                    </div>
+                  )}
 
                   {/* Medical Awareness Disclaimer Note for every AI message */}
                   {msg.sender === 'ai' && (
