@@ -17,7 +17,12 @@ import {
   Copy,
   Check,
   Clock,
-  AlertTriangle
+  AlertTriangle,
+  Plus,
+  Paperclip,
+  FileText,
+  Image as ImageIcon,
+  X
 } from 'lucide-react';
 
 interface Message {
@@ -51,6 +56,11 @@ export const ChatbotSection: React.FC<ChatbotSectionProps> = ({ onOpenHistory, i
   const [isTyping, setIsTyping] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const [copiedMessageId, setCopiedMessageId] = useState<string | null>(null);
+  const [showInsertMenu, setShowInsertMenu] = useState(false);
+  const [insertedAttachment, setInsertedAttachment] = useState<string | null>(null);
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const docInputRef = useRef<HTMLInputElement>(null);
 
   const lastUserMsgRef = useRef<HTMLDivElement>(null);
   const processedQueryRef = useRef<string | null>(null);
@@ -570,10 +580,16 @@ Inability to bear any weight, visible joint deformity, loss of bowel/bladder con
   };
 
   const handleSend = (textToSend?: string) => {
-    const query = textToSend || inputQuery;
+    let query = textToSend || inputQuery;
+    if (insertedAttachment && !textToSend) {
+      query = `[Attachment: ${insertedAttachment}] ${query}`.trim();
+    }
+
     if (!query.trim() || isSendingRef.current) return;
 
     isSendingRef.current = true;
+    setInsertedAttachment(null);
+    setShowInsertMenu(false);
 
     const userMessage: Message = {
       id: `${Date.now()}-${Math.random()}`,
@@ -861,15 +877,131 @@ Inability to bear any weight, visible joint deformity, loss of bowel/bladder con
             ))}
           </div>
 
+          {/* Hidden File Inputs */}
+          <input
+            type="file"
+            ref={fileInputRef}
+            accept="image/*"
+            className="hidden"
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (file) setInsertedAttachment(`Image (${file.name})`);
+              setShowInsertMenu(false);
+            }}
+          />
+          <input
+            type="file"
+            ref={docInputRef}
+            accept=".pdf,.doc,.docx,.txt,image/*"
+            className="hidden"
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (file) setInsertedAttachment(`Doc (${file.name})`);
+              setShowInsertMenu(false);
+            }}
+          />
+
           {/* Chat Input Console */}
           <div className="p-4 bg-white dark:bg-[#171717] border-t border-slate-200 dark:border-[#212121]">
+            
+            {/* Attachment Tag Pill */}
+            {insertedAttachment && (
+              <div className="mb-2 flex items-center gap-2">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-xl bg-health-500/15 border border-health-500/30 text-health-600 dark:text-health-400 text-xs font-bold shadow-sm">
+                  <Paperclip className="w-3.5 h-3.5 text-health-500" />
+                  <span>Inserted: {insertedAttachment}</span>
+                  <button 
+                    type="button" 
+                    onClick={() => setInsertedAttachment(null)}
+                    className="p-0.5 hover:bg-health-500/20 rounded-md ml-1"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              </div>
+            )}
+
             <form
               onSubmit={(e) => {
                 e.preventDefault();
                 handleSend();
               }}
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 relative"
             >
+              {/* Plus Insert Button with Popup */}
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => setShowInsertMenu(!showInsertMenu)}
+                  title="Insert Options (Image, Document, Voice)"
+                  className={`p-3 rounded-2xl border transition-all ${
+                    showInsertMenu 
+                      ? 'bg-health-500 text-white border-health-500 rotate-45 shadow-md' 
+                      : 'bg-slate-100 dark:bg-[#212121] text-slate-600 dark:text-slate-300 border-slate-200 dark:border-[#2f2f2f] hover:bg-slate-200'
+                  }`}
+                >
+                  <Plus className="w-5 h-5" />
+                </button>
+
+                {/* Insert Options Popup Menu */}
+                {showInsertMenu && (
+                  <div className="absolute bottom-14 left-0 w-60 bg-white dark:bg-[#1f1f1f] rounded-2xl p-2 shadow-2xl border border-slate-200 dark:border-[#2f2f2f] z-50 animate-in slide-in-from-bottom-3 duration-200 space-y-1">
+                    <div className="px-3 py-1.5 text-[10px] font-extrabold uppercase text-slate-400 tracking-wider">
+                      Insert Options
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        fileInputRef.current?.click();
+                      }}
+                      className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#2a2a2a] transition-all"
+                    >
+                      <div className="p-1.5 rounded-lg bg-purple-500/10 text-purple-500">
+                        <ImageIcon className="w-4 h-4" />
+                      </div>
+                      <div className="text-left">
+                        <div className="font-bold">Insert Image / Photo</div>
+                        <div className="text-[10px] text-slate-400">Skin rash, wound, medicine</div>
+                      </div>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        docInputRef.current?.click();
+                      }}
+                      className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#2a2a2a] transition-all"
+                    >
+                      <div className="p-1.5 rounded-lg bg-indigo-500/10 text-indigo-500">
+                        <FileText className="w-4 h-4" />
+                      </div>
+                      <div className="text-left">
+                        <div className="font-bold">Insert Document / Report</div>
+                        <div className="text-[10px] text-slate-400">Lab report or prescription PDF</div>
+                      </div>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setShowInsertMenu(false);
+                        handleVoiceInput();
+                      }}
+                      className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#2a2a2a] transition-all"
+                    >
+                      <div className="p-1.5 rounded-lg bg-red-500/10 text-red-500">
+                        <Mic className="w-4 h-4" />
+                      </div>
+                      <div className="text-left">
+                        <div className="font-bold">Insert Voice Note</div>
+                        <div className="text-[10px] text-slate-400">Speak query in natural language</div>
+                      </div>
+                    </button>
+                  </div>
+                )}
+              </div>
+
               {/* Voice Button */}
               <button
                 type="button"
@@ -896,7 +1028,7 @@ Inability to bear any weight, visible joint deformity, loss of bowel/bladder con
               {/* Send Button */}
               <button
                 type="submit"
-                disabled={!inputQuery.trim() || isTyping}
+                disabled={(!inputQuery.trim() && !insertedAttachment) || isTyping}
                 className="px-5 py-3 rounded-2xl bg-gradient-to-r from-health-500 to-health-accent hover:from-health-600 hover:to-health-emerald text-white font-bold text-sm shadow-md shadow-health-500/25 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 transition-all"
               >
                 <span>{t('send')}</span>

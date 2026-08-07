@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { 
   Plus, 
   Mic, 
@@ -9,7 +9,11 @@ import {
   Thermometer,
   Wind,
   ShieldAlert,
-  Droplets
+  Droplets,
+  Image as ImageIcon,
+  FileText,
+  Paperclip,
+  X
 } from 'lucide-react';
 
 interface ChatGPTCanvasProps {
@@ -23,12 +27,23 @@ export const ChatGPTCanvas: React.FC<ChatGPTCanvasProps> = ({
 }) => {
   const [query, setQuery] = useState('');
   const [isListening, setIsListening] = useState(false);
+  const [showInsertMenu, setShowInsertMenu] = useState(false);
+  const [insertedAttachment, setInsertedAttachment] = useState<string | null>(null);
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const docInputRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!query.trim()) return;
-    onSendQuery(query.trim());
+    const finalQuery = insertedAttachment 
+      ? `[Attachment: ${insertedAttachment}] ${query}`.trim()
+      : query.trim();
+
+    if (!finalQuery) return;
+    onSendQuery(finalQuery);
     setQuery('');
+    setInsertedAttachment(null);
+    setShowInsertMenu(false);
   };
 
   const handleVoiceInput = () => {
@@ -39,9 +54,33 @@ export const ChatGPTCanvas: React.FC<ChatGPTCanvasProps> = ({
     }, 2500);
   };
 
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>, type: 'image' | 'doc') => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setInsertedAttachment(`${type === 'image' ? 'Image' : 'Doc'} (${file.name})`);
+      setShowInsertMenu(false);
+    }
+  };
+
   return (
     <div className="flex-1 flex flex-col items-center justify-center min-h-[70vh] px-4 py-8 max-w-4xl mx-auto w-full animate-in fade-in duration-300">
       
+      {/* Hidden File Inputs */}
+      <input
+        type="file"
+        ref={fileInputRef}
+        accept="image/*"
+        className="hidden"
+        onChange={(e) => handleFileSelect(e, 'image')}
+      />
+      <input
+        type="file"
+        ref={docInputRef}
+        accept=".pdf,.doc,.docx,.txt,image/*"
+        className="hidden"
+        onChange={(e) => handleFileSelect(e, 'doc')}
+      />
+
       {/* Centered Heading */}
       <div className="text-center space-y-3 mb-8 flex flex-col items-center">
         {/* Badge Pill */}
@@ -61,20 +100,122 @@ export const ChatGPTCanvas: React.FC<ChatGPTCanvasProps> = ({
         </p>
       </div>
 
+      {/* Attachment Tag Pill if File Inserted */}
+      {insertedAttachment && (
+        <div className="w-full max-w-2xl mb-2 flex items-center gap-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-health-500/15 border border-health-500/30 text-health-600 dark:text-health-400 text-xs font-bold shadow-sm">
+            <Paperclip className="w-3.5 h-3.5 text-health-500" />
+            <span>Inserted: {insertedAttachment}</span>
+            <button 
+              type="button" 
+              onClick={() => setInsertedAttachment(null)}
+              className="p-0.5 hover:bg-health-500/20 rounded-md ml-1"
+            >
+              <X className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Main Search/Prompt Box (Matching ChatGPT floating capsule bar) */}
       <form 
         onSubmit={handleSubmit}
-        className="w-full max-w-2xl bg-white dark:bg-[#212121] rounded-3xl p-3 border border-slate-200/80 dark:border-[#2f2f2f] shadow-xl focus-within:ring-2 focus-within:ring-health-500/40 transition-all flex items-center gap-2 mb-6"
+        className="relative w-full max-w-2xl bg-white dark:bg-[#212121] rounded-3xl p-3 border border-slate-200/80 dark:border-[#2f2f2f] shadow-xl focus-within:ring-2 focus-within:ring-health-500/40 transition-all flex items-center gap-2 mb-6"
       >
-        {/* Plus / Attachment Button */}
-        <button
-          type="button"
-          onClick={onOpenSymptomChecker}
-          title="Symptom Checker & Health Problem Solutions"
-          className="p-2.5 rounded-full hover:bg-slate-100 dark:hover:bg-[#2f2f2f] text-slate-500 dark:text-slate-400 transition-colors flex-shrink-0"
-        >
-          <Plus className="w-5 h-5 text-health-500" />
-        </button>
+        {/* Insert Option Menu Container */}
+        <div className="relative">
+          <button
+            type="button"
+            onClick={() => setShowInsertMenu(!showInsertMenu)}
+            title="Insert Options (Image, Document, Symptom Triage)"
+            className={`p-2.5 rounded-full transition-all flex-shrink-0 ${
+              showInsertMenu 
+                ? 'bg-health-500 text-white rotate-45 shadow-md' 
+                : 'hover:bg-slate-100 dark:hover:bg-[#2f2f2f] text-slate-500 dark:text-slate-400'
+            }`}
+          >
+            <Plus className="w-5 h-5" />
+          </button>
+
+          {/* Insert Options Popup Menu */}
+          {showInsertMenu && (
+            <div className="absolute bottom-14 left-0 w-64 bg-white dark:bg-[#1f1f1f] rounded-2xl p-2 shadow-2xl border border-slate-200 dark:border-[#2f2f2f] z-50 animate-in slide-in-from-bottom-3 duration-200 space-y-1">
+              <div className="px-3 py-1.5 text-[10px] font-extrabold uppercase text-slate-400 tracking-wider">
+                Insert Options
+              </div>
+
+              {/* 1. Insert Image */}
+              <button
+                type="button"
+                onClick={() => {
+                  fileInputRef.current?.click();
+                }}
+                className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#2a2a2a] transition-all"
+              >
+                <div className="p-1.5 rounded-lg bg-purple-500/10 text-purple-500">
+                  <ImageIcon className="w-4 h-4" />
+                </div>
+                <div className="text-left">
+                  <div className="font-bold">Insert Image / Photo</div>
+                  <div className="text-[10px] text-slate-400">Skin rash, wound, or medicine</div>
+                </div>
+              </button>
+
+              {/* 2. Insert Medical Document */}
+              <button
+                type="button"
+                onClick={() => {
+                  docInputRef.current?.click();
+                }}
+                className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#2a2a2a] transition-all"
+              >
+                <div className="p-1.5 rounded-lg bg-indigo-500/10 text-indigo-500">
+                  <FileText className="w-4 h-4" />
+                </div>
+                <div className="text-left">
+                  <div className="font-bold">Insert Document / Report</div>
+                  <div className="text-[10px] text-slate-400">Lab report or prescription PDF</div>
+                </div>
+              </button>
+
+              {/* 3. Insert Symptom Triage */}
+              <button
+                type="button"
+                onClick={() => {
+                  setShowInsertMenu(false);
+                  onOpenSymptomChecker();
+                }}
+                className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#2a2a2a] transition-all"
+              >
+                <div className="p-1.5 rounded-lg bg-amber-500/10 text-amber-500">
+                  <Zap className="w-4 h-4" />
+                </div>
+                <div className="text-left">
+                  <div className="font-bold">Insert Symptom Triage</div>
+                  <div className="text-[10px] text-slate-400">Interactive symptom screener</div>
+                </div>
+              </button>
+
+              {/* 4. Insert Voice Note */}
+              <button
+                type="button"
+                onClick={() => {
+                  setShowInsertMenu(false);
+                  handleVoiceInput();
+                }}
+                className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#2a2a2a] transition-all"
+              >
+                <div className="p-1.5 rounded-lg bg-red-500/10 text-red-500">
+                  <Mic className="w-4 h-4" />
+                </div>
+                <div className="text-left">
+                  <div className="font-bold">Insert Voice Note</div>
+                  <div className="text-[10px] text-slate-400">Speak query in natural language</div>
+                </div>
+              </button>
+            </div>
+          )}
+        </div>
 
         {/* Prompt Input Field */}
         <input
@@ -102,14 +243,14 @@ export const ChatGPTCanvas: React.FC<ChatGPTCanvasProps> = ({
         {/* Submit Button */}
         <button
           type="submit"
-          disabled={!query.trim()}
+          disabled={!query.trim() && !insertedAttachment}
           className={`p-2.5 rounded-full flex items-center justify-center transition-all flex-shrink-0 ${
-            query.trim()
+            (query.trim() || insertedAttachment)
               ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 shadow-md'
               : 'bg-black text-white dark:bg-white dark:text-black opacity-90 hover:opacity-100'
           }`}
         >
-          {query.trim() ? (
+          {(query.trim() || insertedAttachment) ? (
             <ArrowUp className="w-5 h-5" />
           ) : (
             <div className="w-5 h-5 flex items-center justify-center gap-0.5">
