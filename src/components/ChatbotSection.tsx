@@ -1069,7 +1069,7 @@ Inability to bear any weight, visible joint deformity, loss of bowel/bladder con
       };
     }
 
-    // Smart Dynamic Fallback Guide
+    // Smart Dynamic Fallback Guide for Simple / Small Problems
     if (isTEnglish || language === 'te') {
       return {
         text: `### 📋 Visual Medical Action Guide for "${userText}" (Telugu-English)
@@ -1079,24 +1079,13 @@ Inability to bear any weight, visible joint deformity, loss of bowel/bladder con
 
 ---
 
-### 🧠 CRITICAL: Patient ki Fainting Kakunda Awake ga Unchadaniki Steps (First 60 Seconds)
-
-1. 🗣️ **Patient tho Continuously Matladandi (Talk Continuously):**  
-   • Quiet voice thoti *"Mee peru enti?"*, *"Naa maata vinipisthonda?"* ani prashnalu adigi alert ga unchandi.
-2. 🧘 **Patient ni Prashanthamga Kurchobettandi:**  
-   • Stress and anxiety lekunda well-ventilated room lo rest teesukovali.
-3. 🧥 **Body Warmth & Hydration Maintain Cheyandi:**  
-   • Warm water 200-250 mL sip cheyali.
-
----
-
 ### 🏥 Doctor ni Kalise Lopu Paatinchavalasina 5-Step Action Process:
 
 1. **Step 1: Immediate Care & Symptom Relief (0–30 Mins)**  
-   • Physical exertion aapesi rest teesukondi.
+   • Physical exertion aapesi cool & quiet place lo rest teesukondi.
 
 2. **Step 2: Safe Interim Care & Hydration**  
-   • ORS leda warm water sips teesukondi. Paracetamol for fever/pain.
+   • ORS leda warm water 200-250 mL sips teesukondi. Paracetamol for fever/pain.
 
 3. **Step 3: Symptom Monitoring (Next 24 Hours)**  
    • Body temperature and symptoms log cheyandi.
@@ -1105,7 +1094,7 @@ Inability to bear any weight, visible joint deformity, loss of bowel/bladder con
    • Doctor ni kalisi exact symptoms & medicines report cheyandi.
 
 5. **Step 5: Emergency Red Flags**  
-   • High fever, chest pain, leda breathing problem osthe **108 Ambulance** ki call cheyandi!`,
+   • High fever, severe chest pain, leda breathing problem osthe **108 Ambulance** ki call cheyandi!`,
         sources: ['HealthAI Verified Medical Repository', 'WHO Public Health Library'],
         riskBadge: 'Low' as const
       };
@@ -1117,17 +1106,6 @@ Inability to bear any weight, visible joint deformity, loss of bowel/bladder con
 
 **Identified Body Zone:** General Health & Symptom Evaluation  
 **Triage Level:** PRE-DOCTOR ACTION PROTOCOL  
-
----
-
-### 🧠 CRITICAL: Patient Unarvoda / Awake ah Irukka Vaikka (First 60 Seconds)
-
-1. 🗣️ **Patient Kitta Continuous ah Pesunga (Talk Continuously):**  
-   • Quiet ah *"Unga peru enna?"*, *"Naan pesuradhu kekudha?"* nu kelvi kettu alert ah vaingadhinga.
-2. 🧘 **Patient ah Prashanthama Ukkara Vaingadhinga:**  
-   • Well-ventilated room la aaramah padukka illana ukkara vaingadhinga.
-3. 🧥 **Body Warmth & Hydration Maintain Pannunga:**  
-   • Warm water sips kudungadhinga.
 
 ---
 
@@ -1161,21 +1139,10 @@ Inability to bear any weight, visible joint deformity, loss of bowel/bladder con
 
 ---
 
-### 🧠 CRITICAL: Patient ko Hosh me Rakhne aur Shock se Bachane ke Liye (First 60 Seconds)
-
-1. 🗣️ **Patient se Continuous Baat Karte Rahein (Talk Continuously):**  
-   • Calm voice me *"Aapka naam kya hai?"*, *"Aapko meri aawaz aa rahi hai?"* poochkar patient ko alert rakhein.
-2. 🧘 **Patient ko Aaram se Bithayein:**  
-   • Shanti se hawa-dar kamre me rest karne dein.
-3. 🧥 **Body Warmth & Hydration Maintain Karein:**  
-   • Halka gunguna paani sip karein.
-
----
-
 ### 🏥 Doctor ke Paas Jaane se Pehle 5-Step Action Process:
 
 1. **Step 1: Immediate Care & Rest (0–30 Mins)**  
-   • Mehnat ya tension band karke rest karein.
+   • Mehnat ya tension band karke aaram se rest karein.
 
 2. **Step 2: Safe Hydration & Care**  
    • Paani ya ORS ghool sip karein. Paracetamol for fever/pain.
