@@ -57,11 +57,11 @@ export const ChatbotSection: React.FC<ChatbotSectionProps> = ({ onOpenHistory, i
   const isSendingRef = useRef(false);
 
   const sampleQuestions = [
+    'What what questins may ask queations for sih',
+    'What problem does your project solve?',
+    'Why did you choose AI for this project?',
     'What are dengue symptoms?',
-    'How to prevent malaria?',
-    'What vaccines are recommended?',
-    'How can I reduce diabetes risk?',
-    'What should I do if I have a fever?'
+    'How to prevent malaria?'
   ];
 
   const scrollToBottom = () => {
@@ -82,83 +82,482 @@ export const ChatbotSection: React.FC<ChatbotSectionProps> = ({ onOpenHistory, i
   const generateAIResponse = (userText: string) => {
     const textLower = userText.toLowerCase();
 
-    if (language === 'te') {
-      if (textLower.includes('dengue') || textLower.includes('డెంగ్యూ')) {
+    // 1. SIH / Smart India Hackathon / Presentation Questions Mode
+    const isSIHQuery = 
+      textLower.includes('sih') || 
+      textLower.includes('hackathon') || 
+      textLower.includes('questins may ask') ||
+      (textLower.includes('project') && (textLower.includes('solve') || textLower.includes('ai') || textLower.includes('judge')));
+
+    if (isSIHQuery) {
+      if (language === 'te') {
         return {
-          text: `**డెంగ్యూ జ్వరం నివారణ మరియు లక్షణాల మార్గదర్శకం:**\n\n• **ముఖ్య లక్షణాలు:** తీవ్రమైన జ్వరం (104°F), తీవ్రమైన తలనొప్పి/కళ్ల నొప్పులు, కీళ్ల నొప్పులు మరియు దద్దుర్లు.\n• **వ్యాప్తి:** ఆడ ఎడిస్ దోమల ద్వారా వ్యాపిస్తుంది.\n• **నివారణ:** నిలిచి ఉన్న నీటిని తొలగించండి, కాళ్లు చేతులు పూర్తిగా కప్పే దుస్తులు ధరించండి.\n\n⚠️ *హెచ్చరిక:* తీవ్రమైన కడుపు నొప్పి లేదా వాంతులు ఉంటే వెంటనే ఆసుపత్రికి వెళ్ళండి.`,
-          sources: ['WHO డెంగ్యూ సమాచారం 2026', 'CDC నివారణ మార్గదర్శకాలు'],
-          riskBadge: 'Moderate' as const
-        };
-      }
-      if (textLower.includes('malaria') || textLower.includes('మలేరియా')) {
-        return {
-          text: `**మలేరియా అవగాహన మరియు రక్షణ:**\n\n• **లక్షణాలు:** చలితో కూడిన జ్వరం, అధికంగా చెమటలు పట్టడం మరియు శరీర బలహీనత.\n• **నివారణ:** దోమతెరలను (ITNs) ఉపయోగించండి మరియు పరిసరాలను పరిశుభ్రంగా ఉంచుకోండి.\n• **చర్య:** పదే పదే జ్వరం వస్తుంటే వెంటనే రక్త పరీక్ష చేయించుకోండి.`,
-          sources: ['ప్రపంచ మలేరియా నివేదిక', 'CDC మలేరియా నియంత్రణ'],
-          riskBadge: 'Moderate' as const
-        };
-      }
-      if (textLower.includes('fever') || textLower.includes('జ్వరం')) {
-        return {
-          text: `**జ్వరం సంరక్షణ ప్రోటోకాల్:**\n\n1. **ద్రవ పదార్థాలు:** మంచినీరు, ORS మరియు వేడి సూప్‌లు తీసుకోండి.\n2. **విశ్రాంతి:** చల్లని మరియు గాలి వెలుతురు ఉన్న గదిలో విశ్రాంతి తీసుకోండి.\n3. **పరిశీలన:** ప్రతి 4 గంటలకు ఒకసారి శరీర ఉష్ణోగ్రతను తనిఖీ చేయండి.\n\n⚠️ **అత్యవసర చికిత్స అవసరం:** 3 రోజుల కంటే ఎక్కువ జ్వరం ఉంటే లేదా శ్వాస తీసుకోవడంలో ఇబ్బంది ఉంటే వెంటనే డాక్టర్‌ని కలవండి.`,
-          sources: ['CDC జ్వరం నివారణ మార్గదర్శకాలు'],
-          riskBadge: 'Urgent' as const
+          text: `మీ ప్రాజెక్ట్ **స్మార్ట్ ఇండియా హ్యాకథాన్ (SIH)** కోసం **వ్యాధి అవగాహన కోసం AI-ఆధారిత ప్రజా ఆరోగ్య చాట్‌బాట్** అయినందున, న్యాయనిర్ణేతలు ప్రధానంగా మీ సాంకేతిక పరిజ్ఞానం, సాధ్యాసాధ్యాలు, ఆవిష్కరణ మరియు భద్రతను పరీక్షస్తారు. వారు అడిగే అత్యంత సాధారణ ప్రశ్నలు మరియు బలమైన నమూనా సమాధానాలు ఇక్కడ ఉన్నాయి:\n\n**1. మీ ప్రాజెక్ట్ ఏ సమస్యను పరిష్కరిస్తుంది?**\n**సమాధానం:**\nమా చాట్‌బాట్ 24×7 ఆరోగ్య అవగాహన, లక్షణాల మార్గదర్శకత్వం, నివారణ సంరక్షణ సమాచారం మరియు వ్యాధి విద్యను అందిస్తుంది, ముఖ్యంగా ఆరోగ్య సంరక్షణ నిపుణుల లభ్యత పరిమితంగా ఉన్న గ్రామీణ మరియు వెనుకబడిన ప్రాంతాలలో.\n\n---\n\n**2. మీరు AIని ఎందుకు ఎంచుకున్నారు?**\n**సమాధానం:**\nAI సహజ భాషను అర్థం చేసుకుంటుంది, తక్షణ ప్రతిస్పందనలను అందిస్తుంది, బహుళ భాషలకు మద్దతు ఇస్తుంది మరియు వేలాది మంది వినియోగదారులకు ఒకేసారి సహాయం చేయగలదు, తద్వారా ఆరోగ్య సంరక్షణ సమాచారాన్ని మరింత ప్రాప్యత చేస్తుంది.\n\n---\n\n**3. మీ చాట్‌బాట్ ChatGPT లేదా Google కంటే ఎలా భిన్నంగా ఉంటుంది?**\n**సమాధానం:**\nమా చాట్‌బాట్ కేవలం ప్రజా ఆరోగ్యంపై మాత్రమే దృష్టి పెడుతుంది. ఇది విశ్వసనీయమైన వైద్య పరిజ్ఞానాన్ని ఉపయోగిస్తుంది, నిర్మాణాత్మక ఆరోగ్య మార్గదర్శకత్వాన్ని అందిస్తుంది మరియు అనవసర విషయాలు లేకుండా లక్షణాల వర్గీకరణను అందిస్తుంది.`,
+          sources: ['SIH 2026 Project Presentation Repository', 'HealthAI Technical Architecture Whitepaper'],
+          riskBadge: 'Low' as const
         };
       }
       return {
-        text: `మీ ప్రశ్న **"${userText}"** కి ధన్యవాదాలు.\n\nప్రజా ఆరోగ్య సమాచారం ప్రకారం, పరిశుభ్రత పాటించడం, పోషకాహారం తీసుకోవడం మరియు క్రమం తప్పకుండా నీరు తాగడం వల్ల రోగనిరోధక శక్తి పెరుగుతుంది.\n\nప్రత్యేక లక్షణాల తనిఖీ కోసం మా **లక్షణాల తనిఖీ** సాధనాన్ని ఉపయోగించండి లేదా అర్హత కలిగిన వైద్యుడిని సంప్రదించండి.`,
-        sources: ['హెల్త్-AI ధృవీకరించబడిన వైద్య సమాచారం', 'WHO ప్రజా ఆరోగ్య లైబ్రరీ'],
+        text: `Since your project is **AI-Driven Public Health Chatbot for Disease Awareness** for **Smart India Hackathon (SIH)**, the judges will mainly test your technical knowledge, feasibility, innovation, and safety. Here are the most common questions they may ask, along with strong sample answers.\n\n**1. What problem does your project solve?**\n**Answer:**\nOur chatbot provides 24×7 health awareness, symptom guidance, preventive care information, and disease education, especially for rural and underserved communities where access to healthcare professionals is limited.\n\n---\n\n**2. Why did you choose AI?**\n**Answer:**\nAI understands natural language, provides instant responses, supports multiple languages, and can assist thousands of users simultaneously, making healthcare information more accessible.\n\n---\n\n**3. How is your chatbot different from ChatGPT or Google?**\n**Answer:**\nOur chatbot is focused only on public health. It uses trusted medical knowledge, provides structured health guidance, and offers symptom triage without clutter or non-medical distractions.`,
+        sources: ['SIH 2026 Project Presentation Repository', 'HealthAI Technical Architecture Whitepaper'],
         riskBadge: 'Low' as const
       };
     }
 
-    // Dengue
-    if (textLower.includes('dengue')) {
+    // 2. Comprehensive Medical Problem Breakdown (Detailed Guides)
+
+    // Dengue Fever
+    if (textLower.includes('dengue') || textLower.includes('డెంగ్యూ')) {
+      if (language === 'te') {
+        return {
+          text: `### 🦟 డెంగ్యూ జ్వరం సంపూర్ణ వైద్య మార్గదర్శకం
+
+#### 1. ముఖ్య లక్షణాలు & సంకేతాలు:
+• **తీవ్రమైన జ్వరం:** ఒక్కసారిగా 104°F (40°C) వరకు జ్వరం రావడం.
+• **కంటి నొప్పులు:** కంటి రెప్పల వెనుక తీవ్రమైన నొప్పి & ఎముకల నొప్పులు.
+• **దద్దుర్లు:** జ్వరం వచ్చిన 2-5 రోజుల తర్వాత చర్మంపై ఎర్రటి మచ్చలు.
+
+---
+
+### 🏥 డాక్టర్‌ను కలిసే వరకు పాటించవలసిన దశలవారీ చర్యలు (Step-by-Step Process):
+
+1. **దశ 1: తక్షణ విశ్రాంతి (0–30 నిమిషాలు):**
+   • అన్ని రకాల శారీరక శ్రమలను నిలిపివేసి, చల్లని మరియు గాలి వెలుతురు ఉన్న గదిలో ప్రశాంతంగా పడుకోండి.
+
+2. **దశ 2: సురక్షితమైన హోమ్ కేర్ & హైడ్రేషన్ (మొదటి కొన్ని గంటలు):**
+   • **ద్రవ పదార్థాలు:** ప్రతి గంటకు 200-250ml కొబ్బరి నీరు, ORS ద్రావణం లేదా మంచి నీరు తీసుకోండి.
+   • **జ్వర నియంత్రణ:** డాక్టర్ సలహా ప్రకారం సురక్షితమైన పారాసిటమాల్ (Paracetamol) వాడవచ్చు.
+   • ⛔ **ముఖ్య హెచ్చరిక:** ఐబూప్రోఫెన్ (Ibuprofen) లేదా ఆస్ప్రిన్ (Aspirin) మందులను వాడకండి, ఇవి రక్తస్రావ ప్రమాదాన్ని పెంచుతాయి.
+
+3. **దశ 3: లక్షణాల నమోదు (ప్రతి 2 గంటలకు):**
+   • జ్వరం ఉష్ణోగ్రత, తాగిన ద్రవాల పరిమాణం మరియు మూత్ర విసర్జన పదేపదే జరుగుతుందో లేదో నోట్‌బుక్‌లో నమోదు చేయండి.
+
+4. **దశ 4: డాక్టర్ అపాయింట్‌మెంట్ కోసం సిద్ధమవ్వడం:**
+   • మీరు ప్రస్తుతం వాడుతున్న ఇతర మందుల జాబితా మరియు అలెర్జీల వివరాలను సిద్ధం చేసుకోండి.
+
+🚨 **అత్యవసర హెచ్చరిక (వె వెంటనే ఎమర్జెన్సీకి వెళ్ళండి):**
+తీవ్రమైన కడుపు నొప్పి, నిరంతర వాంతులు, ముక్కు/చిగుళ్ళ నుండి రక్తస్రావం ఉంటే అపాయింట్‌మెంట్ కోసం ఆగకుండా వెంటనే హాస్పిటల్ ఎమర్జెన్సీ వార్డుకు వెళ్ళండి.`,
+          sources: ['WHO డెంగ్యూ సమాచారం 2026', 'CDC వెక్టర్ బోర్న్ మార్గదర్శకాలు'],
+          riskBadge: 'Moderate' as const
+        };
+      }
       return {
-        text: `**Dengue Fever Prevention & Symptoms Guide:**\n\n• **Key Symptoms:** High Fever (104°F), Severe Headache/Eye Pain, Joint/Muscle Pain, and Rash.\n• **Transmission:** Transmitted by female Aedes mosquitoes.\n• **Prevention:** Eliminate standing water around containers, wear long sleeves, and apply DEET repellent.\n\n⚠️ *Red Flag:* Severe abdominal pain or persistent vomiting requires immediate hospital care.`,
+        text: `### 🦟 Comprehensive Dengue Fever Medical & Triage Guide
+
+#### 1. Clinical Symptoms & Presentation:
+• **Sudden High Fever:** Spikes up to 104°F (40°C).
+• **Retro-orbital Pain:** Severe pain behind the eyes & bone pain ("Breakbone fever").
+• **Petechial Rash:** Measles-like rash appearing 2–5 days after fever onset.
+
+---
+
+### 🏥 Step-by-Step Patient Action Plan (What to do until you see the doctor)
+
+1. **Step 1: Immediate Rest & Positioning (0–30 Mins)**
+   • Stop all physical exertion immediately and rest in a cool, ventilated room with elevated head position.
+
+2. **Step 2: Safe Interim Care & Hydration (First Few Hours)**
+   • **Hydration Goal:** Drink 200–250 mL of Oral Rehydration Salts (ORS), coconut water, or clear broth every hour.
+   • **Safe Antipyretic:** Take **Paracetamol (Acetaminophen)** for fever/pain control as per age dosage.
+   • ⛔ **STRICT WARNING:** Avoid NSAIDs (Ibuprofen, Aspirin, Naproxen, or Diclofenac) because they increase severe internal bleeding risk in Dengue!
+
+3. **Step 3: Vital Tracking & Symptom Log (Every 1–2 Hours)**
+   • Keep a simple log recording body temperature (°F/°C), fluid intake (mL), and urination frequency to show your doctor.
+
+4. **Step 4: Prepare for Doctor Consultation**
+   • Note down exact symptom onset time, current prescription medications, known allergies, and recent travel history.
+
+🚨 **Emergency Red Flags (Go to ER Immediately):**
+Proceed directly to Emergency ER if experiencing severe abdominal pain, persistent vomiting, blood in vomit/stool, mucosal bleeding (gums/nose), or extreme lethargy.`,
         sources: ['WHO Dengue Fact Sheet 2026', 'CDC Vector Control Guidelines'],
         riskBadge: 'Moderate' as const
       };
     }
 
     // Malaria
-    if (textLower.includes('malaria')) {
+    if (textLower.includes('malaria') || textLower.includes('మలేరియా')) {
       return {
-        text: `**Malaria Awareness & Protection:**\n\n• **Symptoms:** Cyclic high fever, intense chills, profuse sweating, and muscle weakness.\n• **Prevention:** Sleep under insecticide-treated bed nets (ITNs), use spatial repellents, and take prescribed antimalarial prophylaxis if traveling.\n• **Action:** Seek prompt blood smear testing if experiencing recurring fever cycles in endemic zones.`,
-        sources: ['World Malaria Report', 'CDC Malaria Control'],
+        text: `### 🦟 Malaria Clinical Guidance & Pre-Doctor Action Plan
+
+#### 1. Primary Symptoms:
+• Cyclic high fever, severe chills/shivering, profuse sweating, and body weakness.
+
+---
+
+### 🏥 Step-by-Step Process Until Doctor Consultation:
+
+1. **Step 1: Shivering & Fever Management (0–1 Hour)**
+   • Cover warmly during chills phase. Once fever spikes, use lukewarm water sponge baths to lower body temp.
+
+2. **Step 2: Hydration & Safe Pain Relief**
+   • Drink electrolyte ORS fluids continuously. Take Paracetamol for fever control. Do not take self-prescribed antibiotics or antimalarials without a blood smear test.
+
+3. **Step 3: Schedule Blood Diagnostic Test**
+   • Arrange for a prompt **Blood Smear Microscopy** or **Rapid Diagnostic Test (RDT)** at the lab/clinic.
+
+4. **Step 4: Clinical History Prep**
+   • Record exact fever cycle times (e.g. fever every 48 hours) to help the physician diagnose Plasmodium species.
+
+🚨 **Emergency Signs:** Severe jaundice (yellow eyes/skin), dark urine, difficulty breathing, or extreme drowsiness require immediate hospital ER admission.`,
+        sources: ['World Malaria Report 2026', 'CDC Malaria Triage Protocol'],
         riskBadge: 'Moderate' as const
       };
     }
 
-    // Vaccines
-    if (textLower.includes('vaccin') || textLower.includes('immuniz')) {
-      return {
-        text: `**Immunization & Vaccine Roadmap:**\n\n• **Infants & Children:** DTP, MMR, Polio, and Hepatitis B.\n• **Adults & Seniors:** Annual Seasonal Flu, Tdap booster every 10 years, and Pneumococcal vaccine.\n• **Safety:** Modern vaccines undergo rigorous clinical safety monitoring.`,
-        sources: ['Global Immunization Schedule', 'WHO Vaccine Safetynet'],
-        riskBadge: 'Low' as const
-      };
-    }
-
-    // Diabetes
-    if (textLower.includes('diabe') || textLower.includes('sugar')) {
-      return {
-        text: `**Diabetes Management & Lifestyle Prevention:**\n\n• **Diet:** Choose low-glycemic foods, whole grains, and leafy vegetables.\n• **Exercise:** Engage in at least 150 minutes of moderate aerobic activity per week.\n• **Monitoring:** Check HbA1c levels regularly if diagnosed or pre-diabetic.`,
-        sources: ['International Diabetes Federation', 'CDC Diabetes Guidance'],
-        riskBadge: 'Low' as const
-      };
-    }
-
     // Fever / High Temperature
-    if (textLower.includes('fever') || textLower.includes('temp')) {
+    if (textLower.includes('fever') || textLower.includes('temp') || textLower.includes('జ్వరం')) {
       return {
-        text: `**Fever Care Protocol & Triage:**\n\n1. **Hydration:** Consume fluids, electrolyte solutions (ORS), and warm soups.\n2. **Rest:** Allow the body to rest in a cool, well-ventilated room.\n3. **Monitoring:** Track temperature every 4 hours.\n\n⚠️ **When to seek Emergency Care (Call 911/112):**\n- Fever exceeding 103°F (39.4°C) lasting over 3 days\n- Stiff neck, severe breathing difficulty, or altered mental state.`,
-        sources: ['CDC Fever Triage Guide', 'NHS Medical Guidelines'],
+        text: `### 🌡️ Comprehensive Fever Triage & Pre-Doctor Action Plan
+
+#### 1. Temperature Severity Tiers:
+• **Mild Fever:** 99.5°F - 100.9°F (37.5°C - 38.3°C) → Hydrate & Monitor.
+• **Moderate Fever:** 101°F - 102.9°F (38.3°C - 39.4°C) → Paracetamol & Lukewarm Compresses.
+• **High Fever (Pyrexia):** ≥ 103°F (39.4°C) → Requires Immediate Clinical Evaluation.
+
+---
+
+### 🏥 Step-by-Step Process Until Meeting Doctor:
+
+1. **Step 1: Immediate Cooling & Rest (0–30 Mins)**
+   • Rest in a ventilated room. Apply lukewarm water sponges to forehead, armpits, and neck. Avoid cold ice baths.
+
+2. **Step 2: Hydration & Medication Protocol**
+   • Drink 2.5–3 Liters of fluids daily (ORS, warm broths, water). Use Paracetamol as directed for fever spikes > 101°F.
+
+3. **Step 3: Log Readings Every 2 Hours**
+   • Record hourly temperature readings and response to antipyretics to present to your physician.
+
+4. **Step 4: Prepare Medical Notes for Clinic**
+   • Note any associated symptoms (cough, rash, urinary discomfort, joint pain) and drug allergies.
+
+🚨 **Emergency Red Flags (Seek ER Immediately):**
+Stiff neck (inability to touch chin to chest), severe shortness of breath, blue lips, seizures, or fever persisting past 72 hours.`,
+        sources: ['CDC Fever Triage & Management Guide', 'NHS Clinical Guidelines'],
         riskBadge: 'Urgent' as const
       };
     }
 
-    // Default intelligent fall-back
+    // Diabetes / Blood Sugar
+    if (textLower.includes('diabe') || textLower.includes('sugar') || textLower.includes('మధుమేహం')) {
+      return {
+        text: `### 🩸 Diabetes Care & Pre-Consultation Action Plan
+
+#### 1. Immediate Care for High / Low Glucose:
+• **Hypoglycemia (< 70 mg/dL):** Follow 15-15 Rule: Consume 15g fast-acting carbs (fruit juice, 3 sugar cubes), recheck glucose in 15 mins.
+• **Hyperglycemia (> 250 mg/dL):** Drink plenty of water to flush ketones and avoid high-carb meals.
+
+---
+
+### 🏥 Step-by-Step Action Plan Before Doctor Visit:
+
+1. **Step 1: Glucose Log Recording**
+   • Record fasting and post-meal blood sugar levels for 3–7 days leading up to your appointment.
+
+2. **Step 2: Symptom Assessment**
+   • Note any vision blurring, foot numbness, frequent urination, or slow-healing cuts.
+
+3. **Step 3: Prepare Medication List**
+   • Bring all current insulin dosages or oral hypoglycemic pills to the consultation.
+
+🚨 **Emergency Alert:** If experiencing deep rapid breathing, fruity breath odor, nausea, or confusion (Diabetic Ketoacidosis - DKA), seek emergency hospital care immediately.`,
+        sources: ['American Diabetes Association (ADA)', 'International Diabetes Federation'],
+        riskBadge: 'Low' as const
+      };
+    }
+
+    // Bleeding / Cut / Wound / Hemorrhage / Injury
+    if (
+      textLower.includes('bleed') || 
+      textLower.includes('blood') || 
+      textLower.includes('cut') || 
+      textLower.includes('wound') || 
+      textLower.includes('hemorrhage') ||
+      textLower.includes('injury')
+    ) {
+      return {
+        text: `### 🩸 EMERGENCY FIRST AID: How to Stop Bleeding Immediately
+
+#### ⚡ IMMEDIATE ACTION (First 60 Seconds - What You MUST Do Right NOW):
+
+1. **Step 1: Direct Firm Pressure (IMMEDIATE)**
+   • Press a clean cloth, sterile gauze pad, or clean gloved hands **directly and firmly** over the bleeding wound.
+   • **Hold continuous uninterrupted pressure for at least 5 to 10 minutes.** Do NOT lift the cloth to check the wound during this time, as lifting disrupts blood clot formation!
+
+2. **Step 2: Elevate the Wounded Limb**
+   • If the wound is on an arm or leg, **raise it above the level of the heart** while keeping continuous pressure on the wound (unless a broken bone is suspected).
+
+3. **Step 3: Add Absorptive Layers (DO NOT remove blood-soaked cloth)**
+   • If blood soaks through the first cloth, **do NOT remove it!** Place a second clean cloth directly on top of the first and continue applying strong pressure.
+
+4. **Step 4: Secure with a Pressure Bandage**
+   • Wrap a roller bandage or cloth strip firmly around the dressing to maintain continuous pressure. Ensure it is snug but not tight enough to turn fingers/toes blue or cause numbness.
+
+5. **Step 5: Tourniquet Protocol (Severe Life-Threatening Arterial Bleeding ONLY)**
+   • If severe arterial blood is spurting continuously from an arm or leg and direct pressure fails: Apply a commercial or improvised tourniquet **2 to 3 inches above the wound** (never on a joint). Tighten until bleeding stops, and note the exact time applied.
+
+---
+
+### 🏥 What To Do Next (Up to Doctor / ER Arrival):
+• Keep the patient warm with a blanket and lying flat to prevent hemorrhagic shock.
+• Do NOT give food or water if emergency surgery might be needed.
+• Wash hands thoroughly once bleeding is controlled.
+
+🚨 **CALL EMERGENCY SERVICES (911 / 112 / 108) IMMEDIATELY IF:**
+• Bleeding does not stop after 10 minutes of direct pressure.
+• Blood is spurting uncontrollably from an artery.
+• The wound is deep, gaping, or exposes fat, muscle, or bone.
+• The patient feels dizzy, confused, cold/clammy, or loses consciousness (signs of Shock).`,
+        sources: ['American Red Cross Emergency First Aid', 'WHO Emergency Wound & Bleeding Care'],
+        riskBadge: 'Urgent' as const
+      };
+    }
+
+    // Burns / Scalds
+    if (textLower.includes('burn') || textLower.includes('scald') || textLower.includes('fire') || textLower.includes('hot water')) {
+      return {
+        text: `### 🩹 EMERGENCY FIRST AID: Immediate Burn Treatment
+
+#### ⚡ IMMEDIATE ACTION (First 60 Seconds - What You MUST Do Right NOW):
+
+1. **Step 1: Cool the Burn Immediately (0–20 Minutes)**
+   • Hold the burned area under **cool running tap water for 10 to 20 minutes**.
+   • ⛔ **NEVER USE ICE, ice water, butter, oils, toothpaste, or egg whites**, as they trap heat and worsen tissue damage!
+
+2. **Step 2: Remove Constricting Items**
+   • Gently remove rings, watches, belts, or tight clothing around the burned area before swelling starts. Do NOT remove clothing stuck to the burn.
+
+3. **Step 3: Cover Loosely**
+   • Cover the burn loosely with a sterile non-stick gauze bandage or clean plastic cling wrap.
+
+4. **Step 4: Protect Blisters & Pain Relief**
+   • **Do NOT pop blisters!** Intact blisters protect against infection. Take Paracetamol for pain.
+
+🚨 **CALL EMERGENCY SERVICES IMMEDIATELY IF:**
+• Burn covers face, hands, groin, or major joint.
+• Chemical or electrical burn.
+• Skin looks charred white, dark brown, or leathery (3rd-degree burn).`,
+        sources: ['American Burn Association', 'WHO Burns First Aid Protocol'],
+        riskBadge: 'Urgent' as const
+      };
+    }
+
+    // Snake Bite / Animal Bite
+    if (textLower.includes('snake') || textLower.includes('bite') || textLower.includes('venom') || textLower.includes('stings')) {
+      return {
+        text: `### 🐍 EMERGENCY FIRST AID: Snake & Animal Bite Protocol
+
+#### ⚡ IMMEDIATE ACTION (First 60 Seconds - What You MUST Do Right NOW):
+
+1. **Step 1: Immobilize & Keep Calm (IMMEDIATE)**
+   • Keep the patient calm and completely still to slow venom spread.
+   • **Keep the bitten limb below heart level.**
+
+2. **Step 2: Remove Tight Items**
+   • Remove rings, shoes, or tight clothing near the bite before swelling begins.
+
+3. **Step 3: What NOT To Do (CRITICAL SAFETY):**
+   • ⛔ Do **NOT** cut the wound.
+   • ⛔ Do **NOT** suck out venom.
+   • ⛔ Do **NOT** apply tourniquets or ice packs.
+
+4. **Step 4: Emergency Transport to Hospital**
+   • Transport victim immediately to a hospital equipped with Anti-Snake Venom (ASV). Note snake appearance if safe to do so.`,
+        sources: ['WHO Snakebite Envenoming Guidelines', 'CDC Vector & Venom Protocol'],
+        riskBadge: 'Urgent' as const
+      };
+    }
+
+    // Skin Irritation / Underarm Itching / Rash / Fungal / Dermatitis
+    if (
+      textLower.includes('itch') || 
+      textLower.includes('ichting') || 
+      textLower.includes('underarm') || 
+      textLower.includes('armpit') || 
+      textLower.includes('rash') || 
+      textLower.includes('skin') || 
+      textLower.includes('fungal') || 
+      textLower.includes('allergy') || 
+      textLower.includes('eczema') || 
+      textLower.includes('hives')
+    ) {
+      return {
+        text: `### 🧴 Underarm & Skin Itching Action Guide for "${userText}"
+
+#### ⚡ IMMEDIATE ACTION (First 60 Seconds - What You MUST Do Right NOW):
+
+1. **Step 1: Wash Gently & Pat Dry (IMMEDIATE)**
+   • Wash underarms with lukewarm water & mild fragrance-free soap. **Pat dry gently** with a clean cotton towel — do NOT rub!
+
+2. **Step 2: Stop Irritants Immediately**
+   • **Stop using deodorants, antiperspirants, perfumes, and shaving** until skin heals.
+   • Wear loose 100% cotton clothing to prevent friction and sweat buildup.
+
+3. **Step 3: Cool Compress & Anti-Scratch**
+   • Apply a cool damp cotton compress for 10 mins. Apply plain Aloe Vera gel or Calamine lotion.
+   • ⛔ **DO NOT SCRATCH!** Keep fingernails short and clean to prevent secondary bacterial skin infections.
+
+4. **Step 4: Safe Over-the-Counter (OTC) Interim Care**
+   • For sweat/fungal rash: Apply OTC **Clotrimazole 1% cream** twice daily.
+   • For severe itching: OTC **Hydrocortisone 1% cream** for 3–5 days.
+
+🚨 **When to See a Doctor Immediately:**
+Spreading redness, warmth, yellow pus discharge, fever, or rash lasting > 3-5 days.`,
+        sources: ['American Academy of Dermatology (AAD)', 'CDC Skin Triage Guide'],
+        riskBadge: 'Low' as const
+      };
+    }
+
+    // Cough / Cold / Sore Throat / Respiratory
+    if (
+      textLower.includes('cough') || 
+      textLower.includes('cold') || 
+      textLower.includes('throat') || 
+      textLower.includes('flu') || 
+      textLower.includes('phlegm') || 
+      textLower.includes('congestion')
+    ) {
+      return {
+        text: `### 🌬️ Cough, Cold & Respiratory Triage Guide
+
+#### 🏥 Step-by-Step Action Plan Until Doctor Consultation:
+
+1. **Step 1: Airway Moistening & Throat Soothing (Right Now)**
+   • Inhale steam from a bowl of hot water for 5–10 minutes to clear nasal passages and loosen phlegm.
+   • Gargle with warm saltwater (1/2 tsp salt in 1 cup warm water) 3–4 times daily to soothe throat irritation.
+
+2. **Step 2: Natural Cough Relief & Hydration**
+   • Consume warm water, ginger-lemon tea, or 1 tsp pure honey (for adults and children > 1 year).
+   • Drink 2.5–3 Liters of warm fluids daily to keep mucus thin.
+
+3. **Step 3: Rest & Sleep Environment**
+   • Sleep with head elevated on 2 pillows to prevent nighttime coughing fits and post-nasal drip.
+   • Use a cool-mist humidifier in your room.
+
+4. **Step 4: OTC Support & Log**
+   • OTC saline nasal sprays or throat lozenges can provide comfort. Track fever and sputum color.
+
+🚨 **Emergency Red Flags (Go to ER Immediately):**
+Severe shortness of breath, wheezing, coughing up blood, chest pain, or oxygen saturation dropping below 94%.`,
+        sources: ['CDC Respiratory Illness Guidelines', 'NHS Cough & Cold Triage'],
+        riskBadge: 'Low' as const
+      };
+    }
+
+    // Stomach / Diarrhea / Vomiting / Digestion
+    if (
+      textLower.includes('stomach') || 
+      textLower.includes('diarrhea') || 
+      textLower.includes('loose') || 
+      textLower.includes('vomit') || 
+      textLower.includes('acidity') || 
+      textLower.includes('nausea') || 
+      textLower.includes('cramps')
+    ) {
+      return {
+        text: `### 🤢 Stomach & Digestive Care Guide
+
+#### 🏥 Step-by-Step Action Plan Until Doctor Consultation:
+
+1. **Step 1: Hydration & Electrolyte Management (Immediate)**
+   • Sip Oral Rehydration Salts (ORS), rice water, or coconut water slowly (1-2 sips every 5 mins to prevent vomiting).
+   • Avoid plain water in massive gulps if vomiting; avoid alcohol, caffeine, dairy, and sugary drinks.
+
+2. **Step 2: Dietary Modification (BRAT Protocol)**
+   • Once vomiting stops for 4 hours, introduce bland foods: Bananas, Rice, Applesauce, and Toast.
+   • Avoid spicy, greasy, fried, or high-fiber meals until digestion stabilizes.
+
+3. **Step 3: Rest & Abdominal Comfort**
+   • Apply a warm water bottle or heating pad to the abdomen for cramping relief. Rest upright after eating.
+
+4. **Step 4: Log Dehydration Indicators**
+   • Track urine frequency and color (aim for pale yellow). Note frequency of bowel movements.
+
+🚨 **Emergency Red Flags:**
+Blood in stool or vomit, severe localized right lower stomach pain (suspected appendicitis), high fever, or inability to keep any liquids down for 12 hours.`,
+        sources: ['WHO Diarrheal Disease Protocol', 'CDC Gastrointestinal Guidelines'],
+        riskBadge: 'Moderate' as const
+      };
+    }
+
+    // Headache / Migraine
+    if (textLower.includes('headache') || textLower.includes('head pain') || textLower.includes('migraine')) {
+      return {
+        text: `### 🧠 Headache & Migraine Management Guide
+
+#### 🏥 Step-by-Step Action Plan Until Doctor Consultation:
+
+1. **Step 1: Environment & Cold/Warm Compress (Right Now)**
+   • Rest in a dark, quiet, temperature-controlled room away from bright screens and loud noises.
+   • Place a cool damp cloth on your forehead or warm compress on the neck/shoulders to ease tension.
+
+2. **Step 2: Hydration & Safe Pain Relief**
+   • Drink 500 mL of water immediately (dehydration is a primary headache trigger).
+   • Take safe over-the-counter **Paracetamol (Acetaminophen)** or Ibuprofen as directed.
+
+3. **Step 3: Trigger Log**
+   • Write down potential triggers: skipped meals, caffeine withdrawal, stress, lack of sleep, or screen glare.
+
+🚨 **Emergency Red Flags:**
+Sudden "thunderclap" headache (worst headache of your life), headache with fever and stiff neck, weakness on one side of face/body, or vision loss.`,
+        sources: ['American Headache Society', 'NHS Neurological Triage Guide'],
+        riskBadge: 'Low' as const
+      };
+    }
+
+    // Joint / Muscle / Back Pain
+    if (textLower.includes('back pain') || textLower.includes('joint') || textLower.includes('knee') || textLower.includes('muscle') || textLower.includes('sprain')) {
+      return {
+        text: `### 🦴 Joint, Muscle & Back Pain Action Guide
+
+#### 🏥 Step-by-Step Action Plan Until Doctor Consultation:
+
+1. **Step 1: Apply R.I.C.E Protocol (First 24-48 Hours)**
+   • **Rest:** Avoid heavy lifting, twisting, or bearing weight on the painful area.
+   • **Ice:** Apply an ice pack wrapped in a cloth for 15–20 minutes every 2–3 hours to reduce swelling.
+   • **Compression:** Use a light elastic bandage if dealing with joint sprains (do not wrap too tightly).
+   • **Elevation:** Elevate the injured limb above heart level when resting.
+
+2. **Step 2: Safe Pain Relief & Ergonomics**
+   • Apply topical analgesic gel (Diclofenac/Menthol gel) or take Paracetamol. Sit with lumbar support.
+
+3. **Step 3: Gentle Range of Motion**
+   • Perform very gentle stretches only if painless. Stop immediately if sharp pain occurs.
+
+🚨 **Emergency Red Flags:**
+Inability to bear any weight, visible joint deformity, loss of bowel/bladder control with back pain, or numbness/tingling in legs.`,
+        sources: ['AAOS Orthopedic Triage Guidelines', 'Mayo Clinic Musculoskeletal Care'],
+        riskBadge: 'Low' as const
+      };
+    }
+
+    // Smart Dynamic Fallback Guide
     return {
-      text: `Thank you for your inquiry about **"${userText}"**.\n\nBased on public health records, maintaining proper hygiene, eating balanced nutrients, staying hydrated, and keeping vaccinations current are vital for boosting immunity.\n\nFor specific symptom screening, please use our **Symptom Checker** tool or consult a licensed healthcare professional.`,
+      text: `### 📋 Step-by-Step Action Process Until Doctor Consultation for "${userText}"
+
+---
+
+### 🏥 Step-by-Step Process (What to do right now up to meeting your doctor):
+
+1. **Step 1: Immediate Care & Symptom Relief (0–30 Mins)**
+   • Stop physical exertion immediately and rest in a comfortable, quiet, well-ventilated space.
+   • For skin/itching issues: Wash gently with lukewarm water, pat dry, apply cool compress or soothing Aloe Vera/Calamine.
+   • For pain/fever issues: Rest elevated, drink fluids, and apply lukewarm compress.
+
+2. **Step 2: Safe Interim Care & Hydration**
+   • Drink 200–250 mL of clean water or electrolyte fluids hourly.
+   • Take safe over-the-counter **Paracetamol (Acetaminophen)** if experiencing fever or bodily pain.
+   • ⛔ Avoid unprescribed antibiotics, Aspirin, or harsh chemical ointments until evaluated by a physician.
+
+3. **Step 3: Vital Tracking & Symptom Log (Every 1–2 Hours)**
+   • Record symptom onset time, severity scale (1–10), and any triggers to share with your healthcare provider.
+
+4. **Step 4: Prepare for Doctor Appointment**
+   • Write down a concise summary of your current symptoms, list of current prescription medicines, and known allergies to show your doctor.
+
+5. **Step 5: Emergency Red Flags**
+   • **Proceed directly to Emergency ER** if experiencing severe chest pain, shortness of breath, sudden numbness, uncontrolled bleeding, severe abdominal pain, or spreading pus/infection.
+
+*For personalized symptom screening, use our interactive **Symptom Triage** tool or consult a licensed healthcare professional.*`,
       sources: ['HealthAI Verified Medical Repository', 'WHO Public Health Library'],
       riskBadge: 'Low' as const
     };

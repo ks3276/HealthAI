@@ -17,10 +17,15 @@ import {
   AlertCircle,
   BookOpen,
   CheckCircle2,
-  Share2
+  Share2,
+  Bot
 } from 'lucide-react';
 
-export const DiseasesSection: React.FC = () => {
+interface DiseasesSectionProps {
+  onSelectDisease?: (diseaseName: string) => void;
+}
+
+export const DiseasesSection: React.FC<DiseasesSectionProps> = ({ onSelectDisease }) => {
   const { t } = useTheme();
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -277,7 +282,7 @@ export const DiseasesSection: React.FC = () => {
             </div>
 
             {/* Modal Footer */}
-            <div className="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-850 flex items-center justify-between">
+            <div className="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-850 flex items-center justify-between gap-2 flex-wrap">
               <button
                 onClick={() => {
                   if (navigator.share) {
@@ -292,12 +297,28 @@ export const DiseasesSection: React.FC = () => {
                 <span>{t('shareGuide')}</span>
               </button>
 
-              <button
-                onClick={() => setActiveModalDisease(null)}
-                className="px-6 py-2.5 rounded-xl text-xs font-bold text-white bg-slate-900 dark:bg-slate-100 dark:text-slate-900 hover:opacity-90"
-              >
-                {t('closeProfile')}
-              </button>
+              <div className="flex items-center gap-2">
+                {onSelectDisease && (
+                  <button
+                    onClick={() => {
+                      const diseaseName = activeModalDisease.name;
+                      setActiveModalDisease(null);
+                      onSelectDisease(diseaseName);
+                    }}
+                    className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold text-health-600 dark:text-health-400 bg-health-500/10 hover:bg-health-500/20 border border-health-500/30 transition-all"
+                  >
+                    <Bot className="w-4 h-4 text-health-500" />
+                    <span>Ask HealthAI Chatbot</span>
+                  </button>
+                )}
+
+                <button
+                  onClick={() => setActiveModalDisease(null)}
+                  className="px-6 py-2.5 rounded-xl text-xs font-bold text-white bg-slate-900 dark:bg-slate-100 dark:text-slate-900 hover:opacity-90"
+                >
+                  {t('closeProfile')}
+                </button>
+              </div>
             </div>
 
           </div>

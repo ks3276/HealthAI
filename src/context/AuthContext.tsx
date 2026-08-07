@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { AlertCircle, CheckCircle2, Info, X } from 'lucide-react';
 
 export interface User {
   id: string;
@@ -47,6 +48,12 @@ export interface RegistrationDetails {
   password: string;
 }
 
+export interface NotificationToast {
+  id: string;
+  message: string;
+  type: 'error' | 'success' | 'info';
+}
+
 interface AuthContextType {
   user: User | null;
   login: (email: string, name?: string) => void;
@@ -58,6 +65,9 @@ interface AuthContextType {
   addChatHistory: (query: string, response: string, riskBadge?: 'Low' | 'Moderate' | 'Urgent', sources?: string[], imageUrl?: string) => void;
   clearChatHistory: () => void;
   deleteHistoryItem: (id: string) => void;
+  notifications: NotificationToast[];
+  showNotification: (message: string, type?: 'error' | 'success' | 'info') => void;
+  clearNotification: (id?: string) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -303,6 +313,26 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
   };
 
+  const [notifications, setNotifications] = useState<NotificationToast[]>([]);
+
+  const showNotification = (message: string, type: 'error' | 'success' | 'info' = 'error') => {
+    const id = `toast-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`;
+    const newToast: NotificationToast = { id, message, type };
+    setNotifications(prev => [...prev, newToast]);
+
+    setTimeout(() => {
+      setNotifications(prev => prev.filter(t => t.id !== id));
+    }, 5000);
+  };
+
+  const clearNotification = (id?: string) => {
+    if (id) {
+      setNotifications(prev => prev.filter(t => t.id !== id));
+    } else {
+      setNotifications([]);
+    }
+  };
+
   return (
     <AuthContext.Provider value={{
       user,
@@ -314,9 +344,51 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       chatHistory,
       addChatHistory,
       clearChatHistory,
-      deleteHistoryItem
+      deleteHistoryItem,
+      notifications,
+      showNotification,
+      clearNotification
     }}>
       {children}
+
+      {/* Right Side Down (Bottom-Right) Toast Notifications Stack */}
+      {notifications.length > 0 && (
+        <div className="fixed bottom-6 right-6 z-[300] max-w-sm w-full flex flex-col gap-2.5 pointer-events-none">
+          {notifications.map((notif) => (
+            <div 
+              key={notif.id}
+              className="pointer-events-auto bg-slate-900/95 dark:bg-slate-900/95 backdrop-blur-md text-white p-4 rounded-2xl shadow-2xl border border-red-500/50 flex items-start justify-between gap-3 animate-in slide-in-from-bottom-5 fade-in duration-300"
+            >
+              <div className="flex items-start gap-3">
+                <div className={`p-2.5 rounded-xl flex-shrink-0 mt-0.5 ${
+                  notif.type === 'error' ? 'bg-red-500/20 text-red-400 border border-red-500/40 shadow-sm' :
+                  notif.type === 'success' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 shadow-sm' :
+                  'bg-blue-500/20 text-blue-400 border border-blue-500/40 shadow-sm'
+                }`}>
+                  {notif.type === 'error' && <AlertCircle className="w-5 h-5 text-red-500" />}
+                  {notif.type === 'success' && <CheckCircle2 className="w-5 h-5 text-emerald-400" />}
+                  {notif.type === 'info' && <Info className="w-5 h-5 text-blue-400" />}
+                </div>
+                <div>
+                  <h4 className="text-[11px] font-black uppercase tracking-wider text-red-400 mb-0.5">
+                    {notif.type === 'error' ? 'Authentication Alert' : notif.type === 'success' ? 'Success' : 'Notification'}
+                  </h4>
+                  <p className="text-sm font-bold text-white leading-snug">
+                    {notif.message}
+                  </p>
+                </div>
+              </div>
+              <button 
+                onClick={() => clearNotification(notif.id)}
+                className="p-1 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-white transition-colors"
+                title="Dismiss notification"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
     </AuthContext.Provider>
   );
 };

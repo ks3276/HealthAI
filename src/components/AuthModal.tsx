@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
-import { X, Mail, Lock, Sparkles, CheckCircle, ArrowRight, ArrowLeft, AlertCircle, Calendar, UserCheck } from 'lucide-react';
+import { X, Mail, Lock, Sparkles, CheckCircle, ArrowRight, ArrowLeft, Calendar, UserCheck } from 'lucide-react';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -9,7 +9,7 @@ interface AuthModalProps {
 }
 
 export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
-  const { verifyAndLogin, signup } = useAuth();
+  const { verifyAndLogin, signup, showNotification } = useAuth();
   const { t } = useTheme();
 
   const [mode, setMode] = useState<'login' | 'register'>('login');
@@ -49,14 +49,14 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
 
     // Rule 1: Both email and password empty / invalid
     if (!cleanEmail && !cleanPassword) {
-      setErrorMessage('Your credentials are wrong');
+      showNotification('Your credentials are wrong', 'error');
       setPassword('');
       return;
     }
 
     // Rule 2: Email format invalid or missing
     if (!cleanEmail || !validateEmailFormat(cleanEmail)) {
-      setErrorMessage('ur email is wrong');
+      showNotification('ur email is wrong', 'error');
       setPassword('');
       return;
     }
@@ -65,19 +65,19 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
     const result = verifyAndLogin(cleanEmail, cleanPassword);
 
     if (result === 'WRONG_CREDENTIALS') {
-      setErrorMessage('Your credentials are wrong');
+      showNotification('Your credentials are wrong', 'error');
       setPassword('');
       return;
     }
 
     if (result === 'WRONG_EMAIL') {
-      setErrorMessage('ur email is wrong');
+      showNotification('ur email is wrong', 'error');
       setPassword('');
       return;
     }
 
     if (result === 'WRONG_PASSWORD') {
-      setErrorMessage('password is wrong');
+      showNotification('your password is wrong', 'error');
       setPassword(''); // Kick out password input
       return;
     }
@@ -204,13 +204,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
             </div>
           )}
 
-          {/* Error Banner */}
-          {errorMessage && (
-            <div className="p-4 mb-4 rounded-2xl bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-400 flex items-center justify-center gap-2 text-xs font-extrabold animate-in zoom-in-95">
-              <AlertCircle className="w-5 h-5 flex-shrink-0 text-red-500" />
-              <span>{errorMessage}</span>
-            </div>
-          )}
+
 
           {!successMessage && (
             <>

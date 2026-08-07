@@ -1,0 +1,22 @@
+{
+  "sidebar": {
+    "newChat": "Nuevo chat",
+    "tts": "Texto a Voz",
+    "off": "DESACTIVADO",
+    "on": "ACTIVADO",
+    "images": "Imágenes",
+    "features": "Características",
+    "healthGuides": "Guías de Salud",
+    "symptomTriage": "Triaje de Síntomas",
+    "diseases": "Enfermedades",
+    "mostlyAskedQuestions": "Preguntas Más Frecuentes",
+    "recents": "RECIENTES",
+    "viewAll": "Ver Todo"
+  },
+  "mainChat": {
+    "platformBadge": "PLATAFORMA DE SALUD PÚBLICA IA 24/7",
+    "assistantTitle": "Asistente HealthAI 24x7",
+    "subtitle": "Haga cualquier consulta de salud en lenguaje natural para recibir orientación preventiva verificada.",
+    "inputPlaceholder": "Mensaje a HealthAI..."
+  }
+}

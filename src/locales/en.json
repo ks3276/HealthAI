@@ -1,0 +1,22 @@
+{
+  "sidebar": {
+    "newChat": "New chat",
+    "tts": "Text-to-Speech",
+    "off": "OFF",
+    "on": "ON",
+    "images": "Images",
+    "features": "Features",
+    "healthGuides": "Health Guides",
+    "symptomTriage": "Symptom Triage",
+    "diseases": "Diseases",
+    "mostlyAskedQuestions": "Mostly Asked Questions",
+    "recents": "RECENTS",
+    "viewAll": "View All"
+  },
+  "mainChat": {
+    "platformBadge": "24/7 AI PUBLIC HEALTH PLATFORM",
+    "assistantTitle": "24x7 HealthAI Assistant",
+    "subtitle": "Ask any health query in natural language to receive verified preventive care guidance.",
+    "inputPlaceholder": "Message HealthAI..."
+  }
+}

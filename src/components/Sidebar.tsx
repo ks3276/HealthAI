@@ -130,7 +130,43 @@ export const Sidebar: React.FC<SidebarProps> = ({
       {/* Navigation Tools Items */}
       <div className="px-2 py-1 space-y-1">
         
-        {/* 🔊 Text-to-Speech ON/OFF Toggle Button (Upper Position of Images) */}
+        {/* 1. PRIMARY FEATURE (#1 MAIN): Health Problem Solutions & Triage Tool */}
+        <button
+          onClick={onOpenSymptomChecker}
+          className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-bold bg-health-500/10 dark:bg-health-500/20 text-health-600 dark:text-health-400 border border-health-500/30 hover:bg-health-500/20 transition-all ${
+            isCollapsed ? 'justify-center px-0' : ''
+          }`}
+        >
+          <Zap className="w-4 h-4 text-amber-500 flex-shrink-0 animate-pulse" />
+          {!isCollapsed && (
+            <div className="flex items-center justify-between flex-1">
+              <span>Health Problem Solutions</span>
+              <span className="text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded-full bg-health-500 text-white shadow-sm">
+                #1 MAIN
+              </span>
+            </div>
+          )}
+        </button>
+
+        {/* 2. SECONDARY FEATURE (#2 OPTION): Diseases Directory */}
+        <button
+          onClick={() => onSelectTab('diseases')}
+          className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
+            activeTab === 'diseases'
+              ? 'bg-slate-200/80 dark:bg-[#212121] text-slate-900 dark:text-white font-bold'
+              : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-[#171717] hover:text-slate-900 dark:hover:text-white'
+          } ${isCollapsed ? 'justify-center px-0' : ''}`}
+        >
+          <BookOpen className="w-4 h-4 text-blue-500 flex-shrink-0" />
+          {!isCollapsed && (
+            <div className="flex items-center justify-between flex-1">
+              <span>Diseases Awareness</span>
+              <span className="text-[9px] font-bold text-slate-400">#2 OPTION</span>
+            </div>
+          )}
+        </button>
+
+        {/* 🔊 Text-to-Speech ON/OFF Toggle Button */}
         <button
           onClick={toggleTts}
           title={isTtsEnabled ? 'Text-to-Speech is ON (Voice read-aloud active)' : 'Text-to-Speech is OFF'}
@@ -157,7 +193,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           )}
         </button>
 
-        {/* 1. Images Page */}
+        {/* Images Page */}
         <button
           onClick={() => onSelectTab('images')}
           className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
@@ -170,7 +206,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           {!isCollapsed && <span>Images</span>}
         </button>
 
-        {/* 2. Features Page */}
+        {/* Features Page */}
         <button
           onClick={() => onSelectTab('features')}
           className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
@@ -183,7 +219,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           {!isCollapsed && <span>Features</span>}
         </button>
 
-        {/* 3. Health Guides Page */}
+        {/* Health Guides Page */}
         <button
           onClick={() => onSelectTab('tips')}
           className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
@@ -196,31 +232,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           {!isCollapsed && <span>Health Guides</span>}
         </button>
 
-        {/* 4. Symptom Triage Tool */}
-        <button
-          onClick={onOpenSymptomChecker}
-          className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-[#171717] hover:text-slate-900 dark:hover:text-white transition-all ${
-            isCollapsed ? 'justify-center px-0' : ''
-          }`}
-        >
-          <Zap className="w-4 h-4 text-amber-500 flex-shrink-0" />
-          {!isCollapsed && <span>Symptom Triage</span>}
-        </button>
-
-        {/* 5. Diseases Page */}
-        <button
-          onClick={() => onSelectTab('diseases')}
-          className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
-            activeTab === 'diseases'
-              ? 'bg-slate-200/80 dark:bg-[#212121] text-slate-900 dark:text-white font-bold'
-              : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-[#171717] hover:text-slate-900 dark:hover:text-white'
-          } ${isCollapsed ? 'justify-center px-0' : ''}`}
-        >
-          <BookOpen className="w-4 h-4 text-blue-500 flex-shrink-0" />
-          {!isCollapsed && <span>Diseases</span>}
-        </button>
-
-        {/* 6. Mostly Asked Questions Page */}
+        {/* Mostly Asked Questions Page */}
         <button
           onClick={() => onSelectTab('faq')}
           className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${

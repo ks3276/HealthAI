@@ -80,7 +80,7 @@ export const AppContent: React.FC = () => {
           <div key={activeTab} className="animate-in fade-in duration-200 flex-1 flex flex-col">
             
             {activeTab === 'chatbot' && (
-              <div className="flex-1 flex flex-col justify-between">
+              <div className="flex-1 flex flex-col justify-between space-y-8">
                 {!selectedHistoryQuery ? (
                   <ChatGPTCanvas
                     onSendQuery={handleReloadQueryInChat}
@@ -92,6 +92,13 @@ export const AppContent: React.FC = () => {
                     initialQuery={selectedHistoryQuery}
                   />
                 )}
+
+                {/* Integrated Public Health Diseases Directory */}
+                <div className="border-t border-slate-200 dark:border-slate-800/80 pt-6">
+                  <DiseasesSection 
+                    onSelectDisease={(diseaseName) => handleReloadQueryInChat(`Tell me full details, symptoms and prevention for ${diseaseName}`)} 
+                  />
+                </div>
               </div>
             )}
 
