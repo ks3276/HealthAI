@@ -22,6 +22,7 @@ import {
   Paperclip,
   FileText,
   Image as ImageIcon,
+  Clipboard,
   X
 } from 'lucide-react';
 
@@ -58,9 +59,56 @@ export const ChatbotSection: React.FC<ChatbotSectionProps> = ({ onOpenHistory, i
   const [copiedMessageId, setCopiedMessageId] = useState<string | null>(null);
   const [showInsertMenu, setShowInsertMenu] = useState(false);
   const [insertedAttachment, setInsertedAttachment] = useState<string | null>(null);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const docInputRef = useRef<HTMLInputElement>(null);
+
+  const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+    const items = e.clipboardData?.items;
+    if (!items) return;
+
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i];
+      if (item.type.indexOf('image') !== -1) {
+        const file = item.getAsFile();
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            setImagePreviewUrl(event.target?.result as string);
+          };
+          reader.readAsDataURL(file);
+          setInsertedAttachment(`Pasted Image (${file.name || 'clipboard.png'})`);
+          break;
+        }
+      }
+    }
+  };
+
+  const handlePasteFromClipboardMenu = async () => {
+    try {
+      if (navigator.clipboard && navigator.clipboard.read) {
+        const items = await navigator.clipboard.read();
+        for (const item of items) {
+          const imageType = item.types.find(t => t.startsWith('image/'));
+          if (imageType) {
+            const blob = await item.getType(imageType);
+            const reader = new FileReader();
+            reader.onload = (event) => {
+              setImagePreviewUrl(event.target?.result as string);
+            };
+            reader.readAsDataURL(blob);
+            setInsertedAttachment(`Pasted Image (clipboard.png)`);
+            setShowInsertMenu(false);
+            return;
+          }
+        }
+      }
+      fileInputRef.current?.click();
+    } catch {
+      fileInputRef.current?.click();
+    }
+  };
 
   const lastUserMsgRef = useRef<HTMLDivElement>(null);
   const processedQueryRef = useRef<string | null>(null);
@@ -589,6 +637,7 @@ Inability to bear any weight, visible joint deformity, loss of bowel/bladder con
 
     isSendingRef.current = true;
     setInsertedAttachment(null);
+    setImagePreviewUrl(null);
     setShowInsertMenu(false);
 
     const userMessage: Message = {
@@ -885,7 +934,12 @@ Inability to bear any weight, visible joint deformity, loss of bowel/bladder con
             className="hidden"
             onChange={(e) => {
               const file = e.target.files?.[0];
-              if (file) setInsertedAttachment(`Image (${file.name})`);
+              if (file) {
+                const reader = new FileReader();
+                reader.onload = (ev) => setImagePreviewUrl(ev.target?.result as string);
+                reader.readAsDataURL(file);
+                setInsertedAttachment(`Image (${file.name})`);
+              }
               setShowInsertMenu(false);
             }}
           />
@@ -896,7 +950,10 @@ Inability to bear any weight, visible joint deformity, loss of bowel/bladder con
             className="hidden"
             onChange={(e) => {
               const file = e.target.files?.[0];
-              if (file) setInsertedAttachment(`Doc (${file.name})`);
+              if (file) {
+                setImagePreviewUrl(null);
+                setInsertedAttachment(`Doc (${file.name})`);
+              }
               setShowInsertMenu(false);
             }}
           />
@@ -907,12 +964,23 @@ Inability to bear any weight, visible joint deformity, loss of bowel/bladder con
             {/* Attachment Tag Pill */}
             {insertedAttachment && (
               <div className="mb-2 flex items-center gap-2">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-xl bg-health-500/15 border border-health-500/30 text-health-600 dark:text-health-400 text-xs font-bold shadow-sm">
-                  <Paperclip className="w-3.5 h-3.5 text-health-500" />
+                <div className="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-xl bg-health-500/15 border border-health-500/30 text-health-600 dark:text-health-400 text-xs font-bold shadow-sm">
+                  {imagePreviewUrl ? (
+                    <img 
+                      src={imagePreviewUrl} 
+                      alt="Pasted Preview" 
+                      className="w-8 h-8 rounded-lg object-cover border border-health-500/40 shadow-xs" 
+                    />
+                  ) : (
+                    <Paperclip className="w-3.5 h-3.5 text-health-500" />
+                  )}
                   <span>Inserted: {insertedAttachment}</span>
                   <button 
                     type="button" 
-                    onClick={() => setInsertedAttachment(null)}
+                    onClick={() => {
+                      setInsertedAttachment(null);
+                      setImagePreviewUrl(null);
+                    }}
                     className="p-0.5 hover:bg-health-500/20 rounded-md ml-1"
                   >
                     <X className="w-3.5 h-3.5" />
@@ -933,7 +1001,7 @@ Inability to bear any weight, visible joint deformity, loss of bowel/bladder con
                 <button
                   type="button"
                   onClick={() => setShowInsertMenu(!showInsertMenu)}
-                  title="Insert Options (Image, Document, Voice)"
+                  title="Insert Options (Paste Image, Upload Photo, Document)"
                   className={`p-3 rounded-2xl border transition-all ${
                     showInsertMenu 
                       ? 'bg-health-500 text-white border-health-500 rotate-45 shadow-md' 
@@ -945,10 +1013,24 @@ Inability to bear any weight, visible joint deformity, loss of bowel/bladder con
 
                 {/* Insert Options Popup Menu */}
                 {showInsertMenu && (
-                  <div className="absolute bottom-14 left-0 w-60 bg-white dark:bg-[#1f1f1f] rounded-2xl p-2 shadow-2xl border border-slate-200 dark:border-[#2f2f2f] z-50 animate-in slide-in-from-bottom-3 duration-200 space-y-1">
+                  <div className="absolute bottom-14 left-0 w-64 bg-white dark:bg-[#1f1f1f] rounded-2xl p-2 shadow-2xl border border-slate-200 dark:border-[#2f2f2f] z-50 animate-in slide-in-from-bottom-3 duration-200 space-y-1">
                     <div className="px-3 py-1.5 text-[10px] font-extrabold uppercase text-slate-400 tracking-wider">
                       Insert Options
                     </div>
+
+                    <button
+                      type="button"
+                      onClick={handlePasteFromClipboardMenu}
+                      className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-[#2a2a2a] transition-all"
+                    >
+                      <div className="p-1.5 rounded-lg bg-emerald-500/10 text-emerald-500">
+                        <Clipboard className="w-4 h-4" />
+                      </div>
+                      <div className="text-left">
+                        <div className="font-bold">Paste Image from Clipboard</div>
+                        <div className="text-[10px] text-slate-400">Paste copied image (Ctrl+V)</div>
+                      </div>
+                    </button>
 
                     <button
                       type="button"
@@ -1016,11 +1098,12 @@ Inability to bear any weight, visible joint deformity, loss of bowel/bladder con
                 {isListening ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5 text-health-500" />}
               </button>
 
-              {/* Input Text Box */}
+              {/* Input Text Box with Clipboard Paste Handler */}
               <input
                 type="text"
                 placeholder={t('chatPlaceholder')}
                 value={inputQuery}
+                onPaste={handlePaste}
                 onChange={(e) => setInputQuery(e.target.value)}
                 className="flex-1 px-4 py-3 rounded-2xl bg-slate-100 dark:bg-[#212121] border border-slate-200 dark:border-[#2f2f2f] text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-health-500"
               />
