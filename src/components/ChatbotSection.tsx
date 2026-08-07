@@ -664,6 +664,98 @@ Inability to bear any weight, visible joint deformity, loss of bowel/bladder con
     setTimeout(() => setCopiedMessageId(null), 2000);
   };
 
+  const formatInlineText = (str: string) => {
+    const parts = str.split(/(\*\*.*?\*\*)/g);
+    return parts.map((part, i) => {
+      if (part.startsWith('**') && part.endsWith('**')) {
+        return (
+          <strong key={i} className="font-extrabold text-slate-900 dark:text-white">
+            {part.slice(2, -2)}
+          </strong>
+        );
+      }
+      return part;
+    });
+  };
+
+  const renderFormattedMarkdown = (text: string) => {
+    const lines = text.split('\n');
+    return (
+      <div className="space-y-2 text-sm leading-relaxed">
+        {lines.map((line, idx) => {
+          const trimmed = line.trim();
+
+          if (!trimmed) {
+            return <div key={idx} className="h-1" />;
+          }
+
+          if (trimmed.startsWith('### ')) {
+            return (
+              <h3 key={idx} className="text-base font-black text-slate-900 dark:text-white mt-3 mb-2 pb-1 border-b border-slate-200/80 dark:border-slate-800 flex items-center gap-2">
+                {formatInlineText(trimmed.replace('### ', ''))}
+              </h3>
+            );
+          }
+
+          if (trimmed.startsWith('#### ')) {
+            return (
+              <h4 key={idx} className="text-sm font-bold text-slate-800 dark:text-slate-200 mt-2.5 mb-1">
+                {formatInlineText(trimmed.replace('#### ', ''))}
+              </h4>
+            );
+          }
+
+          if (trimmed === '---') {
+            return <hr key={idx} className="my-2.5 border-slate-200 dark:border-slate-800" />;
+          }
+
+          if (trimmed.startsWith('🚨') || trimmed.startsWith('⚠️') || trimmed.startsWith('⛔')) {
+            return (
+              <div key={idx} className="my-2.5 p-3 rounded-2xl bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-400 font-bold text-xs leading-normal">
+                {formatInlineText(trimmed)}
+              </div>
+            );
+          }
+
+          if (trimmed.startsWith('• ') || trimmed.startsWith('- ')) {
+            const content = trimmed.replace(/^[•-]\s*/, '');
+            return (
+              <div key={idx} className="flex items-start gap-2 ml-2 my-1 text-slate-700 dark:text-slate-300 text-xs sm:text-sm">
+                <span className="text-health-500 font-bold mt-0.5">•</span>
+                <span>{formatInlineText(content)}</span>
+              </div>
+            );
+          }
+
+          if (/^\d+\.\s/.test(trimmed)) {
+            const match = trimmed.match(/^(\d+)\.\s*(.*)/);
+            if (match) {
+              const [, num, content] = match;
+              return (
+                <div key={idx} className="p-3 rounded-2xl bg-slate-100/90 dark:bg-[#212121] border border-slate-200/80 dark:border-[#2f2f2f] my-2">
+                  <div className="flex items-start gap-2.5">
+                    <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-health-500 text-white text-[11px] font-black flex-shrink-0 mt-0.5 shadow-sm">
+                      {num}
+                    </span>
+                    <div className="flex-1 text-slate-800 dark:text-slate-200 text-xs sm:text-sm leading-relaxed">
+                      {formatInlineText(content)}
+                    </div>
+                  </div>
+                </div>
+              );
+            }
+          }
+
+          return (
+            <p key={idx} className="text-slate-800 dark:text-slate-200 text-xs sm:text-sm">
+              {formatInlineText(trimmed)}
+            </p>
+          );
+        })}
+      </div>
+    );
+  };
+
   return (
     <section id="chatbot" className="py-20 bg-slate-100/80 dark:bg-black relative">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -782,8 +874,12 @@ Inability to bear any weight, visible joint deformity, loss of bowel/bladder con
                 }`}>
                   
                   {/* Text Content */}
-                  <div className="whitespace-pre-line leading-relaxed">
-                    {msg.text}
+                  <div>
+                    {msg.sender === 'user' ? (
+                      <p className="whitespace-pre-line font-medium leading-relaxed">{msg.text}</p>
+                    ) : (
+                      renderFormattedMarkdown(msg.text)
+                    )}
                   </div>
 
                   {/* Medical Awareness Disclaimer Note for every AI message */}
