@@ -149,11 +149,103 @@ export const ChatbotSection: React.FC<ChatbotSectionProps> = ({ onOpenHistory, i
     const textLower = userText.toLowerCase();
 
     // 0. Visual Medical Image Diagnostic Scan & Body Part Trauma Mode
-    const isImageAnalysis = Boolean(imageUrl) || textLower.includes('attachment:') || textLower.includes('pasted image') || textLower.includes('image.png') || textLower.includes('[image]') || textLower.includes('broken') || textLower.includes('fracture') || textLower.includes('leg');
+    const isImageAnalysis = Boolean(imageUrl) || textLower.includes('attachment:') || textLower.includes('pasted image') || textLower.includes('image.png') || textLower.includes('[image]') || textLower.includes('broken') || textLower.includes('fracture') || textLower.includes('చేయి') || textLower.includes('కాలు');
 
-    if (isImageAnalysis) {
-      // 0A. Broken Leg / Bone Fracture Trauma Scan
-      if (textLower.includes('leg') || textLower.includes('broken') || textLower.includes('fracture') || textLower.includes('bone') || textLower.includes('విరిగిన')) {
+    if (isImageAnalysis || textLower.includes('broken') || textLower.includes('fracture') || textLower.includes('విరిగిన')) {
+      const isHandOrArm = textLower.includes('hand') || textLower.includes('arm') || textLower.includes('wrist') || textLower.includes('finger') || textLower.includes('elbow') || textLower.includes('shoulder') || textLower.includes('చేయి') || textLower.includes('చెయ్యి');
+      const isLegOrFoot = textLower.includes('leg') || textLower.includes('knee') || textLower.includes('ankle') || textLower.includes('foot') || textLower.includes('shin') || textLower.includes('thigh') || textLower.includes('కాల') || textLower.includes('కాలు');
+
+      // 0A. Broken Hand / Arm / Wrist Fracture
+      if (isHandOrArm && (textLower.includes('broken') || textLower.includes('fracture') || textLower.includes('bone') || textLower.includes('విరిగిన') || textLower.includes('చేయి'))) {
+        if (language === 'te') {
+          return {
+            text: `### 🦴 దృశ్య వైద్య విశ్లేషణ: చేయి / మణికట్టు ఎముక గాయం (Hand / Arm Fracture)
+
+**గుర్తించిన శరీర భాగం:** చేతులు / మణికట్టు / మోచేయి (Upper Extremity - Hand, Wrist & Arm Zone)  
+**గుర్తించిన సమస్య:** చేయి ఎముక విరగడం (Broken Hand / Wrist Fracture)  
+**అత్యవసర స్థాయి:** URGENT CLINICAL EMERGENCY  
+
+---
+
+### 🧠 ప్రాణరక్షణ హెచ్చరిక: బాధితుడికి స్పృహ తప్పకుండా కాపాడే చర్యలు (మొదటి 60 సెకన్లు)
+
+1. 🗣️ **బాధితుడితో నిరంతరం మాట్లాడుతూ ఉండండి (Talk Continuously):**  
+   • ప్రశాంతమైన గొంతుతో *"మీ పేరు ఏమిటి?"*, *"నా మాట వినిపిస్తుందా?"*, *"ధైర్యంగా ఉండండి!"* అని ప్రశ్నలు అడుగుతూ వారి ఆలోచనా స్పృహను పరీక్షించండి. స్పృహ కోల్పోకుండా పదేపదే మాట్లాడండి.
+2. 📐 **చేతిని ఛాతీకి అడ్డంగా అమర్చి మద్దతు ఇవ్వండి:**  
+   • విరిగిన చేతిని ప్రశాంతంగా కూర్చోబెట్టి, మోచేతిని 90 డిగ్రీల కోణంలో ఛాతీకి అడ్డంగా ఉంచి తువాలు లేదా గుడ్డతో మెడ చుట్టూ మద్దతు (Arm Sling) కట్టండి.
+3. 🛑 **చేతిని లేదా వేళ్ళను తిప్పడం / సరిచేయడం చేయకండి:**  
+   • **తీవ్రమైన హెచ్చరిక:** విరిగిన మణికట్టు లేదా వేళ్ళను లాగడం, తిప్పడం లేదా సరిచేయడానికి అస్సలు ప్రయత్నించవద్దు.
+4. 🧥 **శరీరాన్ని వెచ్చగా ఉంచండి (Prevent Shock):**  
+   • బాధితుడు కంగారుపడకుండా దుప్పటి కప్పండి.
+
+---
+
+### 🏥 డాక్టర్ కలిసే వరకు పాటించవలసిన 5-దశల తక్షణ చర్యలు:
+
+1. **దశ 1: చేతికి సపోర్ట్ (Arm Sling & Splint) ఇవ్వడం (0–5 నిమిషాలు):**  
+   • విరిగిన చేయి కింద మందపాటి పేపర్ బోర్డు లేదా చుట్టిన పేపర్‌ను ఉంచి మణికట్టు కదలకుండా వస్త్రంతో మెల్లగా కట్టండి.
+
+2. **దశ 2: ఐస్ ప్యాక్ వాడకం (15 నిమిషాలు):**  
+   • బట్టలో చుట్టిన ఐస్ ప్యాక్‌ను వాపు మరియు నరాల నొప్పి తగ్గించడానికి గాయంపై మెల్లగా ఉంచండి.
+
+3. **దశ 3: వేళ్ళ రంగు మరియు స్పృహ పరీక్ష:**  
+   • చేతి వేళ్లను తాకి చూడండి. వేళ్ళు నీలంగా మారినా లేదా చల్లబడిన కట్టిన కట్టును కాస్త సడలించండి. బాధితుడితో మాట్లాడుతూ స్పృహలో ఉంచండి.
+
+4. **దశ 4: ఆసుపత్రికి తరలింపు (108 / 112):**  
+   • తక్షణమే అంబులెన్స్ లేదా సొంత వాహనంలో ఎముకల వైద్యుడి (Orthopedic Specialist) వద్దకు తీసుకెళ్ళండి.
+
+5. **దశ 5: అత్యవసర ప్రమాద సంకేతాలు:**  
+   • ఎముక చర్మం బయటకు వస్తే (Open Fracture) దానిపై పరిశుభ్రమైన గుడ్డ కప్పండి. ఎముకను లోపలికి తోయకూడదు.`,
+            sources: ['AAOS Upper Extremity Fracture Guidelines', 'WHO Emergency First Aid Care Protocol'],
+            riskBadge: 'Urgent' as const
+          };
+        }
+
+        return {
+          text: `### 🦴 Visual Medical Scan Analysis: Upper Limb & Hand Trauma
+
+**Identified Body Part:** Upper Extremity (Hand / Wrist / Forearm / Elbow Zone)  
+**Detected Condition:** Acute Hand/Arm Bone Fracture / Wrist Trauma Suspected  
+**Triage Level:** URGENT CLINICAL EMERGENCY  
+
+---
+
+### 🧠 CRITICAL: How to Keep the Patient Conscious & Prevent Shock (First 60 Seconds)
+
+1. 🗣️ **Talk Continuously to Maintain Alertness:**  
+   • Speak in a steady, reassuring voice. Keep asking simple questions: *"What is your name?"*, *"Can you hear me?"*, *"Stay focused on my voice!"* to monitor cognitive responsiveness and prevent fainting/shock.
+2. 📐 **Support Arm Comfortably Across Chest:**  
+   • Seat the patient comfortably or lay them flat on back. Bend the elbow gently at a 90-degree angle across the chest and support the forearm using a triangular cloth sling or towel around the neck.
+3. 🛑 **NEVER Force, Twist, or Straighten Broken Bones:**  
+   • **STRICT WARNING:** Do NOT attempt to push, bend, align, or pull broken fingers, wrist, or forearm bones into place. Leave in the exact position found.
+4. 🧥 **Maintain Body Temperature:**  
+   • Cover patient with a coat or blanket to prevent fainting and traumatic shock.
+
+---
+
+### 🏥 Step-by-Step Action Process Until Doctor Consultation:
+
+1. **Step 1: Arm Sling & Splinting (0–5 Mins)**  
+   • Place rigid cardboard, magazine, or rolled towel underneath forearm and wrist. Secure gently with cloth strips to immobilize joint.
+
+2. **Step 2: Ice Pack Application (First 15 Mins)**  
+   • Apply an ice pack wrapped in a clean towel over the injured hand/wrist for 15 minutes to reduce internal tissue swelling and acute pain.
+
+3. **Step 3: Monitor Finger Sensation & Alertness Continuously**  
+   • Check fingers for warmth and sensation. If fingers turn blue, cold, or numb, loosen splint bandages slightly. Keep talking to the patient to keep them awake.
+
+4. **Step 4: Transport to ER / Orthopedic Specialist**  
+   • Transport patient safely to nearest Orthopedic Trauma Emergency Room.
+
+5. **Step 5: Emergency Red Flags**  
+   • If bone protrudes through skin (Open Compound Fracture), cover loosely with sterile gauze. Do NOT push bone back inside!`,
+          sources: ['American Academy of Orthopaedic Surgeons (AAOS)', 'WHO Upper Limb Trauma Protocol'],
+          riskBadge: 'Urgent' as const
+        };
+      }
+
+      // 0B. Broken Leg / Ankle / Foot Fracture
+      if (isLegOrFoot || textLower.includes('broken') || textLower.includes('fracture') || textLower.includes('bone') || textLower.includes('విరిగిన')) {
         if (language === 'te') {
           return {
             text: `### 🦴 దృశ్య వైద్య విశ్లేషణ: కాలు ఎముక గాయం (Leg Fracture)
