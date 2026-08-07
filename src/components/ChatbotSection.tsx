@@ -148,55 +148,197 @@ export const ChatbotSection: React.FC<ChatbotSectionProps> = ({ onOpenHistory, i
   const generateAIResponse = (userText: string, imageUrl?: string) => {
     const textLower = userText.toLowerCase();
 
+    // Language Detection Engine (Telugu-English, Tamil-English, Hindi-English)
+    const isTEnglish = 
+      textLower.includes('naa') || 
+      textLower.includes('naaku') || 
+      textLower.includes('undi') || 
+      textLower.includes('unayi') || 
+      textLower.includes('ayindi') || 
+      textLower.includes('ayyi') || 
+      textLower.includes('virigindi') || 
+      textLower.includes('osthondi') || 
+      textLower.includes('noppi') || 
+      textLower.includes('cheyi') || 
+      textLower.includes('kaalu') || 
+      textLower.includes('tala') || 
+      textLower.includes('jwaram') || 
+      textLower.includes('lekapothunnanu') || 
+      textLower.includes('em cheyali');
+
+    const isTanglish = 
+      textLower.includes('enna') || 
+      textLower.includes('pannanum') || 
+      textLower.includes('aayiduchu') || 
+      textLower.includes('aaidichu') || 
+      textLower.includes('irukku') || 
+      textLower.includes('iruku') || 
+      textLower.includes('kaachal') || 
+      textLower.includes('kaisal') || 
+      textLower.includes('vali') || 
+      textLower.includes('ratham') || 
+      textLower.includes('odanja') || 
+      textLower.includes('odancu') || 
+      textLower.includes('varudhu') || 
+      textLower.includes('ennoda');
+
+    const isHinglish = 
+      textLower.includes('mera') || 
+      textLower.includes('meri') || 
+      textLower.includes('haath') || 
+      textLower.includes('hath') || 
+      textLower.includes('pair') || 
+      textLower.includes('pait') || 
+      textLower.includes('dard') || 
+      textLower.includes('gaya') || 
+      textLower.includes('ho gaya') || 
+      textLower.includes('kya kare') || 
+      textLower.includes('bukhar') || 
+      textLower.includes('khoon') || 
+      textLower.includes('nikal') || 
+      textLower.includes('kat gaya');
+
     // 0. Visual Medical Image Diagnostic Scan & Body Part Trauma Mode
     const isImageAnalysis = Boolean(imageUrl) || textLower.includes('attachment:') || textLower.includes('pasted image') || textLower.includes('image.png') || textLower.includes('[image]') || textLower.includes('broken') || textLower.includes('fracture') || textLower.includes('చేయి') || textLower.includes('కాలు');
 
     if (isImageAnalysis || textLower.includes('broken') || textLower.includes('fracture') || textLower.includes('విరిగిన')) {
-      const isHandOrArm = textLower.includes('hand') || textLower.includes('arm') || textLower.includes('wrist') || textLower.includes('finger') || textLower.includes('elbow') || textLower.includes('shoulder') || textLower.includes('చేయి') || textLower.includes('చెయ్యి');
-      const isLegOrFoot = textLower.includes('leg') || textLower.includes('knee') || textLower.includes('ankle') || textLower.includes('foot') || textLower.includes('shin') || textLower.includes('thigh') || textLower.includes('కాల') || textLower.includes('కాలు');
+      const isHandOrArm = textLower.includes('hand') || textLower.includes('arm') || textLower.includes('wrist') || textLower.includes('finger') || textLower.includes('elbow') || textLower.includes('shoulder') || textLower.includes('చేయి') || textLower.includes('చెయ్యి') || textLower.includes('haath') || textLower.includes('kai');
+      const isLegOrFoot = textLower.includes('leg') || textLower.includes('knee') || textLower.includes('ankle') || textLower.includes('foot') || textLower.includes('shin') || textLower.includes('thigh') || textLower.includes('కాల') || textLower.includes('కాలు') || textLower.includes('pair') || textLower.includes('kaal');
 
       // 0A. Broken Hand / Arm / Wrist Fracture
-      if (isHandOrArm && (textLower.includes('broken') || textLower.includes('fracture') || textLower.includes('bone') || textLower.includes('విరిగిన') || textLower.includes('చేయి'))) {
-        if (language === 'te') {
+      if (isHandOrArm && (textLower.includes('broken') || textLower.includes('fracture') || textLower.includes('bone') || textLower.includes('విరిగిన') || textLower.includes('చేయి') || textLower.includes('haath') || textLower.includes('kai') || textLower.includes('aayiduchu') || textLower.includes('gaya'))) {
+        
+        // T-English (Telugu-English)
+        if (isTEnglish || language === 'te') {
           return {
-            text: `### 🦴 దృశ్య వైద్య విశ్లేషణ: చేయి / మణికట్టు ఎముక గాయం (Hand / Arm Fracture)
+            text: `### 🦴 Visual Medical Scan Analysis: Hand / Arm Fracture (Telugu-English)
 
-**గుర్తించిన శరీర భాగం:** చేతులు / మణికట్టు / మోచేయి (Upper Extremity - Hand, Wrist & Arm Zone)  
-**గుర్తించిన సమస్య:** చేయి ఎముక విరగడం (Broken Hand / Wrist Fracture)  
-**అత్యవసర స్థాయి:** URGENT CLINICAL EMERGENCY  
-
----
-
-### 🧠 ప్రాణరక్షణ హెచ్చరిక: బాధితుడికి స్పృహ తప్పకుండా కాపాడే చర్యలు (మొదటి 60 సెకన్లు)
-
-1. 🗣️ **బాధితుడితో నిరంతరం మాట్లాడుతూ ఉండండి (Talk Continuously):**  
-   • ప్రశాంతమైన గొంతుతో *"మీ పేరు ఏమిటి?"*, *"నా మాట వినిపిస్తుందా?"*, *"ధైర్యంగా ఉండండి!"* అని ప్రశ్నలు అడుగుతూ వారి ఆలోచనా స్పృహను పరీక్షించండి. స్పృహ కోల్పోకుండా పదేపదే మాట్లాడండి.
-2. 📐 **చేతిని ఛాతీకి అడ్డంగా అమర్చి మద్దతు ఇవ్వండి:**  
-   • విరిగిన చేతిని ప్రశాంతంగా కూర్చోబెట్టి, మోచేతిని 90 డిగ్రీల కోణంలో ఛాతీకి అడ్డంగా ఉంచి తువాలు లేదా గుడ్డతో మెడ చుట్టూ మద్దతు (Arm Sling) కట్టండి.
-3. 🛑 **చేతిని లేదా వేళ్ళను తిప్పడం / సరిచేయడం చేయకండి:**  
-   • **తీవ్రమైన హెచ్చరిక:** విరిగిన మణికట్టు లేదా వేళ్ళను లాగడం, తిప్పడం లేదా సరిచేయడానికి అస్సలు ప్రయత్నించవద్దు.
-4. 🧥 **శరీరాన్ని వెచ్చగా ఉంచండి (Prevent Shock):**  
-   • బాధితుడు కంగారుపడకుండా దుప్పటి కప్పండి.
+**Identified Body Part:** Upper Extremity (Hand / Wrist / Arm Zone)  
+**Detected Condition:** Acute Hand/Arm Bone Fracture (Cheeyi Emuka Virigindi)  
+**Triage Level:** URGENT CLINICAL EMERGENCY  
 
 ---
 
-### 🏥 డాక్టర్ కలిసే వరకు పాటించవలసిన 5-దశల తక్షణ చర్యలు:
+### 🧠 CRITICAL: Patient ki Fainting Kakunda Awake ga Unchadaniki Steps (First 60 Seconds)
 
-1. **దశ 1: చేతికి సపోర్ట్ (Arm Sling & Splint) ఇవ్వడం (0–5 నిమిషాలు):**  
-   • విరిగిన చేయి కింద మందపాటి పేపర్ బోర్డు లేదా చుట్టిన పేపర్‌ను ఉంచి మణికట్టు కదలకుండా వస్త్రంతో మెల్లగా కట్టండి.
+1. 🗣️ **Patient tho Continuously Matladandi (Talk Continuously):**  
+   • Quiet & reassuring voice thoti *"Mee peru enti?"*, *"Naa maata vinipisthonda?"*, *"Dhairyamga undandi, help osthondi!"* ani prashnalu adigi patient ni alert ga unchandi.
+2. 📐 **Cheeyi ni Chati ki Addamga Support (Arm Sling) Ivvandi:**  
+   • Patient ni prashanthamga kurchobettali. Virigina cheeyi ni 90-degree angle lo chati ki addamga unchi towel leda cloth thoti meda chuttu support (Arm Sling) kattali.
+3. 🛑 **Cheeyi ni Lagaadam leda Tirapadakandi:**  
+   • **STRICT WARNING:** Virigina manikattu leda vella ni force ga laagadam, tirapadadam leda seedha cheyadaniki try CHEYYAKANDI.
+4. 🧥 **Body Warmth Maintain Cheyandi:**  
+   • Circulatory shock kakunda blanket leda jacket thoti cover cheyandi.
 
-2. **దశ 2: ఐస్ ప్యాక్ వాడకం (15 నిమిషాలు):**  
-   • బట్టలో చుట్టిన ఐస్ ప్యాక్‌ను వాపు మరియు నరాల నొప్పి తగ్గించడానికి గాయంపై మెల్లగా ఉంచండి.
+---
 
-3. **దశ 3: వేళ్ళ రంగు మరియు స్పృహ పరీక్ష:**  
-   • చేతి వేళ్లను తాకి చూడండి. వేళ్ళు నీలంగా మారినా లేదా చల్లబడిన కట్టిన కట్టును కాస్త సడలించండి. బాధితుడితో మాట్లాడుతూ స్పృహలో ఉంచండి.
+### 🏥 Doctor ni Kalise Lopu Paatinchavalasina 5-Step Action Process:
 
-4. **దశ 4: ఆసుపత్రికి తరలింపు (108 / 112):**  
-   • తక్షణమే అంబులెన్స్ లేదా సొంత వాహనంలో ఎముకల వైద్యుడి (Orthopedic Specialist) వద్దకు తీసుకెళ్ళండి.
+1. **Step 1: Arm Sling & Splint Support (0–5 Mins)**  
+   • Virigina cheeyi kindha thick cardboard leda rolled towel unchi manikattu kadalukunda vashthram thoti mellaga kattandi.
 
-5. **దశ 5: అత్యవసర ప్రమాద సంకేతాలు:**  
-   • ఎముక చర్మం బయటకు వస్తే (Open Fracture) దానిపై పరిశుభ్రమైన గుడ్డ కప్పండి. ఎముకను లోపలికి తోయకూడదు.`,
+2. **Step 2: Ice Pack Application (First 15 Mins)**  
+   • Clean cloth lo chuttina Ice pack ni vaapu and pain thagganiki 15 mins apply cheyandi.
+
+3. **Step 3: Vella Rangu & Consciousness Check**  
+   • Cheeti vella ni thaki chudandi. Vellu neelangaa marina leda cool ayna kattu ni kastha sadalinchandi. Patient tho matladuthu alert ga unchandi.
+
+4. **Step 4: Orthopedic ER Hospital ki Vellandi (108 / 112)**  
+   • Immediately 108 Ambulance leda private vehicle lo Orthopedic Specialist daggarki teesukuvellandi.
+
+5. **Step 5: Emergency Red Flags**  
+   • Emuka charmam bayataki osthe (Open Fracture) sterile cloth cover cheyandi. Emuka ni lopala thoyakandi!`,
             sources: ['AAOS Upper Extremity Fracture Guidelines', 'WHO Emergency First Aid Care Protocol'],
+            riskBadge: 'Urgent' as const
+          };
+        }
+
+        // Tanglish (Tamil-English)
+        if (isTanglish || (language as string) === 'ta') {
+          return {
+            text: `### 🦴 Visual Medical Scan Analysis: Hand / Arm Fracture (Tamil-English)
+
+**Identified Body Part:** Upper Extremity (Hand / Wrist / Arm Zone)  
+**Detected Condition:** Acute Hand/Arm Bone Fracture (Kai Odanja / Fracture)  
+**Triage Level:** URGENT CLINICAL EMERGENCY  
+
+---
+
+### 🧠 CRITICAL: Patient Unarvoda / Awake ah Irukka Vaikka (First 60 Seconds)
+
+1. 🗣️ **Patient Kitta Continuous ah Pesunga (Talk Continuously):**  
+   • Quiet ah *"Unga peru enna?"*, *"Naan pesuradhu kekudha?"*, *"Bayapadadhinga, help varudhu!"* nu kelvi kettu alert ah vaingadhinga.
+2. 📐 **Kaiya Nenju Ku Kurukka Support (Arm Sling) Pannunga:**  
+   • Patient ah ukkara vaingadhinga. Odanja kaiya 90-degree angle la nenju ku kurukka vachu thundu illana thuni yala kazhuthu sutthi support (Arm Sling) katungadhinga.
+3. 🛑 **Kaiya Nerppa / Thiruppa Müarchikadhinga:**  
+   • **STRICT WARNING:** Odanja kai, wrist illana virala nerukka panna koodadhu.
+4. 🧥 **Body Warmth Maintain Pannunga:**  
+   • Shock aagama irukka blanket illana jacket yala cover pannunga.
+
+---
+
+### 🏥 Doctor ah Paarkuradhu Kulla Seyya Vendiya 5-Step Action Process:
+
+1. **Step 1: Arm Sling & Splint Support (0–5 Mins)**  
+   • Kai ku keezha thick cardboard illana thundu vachu thuniyala mella kattungadhinga.
+
+2. **Step 2: Ice Pack Application (First 15 Mins)**  
+   • Clean thunila ice pack vachu veekam and vali kuraiya 15 mins mella vaingadhinga.
+
+3. **Step 3: Viral Color & Alertness Check**  
+   • Viral alavu thottu paarunga. Viral neelama aana kattu mella thalarthunga. Patient kitta pesi alert ah vaingadhinga.
+
+4. **Step 4: Emergency Dispatch (108 / 112)**  
+   • Udane 108 Ambulance illana Orthopedic Hospital ku kooti pongadhinga.
+
+5. **Step 5: Emergency Red Flags**  
+   • Elumbu tholukku veliye vandha (Open Fracture) sterile thuniyala mella moodunga. Elumba ullukku thalladhinga!`,
+            sources: ['AAOS Upper Extremity Fracture Guidelines', 'WHO Emergency First Aid Care Protocol'],
+            riskBadge: 'Urgent' as const
+          };
+        }
+
+        // Hinglish (Hindi-English)
+        if (isHinglish || language === 'hi') {
+          return {
+            text: `### 🦴 Visual Medical Scan Analysis: Hand / Arm Fracture (Hindi-English)
+
+**Identified Body Part:** Upper Extremity (Hand / Wrist / Arm Zone)  
+**Detected Condition:** Acute Hand/Arm Bone Fracture (Haath ki Haddi Fracture)  
+**Triage Level:** URGENT CLINICAL EMERGENCY  
+
+---
+
+### 🧠 CRITICAL: Patient ko Hosh me Rakhne aur Shock se Bachane ke Liye (First 60 Seconds)
+
+1. 🗣️ **Patient se Continuous Baat Karte Rahein (Talk Continuously):**  
+   • Calm voice me *"Aapka naam kya hai?"*, *"Aapko meri aawaz aa rahi hai?"*, *"Ghabraiye mat, ambulance aa rahi hai!"* poochkar patient ko alert rakhein.
+2. 📐 **Haath ko Seene ke Saamne Support (Arm Sling) Dein:**  
+   • Patient ko aaram se bithayein. Tute hue haath ko 90-degree angle me seene ke samne rakhein aur kisi kapde ya towel se gale ke chaaro taraf Arm Sling baandhein.
+3. 🛑 **Haath ko Seedha ya Modne ki Koshish NA Karein:**  
+   • **STRICT WARNING:** Tute hue haath, kalai ya ungliyon ko kheenchna ya seedha karne ki koshish bilkul NA karein.
+4. 🧥 **Body Warmth Maintain Karein:**  
+   • Shock se bachane ke liye blanket ya jacket se cover karein.
+
+---
+
+### 🏥 Doctor ke Paas Jaane se Pehle 5-Step Action Process:
+
+1. **Step 1: Arm Sling & Splint Support (0–5 Mins)**  
+   • Tute haath ke niche rigid cardboard ya rolled towel rakhkar kapde se halka baandhein.
+
+2. **Step 2: Ice Pack Application (First 15 Mins)**  
+   • Kapde me lapetkar ice pack 15 mins ke liye lagayein taaki sujan aur dard kam ho sake.
+
+3. **Step 3: Ungliyon ka Color aur Hosh Check Karein**  
+   • Ungliyon ko chhoo kar dekhein. Agar ungliyan neeli ya thandi padein toh patti halki dheeli karein.
+
+4. **Step 4: Emergency Dispatch (108 / 112)**  
+   • Turant 108 Ambulance ya nearest Orthopedic ER me le jayein.
+
+5. **Step 5: Emergency Red Flags**  
+   • Agar haddi chamdi se bahar nikli ho (Open Fracture) toh sterile kapde se dhakein. Haddi ko andar na dhakelein!`,
+            sources: ['American Academy of Orthopaedic Surgeons (AAOS)', 'WHO Upper Limb Trauma Protocol'],
             riskBadge: 'Urgent' as const
           };
         }
@@ -245,47 +387,139 @@ export const ChatbotSection: React.FC<ChatbotSectionProps> = ({ onOpenHistory, i
       }
 
       // 0B. Broken Leg / Ankle / Foot Fracture
-      if (isLegOrFoot || textLower.includes('broken') || textLower.includes('fracture') || textLower.includes('bone') || textLower.includes('విరిగిన')) {
-        if (language === 'te') {
+      if (isLegOrFoot || textLower.includes('broken') || textLower.includes('fracture') || textLower.includes('bone') || textLower.includes('విరిగిన') || textLower.includes('kaalu') || textLower.includes('kaal') || textLower.includes('pair')) {
+        
+        // T-English (Telugu-English)
+        if (isTEnglish || language === 'te') {
           return {
-            text: `### 🦴 దృశ్య వైద్య విశ్లేషణ: కాలు ఎముక గాయం (Leg Fracture)
+            text: `### 🦴 Visual Medical Scan Analysis: Leg / Ankle Fracture (Telugu-English)
 
-**గుర్తించిన శరీర భాగం:** కాళ్ళు / ఎముక వ్యవస్థ (Lower Extremity - Leg & Bone Structure)  
-**గుర్తించిన సమస్య:** కాలు ఎముక విరగడం (Broken Leg / Acute Bone Fracture)  
-**అత్యవసర స్థాయి:** URGENT EMERGENCY  
-
----
-
-### 🧠 ప్రాణరక్షణ హెచ్చరిక: బాధితుడికి స్పృహ తప్పకుండా కాపాడే చర్యలు (మొదటి 60 సెకన్లు)
-
-1. 🗣️ **బాధితుడితో నిరంతరం మాట్లాడుతూ ఉండండి (Talk Continuously):**  
-   • ప్రశాంతమైన గొంతుతో *"మీ పేరు ఏమిటి?"*, *"నా మాట వినిపిస్తుందా?"*, *"ధైర్యంగా ఉండండి, అంబులెన్స్ వస్తోంది!"* అని ప్రశ్నలు అడుగుతూ వారి ఆలోచనా స్పృహను పరీక్షించండి.
-2. 🧘 **బాధితుడిని ప్రశాంతంగా పడుకోబెట్టండి (Keep Flat & Still):**  
-   • బాధితుడిని వెల్లకిలా పడుకోబెట్టండి. విరిగిన కాలుపై నిలబడటానికి లేదా నడవడానికి అస్సలు అనుమతించవద్దు.
-3. 🛑 **ఎముకను సరిచేయడానికి ప్రయత్నించకండి (Do NOT Straighten Bone):**  
-   • **తీవ్రమైన హెచ్చరిక:** విరిగిన ఎముకను రుద్దడం, లాగడం లేదా నేరుగా సరిచేయడానికి ప్రయత్నించవద్దు. ఉన్న స్థానంలోనే నిశ్చలంగా ఉంచండి.
-4. 🧥 **శరీరాన్ని వెచ్చగా ఉంచండి (Prevent Shock):**  
-   • షాక్ (Shock) కు గురికాకుండా ఉండటానికి దుప్పటి లేదా జాకెట్ కప్పండి.
+**Identified Body Part:** Lower Extremity (Leg / Shin / Ankle / Femur Zone)  
+**Detected Condition:** Acute Bone Fracture (Kaalu Emuka Virigindi)  
+**Triage Level:** URGENT CLINICAL EMERGENCY  
 
 ---
 
-### 🏥 డాక్టర్ కలిసే వరకు పాటించవలసిన 5-దశల తక్షణ చర్యలు:
+### 🧠 CRITICAL: Patient ki Fainting Kakunda Awake ga Unchadaniki Steps (First 60 Seconds)
 
-1. **దశ 1: కాలు కదలకుండా మద్దతు ఇవ్వడం (0–5 నిమిషాలు):**  
-   • విరిగిన కాలు ఇరువైపులా దిండ్లు, చుట్టిన తువాళ్లు లేదా చెక్క పలకలను ఉంచి కదలకుండా మద్దతుగా కట్టండి.
+1. 🗣️ **Patient tho Continuously Matladandi (Talk Continuously):**  
+   • Quiet voice thoti *"Mee peru enti?"*, *"Naa maata vinipisthonda?"*, *"Dhairyamga undandi, ambulance osthondi!"* ani prashnalu adigi alert ga unchandi.
+2. 🧘 **Patient ni Flat ga Padochobettandi (Keep Flat & Still):**  
+   • Patient ni velakila padochobettali. Virigina kaalu meeda nilabadadaniki leda nadavadaniki ASSALU allow CHEYYAKANDI.
+3. 🛑 **Emuka ni Straighten Cheyadaniki Try CHEYYAKANDI:**  
+   • **STRICT WARNING:** Virigina emuka ni ruddadam, laagadam leda direct ga seedha cheyadaniki try CHEYYAKANDI.
+4. 🧥 **Body Warmth Maintain Cheyandi (Prevent Shock):**  
+   • Blanket leda jacket thoti cover cheyandi.
 
-2. **దశ 2: ఐస్ ప్యాక్ వాడకం (15 నిమిషాలు):**  
-   • బట్టలో చుట్టిన ఐస్ ప్యాక్‌ను వాపు మరియు తీవ్రమైన నొప్పి తగ్గించడానికి గాయంపై ఉంచండి.
+---
 
-3. **దశ 3: స్పృహ మరియు రక్త ప్రసరణ పరీక్ష:**  
-   • విరిగిన భాగం కింద కాళ్ళ వేళ్ళను తాకి చూడండి. వేళ్ళు నీలంగా మారినా లేదా చల్లబడిన కట్టిన కట్టును కాస్త సడలించండి. బాధితుడితో మాట్లాడుతూ స్పృహలో ఉంచండి.
+### 🏥 Doctor ni Kalise Lopu Paatinchavalasina 5-Step Action Process:
 
-4. **దశ 4: అంబులెన్స్ సమాచారం (108 / 112):**  
-   • తక్షణమే 108 లేదా 112 అంబులెన్స్‌కు ఫోన్ చేయండి.
+1. **Step 1: Splinting & Immobilization (0–5 Mins)**  
+   • Virigina kaalu iruvaipula rolled towels, pillows leda wooden boards unchi kadalukunda support kattandi.
 
-5. **దశ 5: అత్యవసర ప్రమాద సంకేతాలు:**  
-   • ఎముక చర్మం బయటకు వస్తే (Open Fracture) దానిపై పరిశుభ్రమైన గుడ్డ కప్పండి. ఎముకను లోపలికి తోయకూడదు.`,
-            sources: ['AAOS Orthopedic First Aid Guidelines', 'WHO Emergency Trauma & Fracture Protocol'],
+2. **Step 2: Ice Pack Application (15 Mins)**  
+   • Clean cloth lo chuttina ice pack ni vaapu and pain thagganiki 15 mins apply cheyandi.
+
+3. **Step 3: Kaali Vella Rangu & Consciousness Check**  
+   • Kaali vellu neelangaa marina leda cool ayna kattu ni kastha sadalinchandi. Patient tho matladuthu alert ga unchandi.
+
+4. **Step 4: Emergency Dispatch (108 / 112)**  
+   • Turant 108 Ambulance ki call chesi Orthopedic Hospital ki teesukuvellandi.
+
+5. **Step 5: Emergency Red Flags**  
+   • Emuka charmam bayataki osthe (Open Fracture) sterile cloth cover cheyandi. Emuka ni lopala thoyakandi!`,
+            sources: ['AAOS Orthopedic First Aid Guidelines', 'WHO Emergency Trauma Protocol'],
+            riskBadge: 'Urgent' as const
+          };
+        }
+
+        // Tanglish (Tamil-English)
+        if (isTanglish || (language as string) === 'ta') {
+          return {
+            text: `### 🦴 Visual Medical Scan Analysis: Leg / Ankle Fracture (Tamil-English)
+
+**Identified Body Part:** Lower Extremity (Leg / Shin / Ankle Zone)  
+**Detected Condition:** Acute Bone Fracture (Kaal Odanja / Fracture)  
+**Triage Level:** URGENT CLINICAL EMERGENCY  
+
+---
+
+### 🧠 CRITICAL: Patient Unarvoda / Awake ah Irukka Vaikka (First 60 Seconds)
+
+1. 🗣️ **Patient Kitta Continuous ah Pesunga (Talk Continuously):**  
+   • Quiet ah *"Unga peru enna?"*, *"Naan pesuradhu kekudha?"*, *"Bayapadadhinga, ambulance varudhu!"* nu kelvi kettu alert ah vaingadhinga.
+2. 🧘 **Patient ah Flat ah Padukka Vaingadhinga (Keep Flat & Still):**  
+   • Patient ah neera padukka vaingadhinga. Odanja kaal la nadakka illana nirkka VIDAADHINGA.
+3. 🛑 **Elumba Nerppa Müyarchikadhinga:**  
+   • **STRICT WARNING:** Odanja elumba ilukka illana nerukka panna koodadhu.
+4. 🧥 **Body Warmth Maintain Pannunga:**  
+   • Shock aagama irukka blanket illana jacket yala cover pannunga.
+
+---
+
+### 🏥 Doctor ah Paarkuradhu Kulla Seyya Vendiya 5-Step Action Process:
+
+1. **Step 1: Splinting & Immobilization (0–5 Mins)**  
+   • Kaal irandu pakkamum thundu illana marapalagai vachu thuniyala mella kattungadhinga.
+
+2. **Step 2: Ice Pack Application (15 Mins)**  
+   • Clean thunila ice pack vachu veekam and vali kuraiya 15 mins mella vaingadhinga.
+
+3. **Step 3: Viral Color & Alertness Check**  
+   • Kaal viral alavu thottu paarunga. Kattu mella thalarthunga if cold. Patient kitta pesi alert ah vaingadhinga.
+
+4. **Step 4: Emergency Dispatch (108 / 112)**  
+   • Udane 108 Ambulance illana Orthopedic Hospital ku kooti pongadhinga.
+
+5. **Step 5: Emergency Red Flags**  
+   • Elumbu tholukku veliye vandha (Open Fracture) sterile thuniyala mella moodunga. Elumba ullukku thalladhinga!`,
+            sources: ['AAOS Orthopedic First Aid Guidelines', 'WHO Emergency Trauma Protocol'],
+            riskBadge: 'Urgent' as const
+          };
+        }
+
+        // Hinglish (Hindi-English)
+        if (isHinglish || language === 'hi') {
+          return {
+            text: `### 🦴 Visual Medical Scan Analysis: Leg / Ankle Fracture (Hindi-English)
+
+**Identified Body Part:** Lower Extremity (Leg / Shin / Ankle Zone)  
+**Detected Condition:** Acute Bone Fracture (Pair ki Haddi Fracture)  
+**Triage Level:** URGENT CLINICAL EMERGENCY  
+
+---
+
+### 🧠 CRITICAL: Patient ko Hosh me Rakhne aur Shock se Bachane ke Liye (First 60 Seconds)
+
+1. 🗣️ **Patient se Continuous Baat Karte Rahein (Talk Continuously):**  
+   • Calm voice me *"Aapka naam kya hai?"*, *"Aapko meri aawaz aa rahi hai?"*, *"Ghabraiye mat, ambulance aa rahi hai!"* poochkar patient ko alert rakhein.
+2. 🧘 **Patient ko Seedha Litaayein (Keep Flat & Still):**  
+   • Patient ko peeth ke bal seedha litaayein. Tute pair par khade hone ya chalne ki ijaazat BILKUL NA DEIN.
+3. 🛑 **Haddi ko Seedha karne ki Koshish NA Karein:**  
+   • **STRICT WARNING:** Tute hue pair ki haddi ko kheenchna ya seedha karne ki koshish bilkul NA karein.
+4. 🧥 **Body Warmth Maintain Karein:**  
+   • Shock se bachane ke liye blanket ya jacket se cover karein.
+
+---
+
+### 🏥 Doctor ke Paas Jaane se Pehle 5-Step Action Process:
+
+1. **Step 1: Splinting & Immobilization (0–5 Mins)**  
+   • Tute pair ke dono taraf pillows, rolled towels ya rigid board rakhkar kapde se halka baandhein.
+
+2. **Step 2: Ice Pack Application (15 Mins)**  
+   • Kapde me lapetkar ice pack 15 mins ke liye lagayein taaki sujan aur dard kam ho sake.
+
+3. **Step 3: Ungliyon ka Color aur Hosh Check Karein**  
+   • Pair ki ungliyon ko chhoo kar dekhein. Agar ungliyan neeli ya thandi padein toh patti halki dheeli karein.
+
+4. **Step 4: Emergency Dispatch (108 / 112)**  
+   • Turant 108 Ambulance ya nearest Orthopedic ER me le jayein.
+
+5. **Step 5: Emergency Red Flags**  
+   • Agar haddi chamdi se bahar nikli ho (Open Fracture) toh sterile kapde se dhakein. Haddi ko andar na dhakelein!`,
+            sources: ['American Academy of Orthopaedic Surgeons (AAOS)', 'WHO Emergency Trauma & Fracture First Aid'],
             riskBadge: 'Urgent' as const
           };
         }
