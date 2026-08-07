@@ -292,13 +292,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
                       )}
                     </button>
                   </form>
-
-                  {/* Registered Accounts Demo Info */}
-                  <div className="mt-4 p-3 rounded-2xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-[11px] text-slate-500">
-                    <span className="font-bold text-slate-700 dark:text-slate-300">Registered Accounts:</span>
-                    <span className="block mt-0.5 font-mono">sriram@gmail.com • pass: password123</span>
-                    <span className="block font-mono">user@example.com • pass: password123</span>
-                  </div>
                 </>
               ) : (
                 /* Mode 2: Multi-Step Registration Wizard */
