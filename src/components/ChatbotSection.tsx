@@ -43,7 +43,7 @@ interface ChatbotSectionProps {
 }
 
 export const ChatbotSection: React.FC<ChatbotSectionProps> = ({ onOpenHistory, initialQuery, initialImageUrl }) => {
-  const { addChatHistory, user } = useAuth();
+  const { addChatHistory, clearChatHistory, user } = useAuth();
   const { t, speakText, isTtsEnabled, toggleTts, language } = useTheme();
 
   const [messages, setMessages] = useState<Message[]>([
@@ -773,6 +773,7 @@ Inability to bear any weight, visible joint deformity, loss of bowel/bladder con
   };
 
   const clearChat = () => {
+    clearChatHistory();
     setMessages([
       {
         id: 'welcome-1',

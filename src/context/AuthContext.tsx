@@ -36,6 +36,16 @@ export interface ChatHistoryItem {
   imageUrl?: string;
 }
 
+export interface UserSavedImage {
+  id: string;
+  chatId: string;
+  url: string;
+  title: string;
+  desc: string;
+  timestamp: string;
+  date: string;
+}
+
 export type AuthResult = 'SUCCESS' | 'WRONG_EMAIL' | 'WRONG_PASSWORD' | 'WRONG_CREDENTIALS';
 
 export interface RegistrationDetails {
@@ -62,9 +72,11 @@ interface AuthContextType {
   verifyAndLogin: (email: string, password: string) => AuthResult;
   logout: () => void;
   chatHistory: ChatHistoryItem[];
+  userSavedImages: UserSavedImage[];
   addChatHistory: (query: string, response: string, riskBadge?: 'Low' | 'Moderate' | 'Urgent', sources?: string[], imageUrl?: string) => void;
   clearChatHistory: () => void;
   deleteHistoryItem: (id: string) => void;
+  deleteUserSavedImage: (id: string) => void;
   notifications: NotificationToast[];
   showNotification: (message: string, type?: 'error' | 'success' | 'info') => void;
   clearNotification: (id?: string) => void;
@@ -105,8 +117,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   });
 
   const [chatHistory, setChatHistory] = useState<ChatHistoryItem[]>([]);
+  const [userSavedImages, setUserSavedImages] = useState<UserSavedImage[]>([]);
 
-  // Load chat history:
+  // Load chat history and saved patient images:
   // - Registered users: Persistent localStorage
   // - Guest users: Temporary sessionStorage (erased when website tab closes)
   useEffect(() => {
@@ -122,8 +135,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       } else {
         setChatHistory([]);
       }
+
+      const imagesKey = `healthai_saved_images_${user.email}`;
+      const savedImages = localStorage.getItem(imagesKey);
+      if (savedImages) {
+        try {
+          setUserSavedImages(JSON.parse(savedImages));
+        } catch (e) {
+          setUserSavedImages([]);
+        }
+      } else {
+        setUserSavedImages([]);
+      }
     } else {
       // Guest Mode: sessionStorage only!
+      setUserSavedImages([]);
       const savedSessionHistory = sessionStorage.getItem('healthai_chathistory_session');
       if (savedSessionHistory) {
         try {
@@ -148,6 +174,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const saveAccountsToStorage = (accounts: RegisteredAccount[]) => {
     localStorage.setItem('healthai_registered_accounts', JSON.stringify(accounts));
+  };
+
+  const saveUserImagesToStorage = (images: UserSavedImage[]) => {
+    if (user) {
+      const key = `healthai_saved_images_${user.email}`;
+      localStorage.setItem(key, JSON.stringify(images));
+    }
   };
 
   const saveHistoryToStorage = (history: ChatHistoryItem[]) => {
@@ -277,8 +310,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     imageUrl?: string
   ) => {
     const now = new Date();
+    const historyId = `history-${Date.now()}`;
     const newItem: ChatHistoryItem = {
-      id: `history-${Date.now()}`,
+      id: historyId,
       timestamp: now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       date: now.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }),
       userQuery: query,
@@ -293,24 +327,65 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       saveHistoryToStorage(updated);
       return updated;
     });
+
+    // If user is registered and attached/pasted an image, automatically save to Patient Images Vault
+    if (user && imageUrl) {
+      const cleanTitle = query ? `Health Photo (${query.slice(0, 32)}...)` : 'Pasted Health Photo';
+      const newImage: UserSavedImage = {
+        id: `img-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
+        chatId: historyId,
+        url: imageUrl,
+        title: cleanTitle,
+        desc: response.slice(0, 90).replace(/[#*_-]/g, '') + '...',
+        timestamp: newItem.timestamp,
+        date: newItem.date
+      };
+      setUserSavedImages(prev => {
+        const updatedImages = [newImage, ...prev];
+        saveUserImagesToStorage(updatedImages);
+        return updatedImages;
+      });
+    }
   };
 
   const clearChatHistory = () => {
     setChatHistory([]);
     if (user) {
-      const key = `healthai_chathistory_${user.email}`;
-      localStorage.removeItem(key);
+      const historyKey = `healthai_chathistory_${user.email}`;
+      const imagesKey = `healthai_saved_images_${user.email}`;
+      localStorage.removeItem(historyKey);
+      localStorage.removeItem(imagesKey);
+      setUserSavedImages([]);
     } else {
       sessionStorage.removeItem('healthai_chathistory_session');
     }
   };
 
   const deleteHistoryItem = (id: string) => {
+    // Automatically delete associated image from Patient Images Vault when chat is deleted
+    if (user) {
+      setUserSavedImages(prev => {
+        const updatedImages = prev.filter(img => img.chatId !== id);
+        saveUserImagesToStorage(updatedImages);
+        return updatedImages;
+      });
+    }
+
     setChatHistory(prev => {
       const updated = prev.filter(item => item.id !== id);
       saveHistoryToStorage(updated);
       return updated;
     });
+  };
+
+  const deleteUserSavedImage = (id: string) => {
+    if (user) {
+      setUserSavedImages(prev => {
+        const updatedImages = prev.filter(img => img.id !== id);
+        saveUserImagesToStorage(updatedImages);
+        return updatedImages;
+      });
+    }
   };
 
   const [notifications, setNotifications] = useState<NotificationToast[]>([]);
@@ -342,9 +417,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       verifyAndLogin,
       logout,
       chatHistory,
+      userSavedImages,
       addChatHistory,
       clearChatHistory,
       deleteHistoryItem,
+      deleteUserSavedImage,
       notifications,
       showNotification,
       clearNotification
