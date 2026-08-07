@@ -150,53 +150,16 @@ export const ChatbotSection: React.FC<ChatbotSectionProps> = ({ onOpenHistory, i
 
     // Language Detection Engine (Telugu-English, Tamil-English, Hindi-English)
     const isTEnglish = 
-      textLower.includes('naa') || 
-      textLower.includes('naaku') || 
-      textLower.includes('undi') || 
-      textLower.includes('unayi') || 
-      textLower.includes('ayindi') || 
-      textLower.includes('ayyi') || 
-      textLower.includes('virigindi') || 
-      textLower.includes('osthondi') || 
-      textLower.includes('noppi') || 
-      textLower.includes('cheyi') || 
-      textLower.includes('kaalu') || 
-      textLower.includes('tala') || 
-      textLower.includes('jwaram') || 
-      textLower.includes('lekapothunnanu') || 
-      textLower.includes('em cheyali');
+      /\b(naa?|naaku|naku|undi|undhi|unayi|unayyi|ayindi|ayindhi|ayyi|virigindi|virigindhi|virigiyi|osthondi|osthundi|noppi|cheyi|cheyyi|kaalu|kalu|tala|thala|jwaram|jvaram|lekapothunnanu|em|yem|yam|cheyali|cheyyali|cheppandi|cheppu|kavali|undha|karigindi|raktham|rakthamsravam)\b/i.test(textLower) ||
+      textLower.includes('ayindi') || textLower.includes('ayindhi') || textLower.includes('virigindi') || textLower.includes('virigindhi') || textLower.includes('cheyali') || textLower.includes('cheyyali') || textLower.includes('em cheyali') || textLower.includes('yem cheyali') || textLower.includes('noppi') || textLower.includes('naku') || textLower.includes('naaku') || textLower.includes('cheyi') || textLower.includes('kaalu') || textLower.includes('kalu');
 
     const isTanglish = 
-      textLower.includes('enna') || 
-      textLower.includes('pannanum') || 
-      textLower.includes('aayiduchu') || 
-      textLower.includes('aaidichu') || 
-      textLower.includes('irukku') || 
-      textLower.includes('iruku') || 
-      textLower.includes('kaachal') || 
-      textLower.includes('kaisal') || 
-      textLower.includes('vali') || 
-      textLower.includes('ratham') || 
-      textLower.includes('odanja') || 
-      textLower.includes('odancu') || 
-      textLower.includes('varudhu') || 
-      textLower.includes('ennoda');
+      /\b(enna|ennoda|ennodu|pannanum|pananum|panna|aayiduchu|aaidichu|aiduchu|irukku|iruku|irukanga|kaachal|kaisal|vali|kai|kaal|ratham|radham|odanja|odancu|varudhu|varuthu|solunga|kudanga|puduchu)\b/i.test(textLower) ||
+      textLower.includes('pannanum') || textLower.includes('pananum') || textLower.includes('aayiduchu') || textLower.includes('aaidichu') || textLower.includes('ennoda') || textLower.includes('irukku') || textLower.includes('kaachal') || textLower.includes('odanja') || textLower.includes('kaal');
 
     const isHinglish = 
-      textLower.includes('mera') || 
-      textLower.includes('meri') || 
-      textLower.includes('haath') || 
-      textLower.includes('hath') || 
-      textLower.includes('pair') || 
-      textLower.includes('pait') || 
-      textLower.includes('dard') || 
-      textLower.includes('gaya') || 
-      textLower.includes('ho gaya') || 
-      textLower.includes('kya kare') || 
-      textLower.includes('bukhar') || 
-      textLower.includes('khoon') || 
-      textLower.includes('nikal') || 
-      textLower.includes('kat gaya');
+      /\b(mera|meri|mere|haath|hath|haat|pair|per|pait|pet|sar|sir|dard|gaya|gaye|ho gaya|kya|kare|karein|batao|bukhar|khoon|nikal|kat gaya|kat|hai|hain|bhai|bataiye|kuch|kya kare)\b/i.test(textLower) ||
+      textLower.includes('mera') || textLower.includes('haath') || textLower.includes('ho gaya') || textLower.includes('kya kare') || textLower.includes('bukhar') || textLower.includes('khoon') || textLower.includes('kat gaya') || textLower.includes('pair');
 
     // 0. Visual Medical Image Diagnostic Scan & Body Part Trauma Mode
     const isImageAnalysis = Boolean(imageUrl) || textLower.includes('attachment:') || textLower.includes('pasted image') || textLower.includes('image.png') || textLower.includes('[image]') || textLower.includes('broken') || textLower.includes('fracture') || textLower.includes('చేయి') || textLower.includes('కాలు');
@@ -1107,6 +1070,129 @@ Inability to bear any weight, visible joint deformity, loss of bowel/bladder con
     }
 
     // Smart Dynamic Fallback Guide
+    if (isTEnglish || language === 'te') {
+      return {
+        text: `### 📋 Visual Medical Action Guide for "${userText}" (Telugu-English)
+
+**Identified Body Zone:** General Health & Symptom Evaluation  
+**Triage Level:** PRE-DOCTOR ACTION PROTOCOL  
+
+---
+
+### 🧠 CRITICAL: Patient ki Fainting Kakunda Awake ga Unchadaniki Steps (First 60 Seconds)
+
+1. 🗣️ **Patient tho Continuously Matladandi (Talk Continuously):**  
+   • Quiet voice thoti *"Mee peru enti?"*, *"Naa maata vinipisthonda?"* ani prashnalu adigi alert ga unchandi.
+2. 🧘 **Patient ni Prashanthamga Kurchobettandi:**  
+   • Stress and anxiety lekunda well-ventilated room lo rest teesukovali.
+3. 🧥 **Body Warmth & Hydration Maintain Cheyandi:**  
+   • Warm water 200-250 mL sip cheyali.
+
+---
+
+### 🏥 Doctor ni Kalise Lopu Paatinchavalasina 5-Step Action Process:
+
+1. **Step 1: Immediate Care & Symptom Relief (0–30 Mins)**  
+   • Physical exertion aapesi rest teesukondi.
+
+2. **Step 2: Safe Interim Care & Hydration**  
+   • ORS leda warm water sips teesukondi. Paracetamol for fever/pain.
+
+3. **Step 3: Symptom Monitoring (Next 24 Hours)**  
+   • Body temperature and symptoms log cheyandi.
+
+4. **Step 4: Prepare for Doctor Consultation**  
+   • Doctor ni kalisi exact symptoms & medicines report cheyandi.
+
+5. **Step 5: Emergency Red Flags**  
+   • High fever, chest pain, leda breathing problem osthe **108 Ambulance** ki call cheyandi!`,
+        sources: ['HealthAI Verified Medical Repository', 'WHO Public Health Library'],
+        riskBadge: 'Low' as const
+      };
+    }
+
+    if (isTanglish || (language as string) === 'ta') {
+      return {
+        text: `### 📋 Visual Medical Action Guide for "${userText}" (Tamil-English)
+
+**Identified Body Zone:** General Health & Symptom Evaluation  
+**Triage Level:** PRE-DOCTOR ACTION PROTOCOL  
+
+---
+
+### 🧠 CRITICAL: Patient Unarvoda / Awake ah Irukka Vaikka (First 60 Seconds)
+
+1. 🗣️ **Patient Kitta Continuous ah Pesunga (Talk Continuously):**  
+   • Quiet ah *"Unga peru enna?"*, *"Naan pesuradhu kekudha?"* nu kelvi kettu alert ah vaingadhinga.
+2. 🧘 **Patient ah Prashanthama Ukkara Vaingadhinga:**  
+   • Well-ventilated room la aaramah padukka illana ukkara vaingadhinga.
+3. 🧥 **Body Warmth & Hydration Maintain Pannunga:**  
+   • Warm water sips kudungadhinga.
+
+---
+
+### 🏥 Doctor ah Paarkuradhu Kulla Seyya Vendiya 5-Step Action Process:
+
+1. **Step 1: Immediate Care & Rest (0–30 Mins)**  
+   • Over exertion thavirka aaramah rest edungadhinga.
+
+2. **Step 2: Safe Hydration & Care**  
+   • Hydration mella sip pannunga. Paracetamol for fever/pain.
+
+3. **Step 3: Symptom Tracking (Next 24 Hours)**  
+   • Body fever & symptom tracking pannunga.
+
+4. **Step 4: Doctor Consultation**  
+   • Doctor kitta kaati treatment edungadhinga.
+
+5. **Step 5: Emergency Red Flags**  
+   • Periya vali, breathing problem vandha **108 Ambulance** ku call pannunga!`,
+        sources: ['HealthAI Verified Medical Repository', 'WHO Public Health Library'],
+        riskBadge: 'Low' as const
+      };
+    }
+
+    if (isHinglish || language === 'hi') {
+      return {
+        text: `### 📋 Visual Medical Action Guide for "${userText}" (Hindi-English)
+
+**Identified Body Zone:** General Health & Symptom Evaluation  
+**Triage Level:** PRE-DOCTOR ACTION PROTOCOL  
+
+---
+
+### 🧠 CRITICAL: Patient ko Hosh me Rakhne aur Shock se Bachane ke Liye (First 60 Seconds)
+
+1. 🗣️ **Patient se Continuous Baat Karte Rahein (Talk Continuously):**  
+   • Calm voice me *"Aapka naam kya hai?"*, *"Aapko meri aawaz aa rahi hai?"* poochkar patient ko alert rakhein.
+2. 🧘 **Patient ko Aaram se Bithayein:**  
+   • Shanti se hawa-dar kamre me rest karne dein.
+3. 🧥 **Body Warmth & Hydration Maintain Karein:**  
+   • Halka gunguna paani sip karein.
+
+---
+
+### 🏥 Doctor ke Paas Jaane se Pehle 5-Step Action Process:
+
+1. **Step 1: Immediate Care & Rest (0–30 Mins)**  
+   • Mehnat ya tension band karke rest karein.
+
+2. **Step 2: Safe Hydration & Care**  
+   • Paani ya ORS ghool sip karein. Paracetamol for fever/pain.
+
+3. **Step 3: Symptom Tracking (Next 24 Hours)**  
+   • Fever aur pain log karein.
+
+4. **Step 4: Doctor Consultation**  
+   • Specialist Doctor se consult karein.
+
+5. **Step 5: Emergency Red Flags**  
+   • Tez dard ya saans lene me dikkat ho toh **108 Ambulance** ko call karein!`,
+        sources: ['HealthAI Verified Medical Repository', 'WHO Public Health Library'],
+        riskBadge: 'Low' as const
+      };
+    }
+
     return {
       text: `### 📋 Step-by-Step Action Process Until Doctor Consultation for "${userText}"
 
