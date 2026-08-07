@@ -152,6 +152,49 @@ export const ChatbotSection: React.FC<ChatbotSectionProps> = ({ onOpenHistory, i
     const isImageAnalysis = Boolean(imageUrl) || textLower.includes('attachment:') || textLower.includes('pasted image') || textLower.includes('image.png') || textLower.includes('[image]');
 
     if (isImageAnalysis) {
+      // 1. Broken Leg / Bone Fracture / Trauma Injury
+      if (
+        textLower.includes('leg') || 
+        textLower.includes('break') || 
+        textLower.includes('broken') || 
+        textLower.includes('fracture') || 
+        textLower.includes('bone') || 
+        textLower.includes('కాలు') || 
+        textLower.includes('ఎముక') ||
+        textLower.includes('sprain')
+      ) {
+        return {
+          text: `### 🦵 Visual Image Analysis & Emergency Broken Leg / Fracture First Aid
+
+**Detected Condition:** Acute Limb Trauma / Suspected Bone Fracture & Leg Injury
+
+---
+
+### 🏥 Step-by-Step Action Process (What to do right now up to meeting your doctor):
+
+1. **Step 1: Immediate Immobilization & Rest (0–60 Seconds)**
+   • ⛔ **CRITICAL:** Do NOT try to straighten, bend, move, or bear weight on the injured leg. Do NOT attempt to push protruding bones back in place.
+   • Keep the patient completely still in a comfortable reclining position.
+
+2. **Step 2: Splinting & Stabilization (First Few Minutes)**
+   • Support the injured leg in the exact position found using soft cushions, folded blankets, or rigid splints tied securely above and below the injury site.
+   • Avoid tight bandages that restrict arterial blood circulation to the foot.
+
+3. **Step 3: Cold Application & Swelling Reduction**
+   • Apply an ice pack wrapped in a clean cloth towel over the swelling for 15–20 minutes every hour. Do NOT place ice directly on bare skin.
+
+4. **Step 4: Shock Management & Preparation for Surgery**
+   • Cover the patient with a warm blanket to treat clinical shock. Keep elevated if safe.
+   • ⛔ **Pre-Surgery Warning:** Do NOT give the patient any solid food or sugary drinks, in case emergency orthopedic surgical anesthesia is required upon arrival at the hospital.
+
+5. **Step 5: Emergency Red Flags & Transport**
+   • Call Emergency Medical Services (108 / 911) immediately if bone protrudes through the skin (open compound fracture), foot turns cold/pale/blue, or severe numbness occurs.`,
+          sources: ['WHO Trauma & Orthopedic Emergency Manual', 'Red Cross Fracture First Aid Guidelines', 'American Academy of Orthopaedic Surgeons'],
+          riskBadge: 'Urgent' as const
+        };
+      }
+
+      // 2. Severe Bleeding Cut / Laceration Wound
       if (textLower.includes('bleed') || textLower.includes('cut') || textLower.includes('wound') || textLower.includes('రక్తస్రావం')) {
         return {
           text: `### 🩸 Visual Image Analysis & Emergency Bleeding First Aid
@@ -184,7 +227,62 @@ export const ChatbotSection: React.FC<ChatbotSectionProps> = ({ onOpenHistory, i
         };
       }
 
-      // Skin / Rash / Underarm Itching (Default Visual Image Detection)
+      // 3. Thermal Burn / Scald Injury
+      if (textLower.includes('burn') || textLower.includes('fire') || textLower.includes('scald') || textLower.includes('కాలిన')) {
+        return {
+          text: `### 🔥 Visual Image Analysis & Emergency Burn First Aid
+
+**Detected Condition:** Thermal Skin Burn / Scald Injury
+
+---
+
+### 🏥 Step-by-Step Action Process (What to do right now up to meeting your doctor):
+
+1. **Step 1: Cool Water Immersion (0–20 Mins)**
+   • Immediately hold the burn under cool, clean running water for 10–20 minutes to stop thermal heat from penetrating deeper tissue layers.
+   • ⛔ **Safety Precaution:** Do NOT use ice, ice water, butter, toothpaste, or oil—these trap heat and worsen tissue destruction.
+
+2. **Step 2: Remove Jewelry & Protect Wound**
+   • Gently remove rings, watches, or tight clothing around the burn before tissue swelling occurs.
+   • Cover loosely with a clean, non-stick sterile gauze bandage or fresh plastic wrap film.
+
+3. **Step 3: Blister Care & Pain Control**
+   • ⛔ Do NOT break or pop blisters, as open blisters drastically increase bacterial infection risk. Take Paracetamol if needed for pain relief.
+
+4. **Step 4: Prepare for Clinical Burn Evaluation**
+   • Seek immediate medical care if the burn is larger than the patient's palm, involves the face, hands, feet, or groin, or appears charred/white.`,
+          sources: ['American Burn Association Emergency Guide', 'WHO Thermal Injury Protocol'],
+          riskBadge: 'Urgent' as const
+        };
+      }
+
+      // 4. Snakebite / Animal / Insect Bite
+      if (textLower.includes('snake') || textLower.includes('bite') || textLower.includes('sting') || textLower.includes('పాము')) {
+        return {
+          text: `### 🐍 Visual Image Analysis & Emergency Snakebite First Aid
+
+**Detected Condition:** Envenomation Hazard / Suspected Venomous Bite
+
+---
+
+### 🏥 Step-by-Step Action Process (What to do right now up to meeting your doctor):
+
+1. **Step 1: Immediate Calm & Immobilization (0–60 Seconds)**
+   • Keep the patient completely still and calm. Movement accelerates snake venom circulation through the lymphatic system.
+   • Position the bitten limb below the level of the heart.
+
+2. **Step 2: Clean Wound & Remove Constrictions**
+   • Wash wound gently with soap and water. Remove tight rings, watches, or footwear before swelling starts.
+   • ⛔ **CRITICAL WARNING:** Do NOT cut the bite area, do NOT attempt to suck out venom, do NOT apply ice, and do NOT apply tight arterial tourniquets.
+
+3. **Step 3: Emergency Hospital Transport**
+   • Transport patient immediately to the nearest hospital equipped with Anti-Snake Venom (ASV). Keep the bitten limb splinted and still during transport.`,
+          sources: ['WHO Guidelines for Management of Snakebites', 'National Health Portal Envenomation Protocol'],
+          riskBadge: 'Urgent' as const
+        };
+      }
+
+      // 5. Skin / Rash / Underarm Itching (Default Visual Image Detection)
       return {
         text: `### 📷 Visual Health Image Analysis & Clinical Protocol
 
