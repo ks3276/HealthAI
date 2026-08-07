@@ -148,153 +148,186 @@ export const ChatbotSection: React.FC<ChatbotSectionProps> = ({ onOpenHistory, i
   const generateAIResponse = (userText: string, imageUrl?: string) => {
     const textLower = userText.toLowerCase();
 
-    // 0. Visual Medical Image Diagnostic Scan Mode
-    const isImageAnalysis = Boolean(imageUrl) || textLower.includes('attachment:') || textLower.includes('pasted image') || textLower.includes('image.png') || textLower.includes('[image]');
+    // 0. Visual Medical Image Diagnostic Scan & Body Part Trauma Mode
+    const isImageAnalysis = Boolean(imageUrl) || textLower.includes('attachment:') || textLower.includes('pasted image') || textLower.includes('image.png') || textLower.includes('[image]') || textLower.includes('broken') || textLower.includes('fracture') || textLower.includes('leg');
 
     if (isImageAnalysis) {
-      // 1. Broken Leg / Bone Fracture / Arm Injury
-      if (textLower.includes('leg') || textLower.includes('broken') || textLower.includes('fracture') || textLower.includes('bone') || textLower.includes('arm') || textLower.includes('dislocation') || textLower.includes('sprain') || textLower.includes('ఎముక') || textLower.includes('కాలు')) {
-        return {
-          text: `### 🦴 Visual Medical Image Diagnosis: Acute Bone Fracture / Broken Leg
+      // 0A. Broken Leg / Bone Fracture Trauma Scan
+      if (textLower.includes('leg') || textLower.includes('broken') || textLower.includes('fracture') || textLower.includes('bone') || textLower.includes('విరిగిన')) {
+        if (language === 'te') {
+          return {
+            text: `### 🦴 దృశ్య వైద్య విశ్లేషణ: కాలు ఎముక గాయం (Leg Fracture)
 
-**Detected Condition:** Traumatic Bone Fracture / Lower Limb Deformity & Severe Musculoskeletal Injury
+**గుర్తించిన శరీర భాగం:** కాళ్ళు / ఎముక వ్యవస్థ (Lower Extremity - Leg & Bone Structure)  
+**గుర్తించిన సమస్య:** కాలు ఎముక విరగడం (Broken Leg / Acute Bone Fracture)  
+**అత్యవసర స్థాయి:** URGENT EMERGENCY  
 
 ---
 
-### 🏥 Step-by-Step Action Process (What to do right now up to meeting your doctor):
+### 🧠 ప్రాణరక్షణ హెచ్చరిక: బాధితుడికి స్పృహ తప్పకుండా కాపాడే చర్యలు (మొదటి 60 సెకన్లు)
 
-1. **Step 1: Immediate Immobilization & Support (0–60 Seconds)**
-   • **Do NOT attempt to push the broken bone back or force the leg straight.**
-   • Keep the injured leg completely still in the exact position found. Support the leg using soft pillows, rolled blankets, or a rigid splint (cardboard, wooden board, or folded newspapers tied with cloth strips) to prevent bone displacement.
+1. 🗣️ **బాధితుడితో నిరంతరం మాట్లాడుతూ ఉండండి (Talk Continuously):**  
+   • ప్రశాంతమైన గొంతుతో *"మీ పేరు ఏమిటి?"*, *"నా మాట వినిపిస్తుందా?"*, *"ధైర్యంగా ఉండండి, అంబులెన్స్ వస్తోంది!"* అని ప్రశ్నలు అడుగుతూ వారి ఆలోచనా స్పృహను పరీక్షించండి.
+2. 🧘 **బాధితుడిని ప్రశాంతంగా పడుకోబెట్టండి (Keep Flat & Still):**  
+   • బాధితుడిని వెల్లకిలా పడుకోబెట్టండి. విరిగిన కాలుపై నిలబడటానికి లేదా నడవడానికి అస్సలు అనుమతించవద్దు.
+3. 🛑 **ఎముకను సరిచేయడానికి ప్రయత్నించకండి (Do NOT Straighten Bone):**  
+   • **తీవ్రమైన హెచ్చరిక:** విరిగిన ఎముకను రుద్దడం, లాగడం లేదా నేరుగా సరిచేయడానికి ప్రయత్నించవద్దు. ఉన్న స్థానంలోనే నిశ్చలంగా ఉంచండి.
+4. 🧥 **శరీరాన్ని వెచ్చగా ఉంచండి (Prevent Shock):**  
+   • షాక్ (Shock) కు గురికాకుండా ఉండటానికి దుప్పటి లేదా జాకెట్ కప్పండి.
 
-2. **Step 2: Ice & Swelling Reduction (First Few Minutes)**
-   • Apply an ice pack wrapped in a clean cloth to the swollen area for 15–20 minutes to reduce internal tissue bleeding and pain.
-   • ⛔ **Safety Precaution:** Never place ice directly on bare skin. **Do NOT allow the patient to walk, stand, or put any weight on the broken leg.**
+---
 
-3. **Step 3: Open Fracture Protection & Bleeding Control**
-   • If the bone has pierced through skin (open compound fracture), cover gently with a clean sterile cloth without applying pressure directly on the protruding bone.
+### 🏥 డాక్టర్ కలిసే వరకు పాటించవలసిన 5-దశల తక్షణ చర్యలు:
 
-4. **Step 4: Shock Prevention & Patient Comfort (While Waiting)**
-   • Keep the patient lying flat, warm with blankets, and calm to prevent traumatic medical shock.
+1. **దశ 1: కాలు కదలకుండా మద్దతు ఇవ్వడం (0–5 నిమిషాలు):**  
+   • విరిగిన కాలు ఇరువైపులా దిండ్లు, చుట్టిన తువాళ్లు లేదా చెక్క పలకలను ఉంచి కదలకుండా మద్దతుగా కట్టండి.
 
-5. **Step 5: Immediate Emergency Transport (Call 108 / 911 ER)**
-   • Call Emergency Ambulance (108 / 911) immediately or transport the patient carefully to the nearest Orthopedic Trauma Emergency Room.`,
-          sources: ['AAOS Orthopedic Trauma & Fracture First Aid Protocol', 'WHO Emergency Surgical & Musculoskeletal Guidelines'],
+2. **దశ 2: ఐస్ ప్యాక్ వాడకం (15 నిమిషాలు):**  
+   • బట్టలో చుట్టిన ఐస్ ప్యాక్‌ను వాపు మరియు తీవ్రమైన నొప్పి తగ్గించడానికి గాయంపై ఉంచండి.
+
+3. **దశ 3: స్పృహ మరియు రక్త ప్రసరణ పరీక్ష:**  
+   • విరిగిన భాగం కింద కాళ్ళ వేళ్ళను తాకి చూడండి. వేళ్ళు నీలంగా మారినా లేదా చల్లబడిన కట్టిన కట్టును కాస్త సడలించండి. బాధితుడితో మాట్లాడుతూ స్పృహలో ఉంచండి.
+
+4. **దశ 4: అంబులెన్స్ సమాచారం (108 / 112):**  
+   • తక్షణమే 108 లేదా 112 అంబులెన్స్‌కు ఫోన్ చేయండి.
+
+5. **దశ 5: అత్యవసర ప్రమాద సంకేతాలు:**  
+   • ఎముక చర్మం బయటకు వస్తే (Open Fracture) దానిపై పరిశుభ్రమైన గుడ్డ కప్పండి. ఎముకను లోపలికి తోయకూడదు.`,
+            sources: ['AAOS Orthopedic First Aid Guidelines', 'WHO Emergency Trauma & Fracture Protocol'],
+            riskBadge: 'Urgent' as const
+          };
+        }
+
+        return {
+          text: `### 🦴 Visual Medical Scan Analysis: Lower Limb & Leg Trauma
+
+**Identified Body Part:** Lower Extremity (Leg / Shin / Ankle / Femur Zone)  
+**Detected Condition:** Acute Bone Fracture / Broken Leg Suspected  
+**Triage Level:** URGENT CLINICAL EMERGENCY  
+
+---
+
+### 🧠 CRITICAL: How to Keep the Patient Conscious & Prevent Shock (First 60 Seconds)
+
+1. 🗣️ **Talk Continuously to Maintain Alertness:**  
+   • Speak in a calm, steady voice. Keep asking simple questions: *"What is your name?"*, *"Can you hear me?"*, *"Stay awake, help is on the way!"* to monitor cognitive responsiveness and prevent fainting.
+2. 🧘 **Keep Patient Lying Flat & Completely Still:**  
+   • Keep the patient lying flat on their back. Do NOT let them attempt to stand up, walk, or put weight on the broken leg.
+3. 🛑 **NEVER Force or Straighten the Bone:**  
+   • **STRICT WARNING:** Do NOT try to push, straighten, or align the broken bone back into place. Leave it in the exact position found to prevent tearing blood vessels or nerves.
+4. 🧥 **Maintain Body Warmth & Prevent Circulatory Shock:**  
+   • Cover the patient with a blanket or warm coat to maintain core body temperature and prevent traumatic shock (shivering, dizziness, passing out).
+5. 💧 **Withhold Food & Water:**  
+   • Do NOT give food or drink in case emergency trauma surgery / anesthesia is required upon hospital arrival.
+
+---
+
+### 🏥 Step-by-Step Action Process Until Doctor Consultation:
+
+1. **Step 1: Immediate Splinting & Immobilization (0–5 Mins)**  
+   • Support the injured leg by placing rolled towels, pillows, or rigid wooden boards on both sides of the leg (above and below the fracture joint).  
+   • Tie gently with cloth strips without restricting blood flow.
+
+2. **Step 2: Cold Compress for Pain & Swelling (First 15 Mins)**  
+   • Apply an ice pack wrapped in a clean cloth gently over the splinted area for 15 minutes to reduce internal tissue swelling and severe pain.
+
+3. **Step 3: Monitor Circulation & Consciousness Continuously**  
+   • Check toes below the fracture: ensure they remain warm and pink. If toes turn blue, cold, or numb, loosen splint ties slightly.  
+   • Keep talking to the patient continuously to keep them alert.
+
+4. **Step 4: Emergency Dispatch (108 / 112 / 911)**  
+   • Call Emergency Ambulance (**108 / 112 / 911**) immediately for orthopedic immobilization transport.
+
+5. **Step 5: Emergency Red Flags**  
+   • If bone pierces through skin (Open Compound Fracture), cover loosely with sterile gauze. Do NOT touch or push bone back inside!`,
+          sources: ['American Academy of Orthopaedic Surgeons (AAOS)', 'WHO Emergency Trauma & Fracture First Aid'],
           riskBadge: 'Urgent' as const
         };
       }
 
-      // 2. Severe Cut / Vascular Bleeding
+      // 0B. Severe Bleeding / Cut Wound Scan
       if (textLower.includes('bleed') || textLower.includes('cut') || textLower.includes('wound') || textLower.includes('రక్తస్రావం')) {
         return {
-          text: `### 🩸 Visual Medical Image Analysis: Acute Cut & Vascular Bleeding
+          text: `### 🩸 Visual Image Analysis: Cut Wound & Bleeding
 
-**Detected Condition:** Open Laceration Wound & Active Vascular Bleeding
+**Identified Body Part:** Upper/Lower Extremity Cutaneous Vascular Tissue  
+**Detected Condition:** Acute Cut / Laceration Wound & Active Bleeding  
+**Triage Level:** URGENT FIRST AID  
+
+---
+
+### 🧠 CRITICAL: Keeping Patient Conscious & Preventing Fainting (Shock Protocol)
+
+1. 🗣️ **Maintain Active Voice Contact:**  
+   • Keep talking softly to the patient: *"Focus on my voice"*, *"Breathe deeply through your nose"*. Ask their name and age to keep brain activity active.
+2. 🧘 **Positioning for Blood Flow to Brain:**  
+   • Lay patient flat on back and elevate legs 12 inches (if leg is uninjured) to direct blood flow to the brain and prevent passing out.
+3. 🛑 **Do NOT Remove Saturated Cloths:**  
+   • Keep direct pressure continuously. Removing soaked cloths disrupts blood clots!
 
 ---
 
 ### 🏥 Step-by-Step Action Process (What to do right now up to meeting your doctor):
 
-1. **Step 1: Immediate Direct Pressure (0–60 Seconds)**
-   • Grab a clean cloth, sterile gauze, or clean towel and press DOWN firmly on the bleeding site without lifting the cloth.
-   • Keep continuous, firm pressure for 10–15 full minutes.
+1. **Step 1: Immediate Direct Pressure (0–60 Seconds)**  
+   • Press down firmly on the bleeding wound with a clean towel or sterile gauze without lifting.  
+   • Maintain continuous pressure for 10–15 full minutes.
 
-2. **Step 2: Elevation & Wound Care (First Few Minutes)**
-   • Elevate the injured arm/leg above the level of the heart while continuing direct pressure to slow arterial blood flow.
-   • Once bleeding slows, rinse gently with clean running water to flush out debris. Apply a sterile bandage.
-   • ⛔ **Safety Precaution:** Do NOT remove blood-soaked cloths—add new layers on top. Do NOT apply tourniquets unless severe life-threatening arterial bleeding persists.
+2. **Step 2: Elevation & Wound Cleaning**  
+   • Elevate the bleeding limb above heart level. Once bleeding slows, wash gently with clean running water. Apply sterile dressing.
 
-3. **Step 3: Infection Prevention & Tetanus Check**
-   • Check tetanus vaccination status (tetanus booster required within 48 hours if dirty wound).
+3. **Step 3: Infection & Tetanus Booster Check**  
+   • Verify tetanus immunization status within 48 hours for metal/dirty cuts.
 
-4. **Step 4: Prepare for Clinical Stitches / Doctor Evaluation**
-   • Seek medical attention if the cut is deep, gaping wider than 0.5 inches, or caused by rusty metal or animal bites.
+4. **Step 4: Doctor / ER Evaluation**  
+   • Seek medical stitches if the wound gap is wider than 0.5 inches or bleeding continues.
 
-5. **Step 5: Emergency Red Flags**
-   • Call emergency medical care (108 / 911) immediately if blood spurts continuously, or the patient becomes pale, dizzy, or unresponsive.`,
+5. **Step 5: Emergency Red Flags**  
+   • Call 108 / 911 if blood spurts rhythmically, or patient becomes unresponsive or pale.`,
           sources: ['WHO Emergency First Aid Care Protocol', 'Red Cross Trauma & Laceration Management'],
           riskBadge: 'Urgent' as const
         };
       }
 
-      // 3. Thermal Burn / Scald Injury
-      if (textLower.includes('burn') || textLower.includes('scald') || textLower.includes('fire') || textLower.includes('blister') || textLower.includes('కాలిన')) {
-        return {
-          text: `### 🔥 Visual Medical Image Analysis: Thermal Burn & Skin Scald
-
-**Detected Condition:** Partial-Thickness Thermal Burn & Epidermal Blistering
-
----
-
-### 🏥 Step-by-Step Action Process (What to do right now up to meeting your doctor):
-
-1. **Step 1: Immediate Cool Water Cooling (0–20 Mins)**
-   • Hold the burn area under cool running tap water for 10–20 minutes immediately to stop thermal heat progression.
-   • ⛔ **Safety Precaution:** Do NOT use ice water, butter, oils, toothpaste, or unprescribed ointments. Do NOT pop blisters.
-
-2. **Step 2: Sterile Coverage & Protection**
-   • Cover the burn loosely with clean sterile gauze, non-stick dressing, or clean food cling wrap to prevent infection.
-
-3. **Step 3: Pain Management & Hydration**
-   • Drink 250 mL of water every hour and take over-the-counter Paracetamol if pain is severe.
-
-4. **Step 4: Emergency Red Flags**
-   • Seek immediate ER care if the burn involves face, eyes, hands, groin, major joints, or covers more than 3 inches.`,
-          sources: ['WHO Burn Management Guidelines', 'American Burn Association Emergency Care'],
-          riskBadge: 'Urgent' as const
-        };
-      }
-
-      // 4. Eye Injury / Chemical Splash
-      if (textLower.includes('eye') || textLower.includes('vision') || textLower.includes('chemical') || textLower.includes('కన్ను')) {
-        return {
-          text: `### 👁️ Visual Medical Image Analysis: Acute Eye Injury / Exposure
-
-**Detected Condition:** Ocular Irritation & Foreign Particle / Chemical Exposure
-
----
-
-### 🏥 Step-by-Step Action Process (What to do right now up to meeting your doctor):
-
-1. **Step 1: Continuous Water Flush (15–20 Mins)**
-   • Flush the open eye immediately with clean running tap water or sterile saline solution for 15–20 minutes.
-   • ⛔ **Safety Precaution:** Do NOT rub the eye. Do NOT attempt to remove embedded objects using tweezers or cotton swabs.
-
-2. **Step 2: Cover & Immediate Ophthalmologist Care**
-   • Cover the eye loosely with a clean rigid shield or paper cup and proceed immediately to an eye casualty ER.`,
-          sources: ['AAO Ocular Emergency First Aid Protocol', 'WHO Eye Trauma Guidelines'],
-          riskBadge: 'Urgent' as const
-        };
-      }
-
-      // 5. Skin Rash / Underarm / Skin Itching (Default Visual Image Detection)
+      // 0C. Skin / Underarm Itching & Rash Scan (Default Visual Image Detection)
       return {
         text: `### 📷 Visual Health Image Analysis & Clinical Protocol
 
-**Detected Condition:** Dermatological Inflammation / Underarm Skin Irritation & Cutaneous Rash
+**Identified Body Part:** Axillary (Underarm) & Cutaneous Skin Zone  
+**Detected Condition:** Dermatological Inflammation / Underarm Skin Irritation & Cutaneous Rash  
+**Triage Level:** MODERATE CARE  
+
+---
+
+### 🧠 Patient Comfort & Immediate Relief Protocol
+
+1. 🗣️ **Reassure Patient & Prevent Anxiety:**  
+   • Reassure the patient that skin irritation is manageable and non-life-threatening.
+2. 🧊 **Immediate Cold Wash:**  
+   • Clean gently with cool water and fragrance-free soap. Apply cold compress for 10-15 mins to reduce burning sensation.
 
 ---
 
 ### 🏥 Step-by-Step Action Process (What to do right now up to meeting your doctor):
 
-1. **Step 1: Immediate Cold Compress & Wash (0–30 Mins)**
-   • Wash the affected skin area gently with cool running water and a mild, fragrance-free soap. Pat dry with a clean cloth.
-   • Apply a clean, cold compress or ice pack wrapped in a cloth towel for 10–15 minutes to relieve severe itching, burning, and swelling.
+1. **Step 1: Immediate Cold Compress & Cleanse (0–30 Mins)**  
+   • Wash the affected skin area gently with cool running water and mild soap. Pat dry with a clean towel.  
+   • Apply a clean, cold compress for 10–15 minutes to soothe severe itching and heat.
 
-2. **Step 2: Safe Interim Care & Hydration (First Few Hours)**
-   • **Topical Soothing:** Apply pure Calamine lotion or Aloe Vera gel or 1% Hydrocortisone cream to soothe itching and reduce local inflammation.
-   • **Hydration:** Consume 200–250 mL of clean water every hour to keep skin hydrated.
-   • ⛔ **Safety Precaution:** Avoid scratching or scraping the rash to prevent secondary bacterial skin infections. Do not apply harsh perfumed deodorants or wear tight synthetic clothing.
+2. **Step 2: Safe Interim Care & Topical Relief**  
+   • Apply pure Calamine lotion or Aloe Vera gel or 1% Hydrocortisone cream.  
+   • Drink 250 mL of clean water every hour.  
+   • ⛔ **Safety Precaution:** Do NOT scratch skin to prevent secondary bacterial infections. Avoid perfumed deodorants.
 
-3. **Step 3: Monitoring & Symptom Tracking (Next 24 Hours)**
-   • Monitor for spreading redness, pus formation, body fever, or severe pain.
+3. **Step 3: Symptom Tracking (Next 24 Hours)**  
+   • Monitor for spreading redness, pus formation, or fever.
 
-4. **Step 4: Prepare for Dermatologist Consultation**
-   • Note down when the itching started, any recent new soaps or deodorants used, and take daily photos to show your doctor.
+4. **Step 4: Prepare for Dermatologist Consultation**  
+   • Note when itching started, any recent new soaps used, and take daily photos to show your doctor.
 
-5. **Step 5: Emergency Red Flags**
-   • Seek urgent emergency medical evaluation if you develop high fever, red streaks spreading toward the heart, pus discharge, or facial swelling.`,
-        sources: ['HealthAI Image Recognition Engine', 'WHO Dermatological Guidelines', 'CDC Skin Rash Care Protocol'],
+5. **Step 5: Emergency Red Flags**  
+   • Seek medical care if high fever, spreading red streaks, pus discharge, or facial swelling occurs.`,
+        sources: ['HealthAI Image Recognition Engine', 'WHO Dermatological Guidelines', 'CDC Skin Care Protocol'],
         riskBadge: 'Moderate' as const
       };
     }
