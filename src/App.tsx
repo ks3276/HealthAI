@@ -147,8 +147,10 @@ export const AppContent: React.FC = () => {
           </div>
         </main>
 
-        {/* Footer */}
-        <Footer onSelectTab={handleSelectTab} />
+        {/* Footer (Hidden on New Chat / Chatbot tab) */}
+        {activeTab !== 'chatbot' && (
+          <Footer onSelectTab={handleSelectTab} />
+        )}
 
       </div>
 
