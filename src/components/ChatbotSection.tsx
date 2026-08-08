@@ -116,13 +116,39 @@ export const ChatbotSection: React.FC<ChatbotSectionProps> = ({ onOpenHistory, i
   const processedQueryRef = useRef<string | null>(null);
   const isSendingRef = useRef(false);
 
-  const sampleQuestions = [
-    'What what questins may ask queations for sih',
-    'What problem does your project solve?',
-    'Why did you choose AI for this project?',
-    'What are dengue symptoms?',
-    'How to prevent malaria?'
-  ];
+  const getSampleQuestions = () => {
+    if (language === 'te') {
+      return [
+        'డెంగ్యూ లక్షణాలు & నివారణ ఎలా?',
+        'మలేరియా రాకుండా ఎలా జాగ్రత్తపడాలి?',
+        'చేయి విరిగినప్పుడు ప్రథమ చికిత్స ఏమిటి?',
+        'రక్తస్రావం వెంటనే ఎలా ఆపాలి?',
+        'తీవ్రమైన జ్వరం వచ్చినప్పుడు ఏమి చేయాలి?',
+        'కాలిన గాయాలకు ప్రథమ చికిత్స?'
+      ];
+    }
+    if (language === 'hi') {
+      return [
+        'डेंगू के लक्षण और बचाव कैसे करें?',
+        'मलेरिया से बचने के उपाय क्या हैं?',
+        'हाथ टूटने (Fracture) पर प्राथमिक उपचार?',
+        'खून बहना तुरंत कैसे रोकें?',
+        'तेज बुखार (102°F) होने पर क्या करें?',
+        'त्वचा जलने पर प्राथमिक चिकित्सा?'
+      ];
+    }
+    return [
+      'What are dengue symptoms & prevention?',
+      'How to prevent malaria infection?',
+      'First aid for hand fracture?',
+      'Emergency steps to stop bleeding?',
+      'What to do for high fever above 102°F?',
+      'First aid for thermal skin burns?',
+      'How to lower high blood sugar level?'
+    ];
+  };
+
+  const sampleQuestions = getSampleQuestions();
 
   const lastUserIndex = messages.reduce((acc, m, idx) => m.sender === 'user' ? idx : acc, -1);
 
