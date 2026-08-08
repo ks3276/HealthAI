@@ -120,11 +120,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [userSavedImages, setUserSavedImages] = useState<UserSavedImage[]>([]);
 
   // Load chat history and saved patient images:
-  // - Registered users: Persistent localStorage
-  // - Guest users: Temporary sessionStorage (erased when website tab closes)
+  // - Registered users: Persistent localStorage linked exclusively to their account email
+  // - Non-registered (Guest) users: Erased/deleted upon page refresh!
   useEffect(() => {
     if (user) {
-      const historyKey = `healthai_chathistory_${user.email}`;
+      const emailClean = user.email.trim().toLowerCase();
+      const historyKey = `healthai_chathistory_${emailClean}`;
       const savedHistory = localStorage.getItem(historyKey);
       if (savedHistory) {
         try {
@@ -136,7 +137,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setChatHistory([]);
       }
 
-      const imagesKey = `healthai_saved_images_${user.email}`;
+      const imagesKey = `healthai_saved_images_${emailClean}`;
       const savedImages = localStorage.getItem(imagesKey);
       if (savedImages) {
         try {
@@ -148,18 +149,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setUserSavedImages([]);
       }
     } else {
-      // Guest Mode: sessionStorage only!
+      // Non-registered Guest Mode: Chat history is NOT stored across page reloads.
+      // Cleared automatically on page refresh!
+      setChatHistory([]);
       setUserSavedImages([]);
-      const savedSessionHistory = sessionStorage.getItem('healthai_chathistory_session');
-      if (savedSessionHistory) {
-        try {
-          setChatHistory(JSON.parse(savedSessionHistory));
-        } catch (e) {
-          setChatHistory([]);
-        }
-      } else {
-        setChatHistory([]);
-      }
+      sessionStorage.removeItem('healthai_chathistory_session');
     }
   }, [user]);
 
@@ -178,19 +172,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const saveUserImagesToStorage = (images: UserSavedImage[]) => {
     if (user) {
-      const key = `healthai_saved_images_${user.email}`;
+      const emailClean = user.email.trim().toLowerCase();
+      const key = `healthai_saved_images_${emailClean}`;
       localStorage.setItem(key, JSON.stringify(images));
     }
   };
 
   const saveHistoryToStorage = (history: ChatHistoryItem[]) => {
     if (user) {
-      // Registered User -> Persistent localStorage
-      const key = `healthai_chathistory_${user.email}`;
+      // Registered User -> Saved persistently in localStorage under their email
+      const emailClean = user.email.trim().toLowerCase();
+      const key = `healthai_chathistory_${emailClean}`;
       localStorage.setItem(key, JSON.stringify(history));
     } else {
-      // Unregistered Guest -> Temporary sessionStorage (erased upon tab close!)
-      sessionStorage.setItem('healthai_chathistory_session', JSON.stringify(history));
+      // Non-registered Guest User -> DO NOT persist in localStorage or sessionStorage!
+      // Deleted upon page refresh.
+      sessionStorage.removeItem('healthai_chathistory_session');
     }
   };
 
@@ -300,6 +297,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const logout = () => {
     setUser(null);
+    setChatHistory([]);
+    setUserSavedImages([]);
+    sessionStorage.removeItem('healthai_chathistory_session');
   };
 
   const addChatHistory = (
