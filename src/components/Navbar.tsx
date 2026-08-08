@@ -146,9 +146,22 @@ export const Navbar: React.FC<NavbarProps> = ({
               onClick={toggleTheme}
               className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
               aria-label="Toggle Theme"
+              title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
             >
               {theme === 'dark' ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-indigo-600" />}
             </button>
+
+            {/* Sign Out Button (Shifted Right Beside Light/Dark Switch Mode) */}
+            {user && (
+              <button
+                onClick={logout}
+                title="Sign Out of Registered Account"
+                className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold text-red-600 dark:text-red-400 bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 transition-all shadow-xs"
+              >
+                <LogOut className="w-4 h-4 text-red-500" />
+                <span>{t('signOut')}</span>
+              </button>
+            )}
 
             {/* Symptom Checker CTA */}
             <button

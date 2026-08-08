@@ -6,7 +6,8 @@ import {
   Sun, 
   Moon, 
   Check, 
-  HeartPulse
+  HeartPulse,
+  LogOut
 } from 'lucide-react';
 
 interface ChatGPTHeaderProps {
@@ -20,7 +21,7 @@ export const ChatGPTHeader: React.FC<ChatGPTHeaderProps> = ({
   onOpenAuth,
 }) => {
   const { theme, toggleTheme, language, setLanguage, t } = useTheme();
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
 
   const [selectedModel, setSelectedModel] = useState('HealthAI 4.0');
   const [showModelDropdown, setShowModelDropdown] = useState(false);
@@ -133,6 +134,18 @@ export const ChatGPTHeader: React.FC<ChatGPTHeaderProps> = ({
         >
           {theme === 'dark' ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-slate-700" />}
         </button>
+
+        {/* Sign Out Button (Shifted Right Beside Light/Dark Switch Mode) */}
+        {user && (
+          <button
+            onClick={logout}
+            title="Sign Out of Registered Account"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl bg-red-500/10 hover:bg-red-500/20 text-red-600 dark:text-red-400 font-bold text-xs border border-red-500/30 transition-all shadow-xs"
+          >
+            <LogOut className="w-4 h-4 text-red-500" />
+            <span>{t('signOut')}</span>
+          </button>
+        )}
 
         {/* User Auth Button: Hidden when logged in. Displays Sign In when logged out */}
         {!user && (
